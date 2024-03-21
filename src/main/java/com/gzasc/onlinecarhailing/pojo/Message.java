@@ -1,0 +1,17 @@
+package com.gzasc.onlinecarhailing.pojo;
+
+import com.alibaba.fastjson.JSONObject;
+import lombok.Data;
+
+//系统中各用户交流发的信息的类
+@Data
+public class Message {
+
+//    id
+    private Integer id;
+//    所属用户的ID
+    private Integer ownerId;
+//    内容
+    private String data;
+
+}
