@@ -15,14 +15,14 @@ public class Order {
 
 //ID
     private Integer id;
-//    订单类型
-    private Integer typeCode;
+////    订单类型
+//    private Integer typeCode;
 // 订单编号和ID一样是唯一的。
     private String orderId;
 //    订单发起时间，这个每个乘客应该是不一样的。
     private Date createTime;
-//    订单不再接受新的接单用户的时间
-    private Date endTime;
+////    订单不再接受新的接单用户的时间
+//    private Date endTime;
 //    订单完成时间，这个每个乘客应该是不一样的。
     private Date finishTime;
 
@@ -30,14 +30,17 @@ public class Order {
 //    不过现在好像也是了，都是存放在堆的数据。
 //    司机
     private Driver driver;
-//    可同行的人数
+//    可同行的人数，或者说是订单最大接取人数。
     private Integer manCount;
 //    乘客
     private List<Passenger> passengers;
 //    备注
     private String tips;
+//    价格
+    private float price;
 
-    public void setTypeCode(Integer typeCode) {
-        this.typeCode = typeCode;
-    }
+//    public void setTypeCode(Integer typeCode) {
+//        this.typeCode = typeCode;
+//    }
+
 }
