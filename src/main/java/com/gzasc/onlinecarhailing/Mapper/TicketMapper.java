@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface TicketMapper {
 
 //    增加
-
-
+    public void insertTicket();
 
 }
