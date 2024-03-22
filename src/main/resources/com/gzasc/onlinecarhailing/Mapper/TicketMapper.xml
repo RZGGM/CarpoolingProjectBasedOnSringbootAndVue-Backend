@@ -3,8 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.TicketMapper">
-
+<!--增加-->
     <insert id="insertTicket">
-
+        insert into ticket
     </insert>
+<!--    修改-->
+    <update id="updateTicket">
+
+    </update>
+<!--    删除-->
+    <delete id="deleteTicket">
+
+    </delete>
+<!--    查询一条-->
+    <select id="selectTicketById">
+
+    </select>
 </mapper>

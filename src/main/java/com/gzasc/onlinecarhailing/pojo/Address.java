@@ -15,10 +15,10 @@ public class Address {
 //    县或是区
     private String region;
 //    镇
-
     private String town;
 
-//    道路或是街道
+//    道路或是街道（这个感觉也得是可选，毕竟道路太多的。
+//    不知道打车软件是怎么解决的。）
 
     private String street;
 

@@ -8,5 +8,10 @@ public interface TicketMapper {
 
 //    增加
     public void insertTicket();
-
+// 删除
+    public void deleteTicket();
+//    修改
+    public void updateTicket();
+//    查询一条，根据ID查询
+    public void selectTicketById();
 }
