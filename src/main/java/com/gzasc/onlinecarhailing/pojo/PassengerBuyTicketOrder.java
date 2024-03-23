@@ -6,7 +6,7 @@ import java.util.Date;
 
 //乘客订单
 @Data
-public class PassengerOrder {
+public class PassengerBuyTicketOrder {
 
 //      id
     private Integer id;

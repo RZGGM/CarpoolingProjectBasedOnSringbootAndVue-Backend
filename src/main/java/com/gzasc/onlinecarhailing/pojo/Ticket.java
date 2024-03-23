@@ -26,7 +26,8 @@ public class Ticket {
 //    private List<Passenger> passengerList;
 
 //    预计出发地详细地址，这也许是一个类。
-    private Address departureAddress;
+//    因为它是可以沿路上下的，所以它应该是可以选择的。
+    private List<Address> departureAddress;
 
 //    预计出发地点经度，虽然政府的标准要，但我没学会怎么获取，先忽略吧。
 //    private Integer depLongitude;
@@ -34,7 +35,7 @@ public class Ticket {
 //    private Integer depLatitude;
 
 //    预计目的地
-    private Address destinationAddress;
+    private List<Address> destinationAddress;
 
     //    预计目的地经度，虽然政府的标准要，但我没学会怎么获取，先忽略吧。
 //    private Integer destLongitude;
@@ -47,6 +48,7 @@ public class Ticket {
     private float price;
 
 //    状态，设置是否可购买，0不可以购买，1可以。
+//      状态的改变有，满客变为不可购买，和已经发车，所以不可以购买。
     private Integer status;
 
 
