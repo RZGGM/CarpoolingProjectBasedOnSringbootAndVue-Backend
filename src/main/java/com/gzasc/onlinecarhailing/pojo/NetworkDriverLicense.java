@@ -10,7 +10,6 @@ public class NetworkDriverLicense {
 
     //    在数据库里的唯一标识ID
     private Integer id;
-
     //    网络预约出租汽车驾驶员资格证号
     private String certificateNo;
     //    网络预约出租汽车驾驶员资格证发证机构

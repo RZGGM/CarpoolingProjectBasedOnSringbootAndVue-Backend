@@ -1,15 +1,10 @@
 package com.gzasc.onlinecarhailing.controller;
 
-import com.gzasc.onlinecarhailing.pojo.Account;
 import com.gzasc.onlinecarhailing.pojo.Result;
 import com.gzasc.onlinecarhailing.service.UserService;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 //登录验证的控制层，乘客、司机、管理员统一都有的功能。
 

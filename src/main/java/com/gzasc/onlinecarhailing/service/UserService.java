@@ -1,16 +1,5 @@
 package com.gzasc.onlinecarhailing.service;
 
-import com.gzasc.onlinecarhailing.Mapper.UserMapper;
-
-import com.gzasc.onlinecarhailing.pojo.Account;
-import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
-
 //用户服务层
 
 public interface UserService {

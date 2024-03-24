@@ -1,12 +1,10 @@
 package com.gzasc.onlinecarhailing.service.impl;
 
 import com.gzasc.onlinecarhailing.Mapper.UserMapper;
-import com.gzasc.onlinecarhailing.pojo.Result;
+import com.gzasc.onlinecarhailing.pojo.User;
 import com.gzasc.onlinecarhailing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.gzasc.onlinecarhailing.pojo.Account;
 
 import java.util.List;
 
@@ -20,51 +18,51 @@ public class UserServiceImpl implements UserService {
 
 //    登录功能
     @Override
-    public Account login(Account account) {
+    public User login(User user) {
 
-        List<Account> accountList = userMapper.selectAllUser(account);
-        Account account1 = null;
-        if(!accountList.isEmpty()) {
+        List<User> userList = userMapper.selectAllUser();
+        User user = null;
+        if(!userList.isEmpty()) {
 
-            account1 = accountList.get(0);
+            user = userList.get(0);
 
-            account1.setPassword("");
+            user.setPassword("");
 
-            return account1;
+            return user;
         }
 
-        else return account1;
+        else return user;
 
     }
 
     //    注册功能
     @Override
-     public Integer register(Account account){
+     public Integer register(User user){
 
-        userMapper.insertAccount(account);
+        userMapper.insertUser(user);
 
-        return account.getId();
+        return user.getId();
 
     }
 
 //    验证数据库里是否存在相同的帐号
 
     @Override
-    public Account isAccountExit(Account account) {
+    public User isUserExit(User user) {
 
 //        直接将帐号返回
-        return userMapper.isAccountExit(account);
+        return userMapper.isUserExit(user);
     }
     //    通过帐号ID删除帐号
     @Override
-    public Integer removeAccount(Account account) {
+    public Integer removeUser(User user) {
 
-        return userMapper.deleteAccount(account);
+        return userMapper.deleteUser(user);
     }
 //更改帐号的密码
     @Override
-    public Integer modAccountPassword(Account account) {
+    public Integer modUserPassword(User user) {
 
-        return userMapper.alterAccountPassword(account);
+        return userMapper.alterUserPassword(user);
     }
 }

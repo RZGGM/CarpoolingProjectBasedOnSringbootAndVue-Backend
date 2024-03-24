@@ -3,32 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.UserMapper">
-<!--    插入帐号到数据库-->
-    <insert id="insertAccount" keyProperty="id" useGeneratedKeys="true" >
-        insert into account(account, password) values (#{account}, #{password})
+<!--注册-->
+    <insert id="insertUser">
+        insert into user(account, password) values (#{account}, #{password}n)
     </insert>
-    <!--    修改密码-->
-    <update id="alterAccountPassword">
-
-    update account set password = #{newPassword} where account = #{account} and id = #{id}
+<!--    改密码-->
+    <update id="alterUserPassword">
 
     </update>
-    <!--    删除帐号-->
-    <delete id="deleteAccount">
-        delete from account where account = #{account} and id = #{id}
+<!--    删除用户-->
+    <delete id="deleteUser">
+
     </delete>
-    <!--    登录操作-->
-    <select id="selectAllUser" resultType="com.gzasc.onlinecarhailing.pojo.Account">
-        select * from account where account = #{account} and password = #{password}
-    </select>
 
-<!--    注册前，要先确定数据库不存在相同的帐号-->
-    <select id="isAccountExit" resultType="com.gzasc.onlinecarhailing.pojo.Account">
-
-        select * from account where account = #{account}
+<!--查询所有用户-->
+    <select id="selectAllUser" resultType="com.gzasc.onlinecarhailing.pojo.User">
 
     </select>
+<!--    判断用户要注册的帐号是否存在-->
+    <select id="isUserExit" resultType="com.gzasc.onlinecarhailing.pojo.User">
 
-
-
+    </select>
 </mapper>

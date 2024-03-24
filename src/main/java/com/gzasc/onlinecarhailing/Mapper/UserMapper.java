@@ -1,6 +1,7 @@
 package com.gzasc.onlinecarhailing.Mapper;
 
-import com.gzasc.onlinecarhailing.pojo.Account;
+
+import com.gzasc.onlinecarhailing.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -9,16 +10,16 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-//    查询根据帐号查询用户的信息，用来登录的
-    public List<Account> selectAllUser(Account account);
+//    查询所有的用户，管理员用来管理所有用户的基础
+    public List<User> selectAllUser();
 //    注册帐号
-    public void insertAccount(Account account);
+    public void insertUser(User user);
 //    检查帐号是否存在
-    public Account isAccountExit(Account account);
+    public User isUserExit(User user);
     //    通过帐号ID删除帐号
-    public Integer deleteAccount(Account account);
+    public Integer deleteUser(Integer id);
 //    修改密码
-    public Integer alterAccountPassword(Account account);
+    public Integer alterUserPassword(User user);
 
 
 }

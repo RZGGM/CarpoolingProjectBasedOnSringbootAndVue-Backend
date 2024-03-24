@@ -6,9 +6,8 @@
 <!--增加-->
     <insert id="insertTicket" >
         insert into ticket(max_passenger_count,
-                           departure_address_id,
-                           destination_address_id,
-                           start_time,
+                           departure,
+                           destination,start_time,
                            price,
                            status)
         values
@@ -30,6 +29,10 @@
     </delete>
 <!--    查询一条-->
     <select id="selectTicketById">
+
+    </select>
+<!--    查询所有-->
+    <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Ticket">
 
     </select>
 </mapper>

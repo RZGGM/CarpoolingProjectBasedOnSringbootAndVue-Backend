@@ -27,7 +27,9 @@ public class Ticket {
 
 //    预计出发地详细地址，这也许是一个类。
 //    因为它是可以沿路上下的，所以它应该是可以选择的。
-    private List<Address> departureAddress;
+//    不要是一个类，不然太麻烦了。直接就是String吧。
+//    一个有格式的String，县级-镇级-出发点1-出发点2-。。。这样的。
+    private String departureAddress;
 
 //    预计出发地点经度，虽然政府的标准要，但我没学会怎么获取，先忽略吧。
 //    private Integer depLongitude;
@@ -35,7 +37,9 @@ public class Ticket {
 //    private Integer depLatitude;
 
 //    预计目的地
-    private List<Address> destinationAddress;
+//    一个有格式的String，县级-镇级-出发点1-出发点2-。。。这样的。
+//    后面再用一个工具类，将它给分割了。
+    private String destinationAddress;
 
     //    预计目的地经度，虽然政府的标准要，但我没学会怎么获取，先忽略吧。
 //    private Integer destLongitude;

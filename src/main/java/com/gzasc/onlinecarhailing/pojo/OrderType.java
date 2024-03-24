@@ -4,8 +4,11 @@ package com.gzasc.onlinecarhailing.pojo;
 public class OrderType {
 
     public static final Integer TYPE_PASSENGER = 0;
+
     public static final Integer TYPE_DRIVER = 1;
+
     public static final Integer TYPE_OFFICIAL = 2;
+
 
 
 }

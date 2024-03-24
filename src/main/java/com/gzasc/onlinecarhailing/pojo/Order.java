@@ -17,6 +17,7 @@ public class Order {
     private Integer id;
 ////    订单类型
 //    private Integer typeCode;
+
 // 订单编号和ID一样是唯一的。
     private String orderId;
 //    订单发起时间，这个每个乘客应该是不一样的。

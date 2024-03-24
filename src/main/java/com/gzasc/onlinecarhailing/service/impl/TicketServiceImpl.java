@@ -17,7 +17,7 @@ public class TicketServiceImpl implements TicketService {
 
 //    增加
     @Override
-    public void addTicket(){
+    public void addTicket(Ticket ticket){
 
         ticketMapper.insertTicket();
 
