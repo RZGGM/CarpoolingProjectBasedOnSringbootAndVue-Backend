@@ -2,19 +2,21 @@ package com.gzasc.onlinecarhailing.service;
 
 //用户服务层
 
+import com.gzasc.onlinecarhailing.pojo.User;
+
 public interface UserService {
 
 
 //    登录
-    public Account login(Account account);
+    public User login(User user);
 //    帐号注册
-    public Integer register(Account account);
+    public Integer register(User user);
 //    帐号注册前检查帐号是否存在
-    public Account isAccountExit(Account account);
+    public User isUserExit(User user);
 //    通过帐号ID删除帐号
-    public Integer removeAccount(Account account);
+    public Integer removeUser(Integer id);
 //    更改帐号密码
-    public Integer modAccountPassword(Account account);
+    public Integer modUserPassword(User user);
 
 
 }

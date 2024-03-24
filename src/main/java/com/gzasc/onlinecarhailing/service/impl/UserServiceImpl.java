@@ -20,18 +20,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(User user) {
 
-        List<User> userList = userMapper.selectAllUser();
-        User user = null;
-        if(!userList.isEmpty()) {
+//        在数据库里查询用户使用的帐号和密码是否正确
+        User user1 =  userMapper.seleceByAccount(user);
 
-            user = userList.get(0);
+        if(user1!=null){
 
-            user.setPassword("");
-
-            return user;
         }
 
-        else return user;
+        return user1;
+
 
     }
 
@@ -55,9 +52,9 @@ public class UserServiceImpl implements UserService {
     }
     //    通过帐号ID删除帐号
     @Override
-    public Integer removeUser(User user) {
+    public Integer removeUser(Integer id) {
 
-        return userMapper.deleteUser(user);
+        return userMapper.deleteUser(id);
     }
 //更改帐号的密码
     @Override

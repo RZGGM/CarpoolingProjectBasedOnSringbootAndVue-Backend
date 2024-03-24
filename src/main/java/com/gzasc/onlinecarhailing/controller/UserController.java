@@ -1,6 +1,7 @@
 package com.gzasc.onlinecarhailing.controller;
 
 import com.gzasc.onlinecarhailing.pojo.Result;
+import com.gzasc.onlinecarhailing.pojo.User;
 import com.gzasc.onlinecarhailing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,16 +17,16 @@ public class UserController {
 
 //    登录功能
     @RequestMapping("/login")
-    public Result login(Account account){
+    public Result login(User user){
 
-        Account account1 = userService.login(account);
+        User user1 = userService.login(user);
 
-        if(null != account1){
+        if(null != user1){
 
 
-            account1.setPassword("");
+            user1.setPassword("");
 
-            return Result.success("登录成功", account1);
+            return Result.success("登录成功", user1);
         }
 
         return Result.error("登录失败");
@@ -35,12 +36,12 @@ public class UserController {
 
 //    注册功能
     @RequestMapping("/register")
-    public Result register(Account account){
+    public Result register(User user){
 
 //        不存在时，才会进行注册。
-        if(null == userService.isAccountExit(account)){
+        if(null == userService.isUserExit(user)){
 
-            Integer id = userService.register(account);
+            Integer id = userService.register(user);
 
             return Result.success();
         }
@@ -52,24 +53,23 @@ public class UserController {
     }
 
     //    通过帐号ID删除帐号，一次删除一个。
-    @RequestMapping("/deleteAccount")
-    public Result deleteAccountById(Account account){
+    @RequestMapping("/deleteUser")
+    public Result deleteUserById(User user){
 
-        if(userService.removeAccount(account) > 0){
+        if(userService.removeUser(user.getId()) > 0){
 
-            return Result.success("删除成功", account);
+            return Result.success("删除成功", user);
         }
 
         return Result.error("删除失败");
     }
 //    修改密码
     @RequestMapping("/alterPassword")
-    public Result editAccountPassword(Account account, String newPassword){
+    public Result editUserPassword(User user){
 
-        Integer modAccountNum = userService.modAccountPassword(account);
-        account.setPassword("");
-        account.setNewPassword("#");
-        if(modAccountNum > 0) return Result.success("修改成功",account);
+        Integer modUserNum = userService.modUserPassword(user);
+
+        if(modUserNum > 0) return Result.success("修改成功",user);
 
         return Result.error("修改失败");
     }

@@ -20,6 +20,8 @@ public interface UserMapper {
     public Integer deleteUser(Integer id);
 //    修改密码
     public Integer alterUserPassword(User user);
+//    登录功能，通过帐号查询用户
+    public User seleceByAccount(User user);
 
 
 }

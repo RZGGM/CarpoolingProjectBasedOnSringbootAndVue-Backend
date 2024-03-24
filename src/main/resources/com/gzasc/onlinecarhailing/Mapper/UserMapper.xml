@@ -24,4 +24,9 @@
     <select id="isUserExit" resultType="com.gzasc.onlinecarhailing.pojo.User">
 
     </select>
+    <select id="seleceByAccount" resultType="com.gzasc.onlinecarhailing.pojo.User">
+
+        select * from user where account = #{account} and password = #{password}
+
+    </select>
 </mapper>

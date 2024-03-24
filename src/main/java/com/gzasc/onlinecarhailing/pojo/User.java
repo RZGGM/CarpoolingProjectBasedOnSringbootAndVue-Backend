@@ -12,7 +12,7 @@ public class User {
     //    性别
     private String gender;
     // 公司标识
-    private String companyId;
+//    private String companyId;
     //    状态
     private Integer State;
     //    姓名
