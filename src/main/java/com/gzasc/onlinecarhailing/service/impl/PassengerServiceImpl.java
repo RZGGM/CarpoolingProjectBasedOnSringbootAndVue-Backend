@@ -18,8 +18,6 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     public Integer register(Passenger passenger) {
 
-
-
         return passengerMapper.insert(passenger);
     }
 
@@ -42,7 +40,7 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public Passenger search(Integer id) {
-        return null;
+        return passengerMapper.selectById(id);
     }
 
     @Override

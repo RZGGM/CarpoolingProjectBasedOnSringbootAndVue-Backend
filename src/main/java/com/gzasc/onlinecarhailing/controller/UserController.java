@@ -25,7 +25,7 @@ public class UserController {
     DriverSerivce driverSerivce;
 
 
-    //    注册成为乘客
+    //    注册成为用户
     @RequestMapping("/register")
     public Result registerPassenger(Account account) {
 //        处理下null
@@ -74,6 +74,7 @@ public class UserController {
     }
 
 
+
     //    修改帐号密码
     @RequestMapping("/user/newPassword")
     public Result alterAccountPassword(Account account) {
@@ -84,6 +85,7 @@ public class UserController {
 
         return Result.error("修改失败");
     }
+
 
 
 }

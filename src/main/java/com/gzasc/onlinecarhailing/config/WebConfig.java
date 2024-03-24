@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     UserCheckInterceptor userCheckInterceptor;
 
+//    配置要拦截的路径。
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(userCheckInterceptor).addPathPatterns("/**")

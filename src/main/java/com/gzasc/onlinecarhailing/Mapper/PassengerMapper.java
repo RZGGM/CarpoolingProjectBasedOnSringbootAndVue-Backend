@@ -10,16 +10,17 @@ import java.util.List;
 public interface PassengerMapper {
 
 //    增加
-    public Integer insert(Passenger passenger);
+     Integer insert(Passenger passenger);
 //    删除，通过id删除，多个
-    public Integer deleteByIds(List<Integer> ids);
+     Integer deleteByIds(List<Integer> ids);
 //    删除一个
-    public Integer deleteById(Integer id);
+     Integer deleteById(Integer id);
 //    修改
-    public Integer update(Passenger passenger);
+     Integer update(Passenger passenger);
 //    查询，根据乘客的id查一条
-    public Passenger selectById(Integer id);
+     Passenger selectById(Integer id);
 //    查询所有
-    public List<Passenger> selectAll();
+     List<Passenger> selectAll();
+
 
 }

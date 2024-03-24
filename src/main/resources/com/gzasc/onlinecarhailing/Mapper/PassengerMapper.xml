@@ -3,16 +3,33 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.PassengerMapper">
-    <insert id="insert" >
+    <insert id="insert">
         insert into passenger(phone, gender, statue, name, account, account_id, update_time)
-        values (#{phone},#{gender},#{state},#{name},#{account},#{accountId},#{updateTime})
+        values (#{phone}, #{gender}, #{state}, #{name}, #{account}, #{accountId}, #{updateTime})
     </insert>
     <update id="update" keyProperty="passengerId" useGeneratedKeys="true">
-
+        update passenger
+        <set>
+            <if test="phone != null">
+                phone = #{phone}
+            </if>
+            <if test="gender != null">
+                gender = #{gender}
+            </if>
+            <if test="state != null">
+                state = #{state}
+            </if>
+            <if test="name != null">
+                name = #{name}
+            </if>
+        </set>
+        where id = #{passengerId}
     </update>
 
     <delete id="deleteById">
-        delete from passenger where id = #{id}
+        delete
+        from passenger
+        where id = #{id}
     </delete>
     <delete id="deleteByIds">
         delete from passenger where id in
@@ -20,10 +37,21 @@
             #{id}
         </foreach>
     </delete>
-    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Passenger">
-        select * from passenger where id = #{id}
+    <resultMap id="PassengerMap" type="com.gzasc.onlinecarhailing.pojo.Passenger">
+        <!--column对应数据库字段 property对应实体类属性-->
+        <!--<result column="id" property="id"/>-->
+        <!--<result column="name" property="name"/>-->
+        <result column="id" property="passengerId"/>
+    </resultMap>
+
+    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Passenger" resultMap="PassengerMap">
+        select *
+        from passenger
+        where id = #{passengerId}
     </select>
-    <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Passenger">
-        select * from passenger
+
+    <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Passenger" resultMap="PassengerMap">
+        select *
+        from passenger
     </select>
 </mapper>
