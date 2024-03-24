@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class Chaters {
 
-    private User self;
-    private User other;
+    private Passenger passenger;
+    private Driver driver;
 
 }
