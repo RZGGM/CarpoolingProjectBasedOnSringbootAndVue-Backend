@@ -8,11 +8,12 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ChatRoomMapper {
 
 //    创建一个聊天室。
-    public Integer insertChatRoom(ChatRoom chatRoom);
+     Integer insertChatRoom(ChatRoom chatRoom);
 //    修改聊天室
-    public void updateChatRoom(ChatRoom chatRoom);
+     void updateChatRoom(ChatRoom chatRoom);
 
 //    判断双方有无聊天室
-    public ChatRoom searchChatRoom(Integer selfId, Integer otherId);
+     ChatRoom searchChatRoom(Integer selfId, Integer otherId);
+
 
 }

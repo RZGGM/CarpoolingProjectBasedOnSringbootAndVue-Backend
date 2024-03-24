@@ -8,9 +8,10 @@ import com.gzasc.onlinecarhailing.pojo.Passenger;
 public interface ChatRoomService {
 
 //    创建一个聊天室
-    public ChatRoom createChatRoom(Passenger self, Driver other);
+     ChatRoom createChatRoom(Passenger self, Driver other);
 
 //    查打聊天室
-    public ChatRoom searchChatRoom(Passenger self, Driver other);
+     ChatRoom searchChatRoom(Passenger self, Driver other);
+
 
 }

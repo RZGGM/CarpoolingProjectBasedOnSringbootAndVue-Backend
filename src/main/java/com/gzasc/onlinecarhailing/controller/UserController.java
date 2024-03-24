@@ -25,46 +25,58 @@ public class UserController {
     DriverSerivce driverSerivce;
 
 
-
-//    注册成为乘客
+    //    注册成为乘客
     @RequestMapping("/register")
-    public Result registerPassenger(Account account){
-
+    public Result registerPassenger(Account account) {
+//        处理下null
+        if (null == account.getAccount() || null == account.getIt()) return Result.error("要输入东酉");
 //        要先判断帐号是否存在
-        if(accountService.search(account.getAccount())!=null){
+        if (accountService.search(account.getAccount()) != null) {
 
 //            帐号已经存在了，应该要修改帐号再注册
             return Result.error("帐号已经存在。");
 
-        }else {
+        } else {
+
+            if (account.getIt() == 0) {
 //            先注册了帐号
-            Integer accountId = accountService.register(account);
-
-            if (account.getIt() == 0){
-
+                accountService.register(account);
+                Integer accountId = account.getId();
                 Passenger passenger = new Passenger();
                 passenger.setAccount(account.getAccount());
                 passenger.setAccountId(accountId);
                 Integer pasengerId = passengerService.register(passenger);
 
+                account.setPassengerId(pasengerId);
+
+                accountService.mod(account);
+
                 return Result.success("乘客注册成功", passengerService.search(pasengerId));
 
             } else if (account.getIt() == 1) {
+                //            先注册了帐号
+                accountService.register(account);
+                Integer accountId = account.getId();
                 Driver driver = new Driver();
                 driver.setAccount(account.getAccount());
                 driver.setAccountId(accountId);
-                Integer driverId = driverSerivce.register(driver);
-                return Result.success("乘客注册成功", driverSerivce.search(driverId));
-            }else return Result.error("注册失败");
+                driverSerivce.register(driver);
+                Integer driverId = driver.getDriverId();
+
+                account.setDriverId(driverId);
+
+                accountService.mod(account);
+
+                return Result.success("司机注册成功", driverSerivce.search(driverId));
+            } else return Result.error("注册失败");
         }
 
     }
 
 
-
     //    修改帐号密码
-    @RequestMapping("/newPassword")
-    public Result alterAccountPassword(Account account){
+    @RequestMapping("/user/newPassword")
+    public Result alterAccountPassword(Account account) {
 
         Integer count = accountService.mod(account);
 
@@ -72,7 +84,6 @@ public class UserController {
 
         return Result.error("修改失败");
     }
-
 
 
 }

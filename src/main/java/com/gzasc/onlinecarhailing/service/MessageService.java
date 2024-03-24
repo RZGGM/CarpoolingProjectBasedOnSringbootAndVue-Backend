@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 public interface MessageService {
 
 //插入信息
-    public Integer createMessage(Message message);
+     Integer createMessage(Message message);
 }

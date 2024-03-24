@@ -5,7 +5,7 @@
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.MessageMapper">
 
 <!--将信息保存到数据库-->
-    <insert id="insertMessage">
+    <insert id="insertMessage" keyProperty="id" useGeneratedKeys="true">
 
     </insert>
 </mapper>

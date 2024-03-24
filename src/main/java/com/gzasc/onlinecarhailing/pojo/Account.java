@@ -18,7 +18,7 @@ public class Account {
     private String password;
 //    帐号的身份
     private Integer driverId;
-    private Integer passenerId;
+    private Integer passengerId;
     private Integer managerId;
 //    注册时要用到标识，当它为0就是乘客，当它为1就是司机，当它为2就是管理员。
     private Integer it;

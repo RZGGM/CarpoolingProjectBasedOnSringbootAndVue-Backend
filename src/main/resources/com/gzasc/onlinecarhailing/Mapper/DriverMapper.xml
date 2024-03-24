@@ -5,7 +5,7 @@
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.DriverMapper">
 
 
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="driverId" >
         insert into driver(driver_birthday, driver_nation, driver_address, driver_license, update_time, phone, gender,
                            state, name, account_id, account)
         values (#{driverBirthday},#{driverNation},#{driverAddress},#{driverLicense},#{updateTime},#{phone},

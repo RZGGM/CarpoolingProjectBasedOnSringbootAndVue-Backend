@@ -14,7 +14,7 @@ public class ManagerController {
     @RequestMapping("/deletePassengerByIds")
     public Result deleteByIds(List<Integer> ids){
 
-
+        
 
         return null;
     }

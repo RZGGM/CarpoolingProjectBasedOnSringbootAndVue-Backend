@@ -6,7 +6,7 @@
 
 <!--创建聊天室-->
     <insert id="insertChatRoom" keyProperty="id" useGeneratedKeys="true">
-        insert into chatroom(name, message_id, create_date, self_id, other_id) values (#{name}, #{messageList}, NOW(), #{selfId}, #{otherId})
+        insert into chatroom(name, create_date, self_id, other_id) values (#{name}, #{messageList}, NOW(), #{selfId}, #{otherId})
     </insert>
 <!--    修改聊天室-->
     <update id="updateChatRoom">
@@ -18,4 +18,5 @@
         select * from chatroom where self_id = #{selfId} and other_id = #{otherId}
 
     </select>
+
 </mapper>

@@ -4,9 +4,11 @@ import com.gzasc.onlinecarhailing.Mapper.PassengerMapper;
 import com.gzasc.onlinecarhailing.pojo.Passenger;
 import com.gzasc.onlinecarhailing.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PassengerServiceImpl implements PassengerService {
 
     @Autowired

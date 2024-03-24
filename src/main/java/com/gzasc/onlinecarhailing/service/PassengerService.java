@@ -12,16 +12,16 @@ import java.util.List;
 public interface PassengerService {
 
     //    注册帐号
-    public Integer register(Passenger passenger);
+     Integer register(Passenger passenger);
     //    删除，通过id
-    public Integer remove(Integer id);
+     Integer remove(Integer id);
 //    批量删除
-    public Integer removeByIds(List<Integer> ids);
+     Integer removeByIds(List<Integer> ids);
     //    修改
-    public Integer mod(Passenger newPassenger);
+     Integer mod(Passenger newPassenger);
     //    根据id查询
-    public Passenger search(Integer id);
+     Passenger search(Integer id);
     //    查询所有
-    public List<Passenger> searchAll();
+     List<Passenger> searchAll();
 
 }

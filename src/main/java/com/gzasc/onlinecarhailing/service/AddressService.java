@@ -7,6 +7,6 @@ import com.gzasc.onlinecarhailing.pojo.Result;
 public interface AddressService {
 
 //    新增地址
-    public Result addAddress();
+     Result addAddress();
 
 }

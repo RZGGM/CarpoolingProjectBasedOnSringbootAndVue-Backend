@@ -15,30 +15,29 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     TicketMapper ticketMapper;
 
-//    增加
-    @Override
-    public void addTicket(Ticket ticket){
 
-        ticketMapper.insertTicket();
+    @Override
+    public void addTicket(Ticket ticket) {
 
     }
 
     @Override
-    public void removeTicket() {
+    public void removeTicket(Integer ticketId) {
 
     }
 
     @Override
-    public void modTicket() {
+    public void modTicket(Ticket ticket) {
 
     }
 
     @Override
     public List<Ticket> searchAllTicket() {
-
-
-
         return null;
     }
 
+    @Override
+    public Ticket searchTicketById() {
+        return null;
+    }
 }

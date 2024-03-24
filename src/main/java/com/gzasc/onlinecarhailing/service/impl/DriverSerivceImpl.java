@@ -1,5 +1,6 @@
 package com.gzasc.onlinecarhailing.service.impl;
 
+import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
 import com.gzasc.onlinecarhailing.pojo.Driver;
 import com.gzasc.onlinecarhailing.service.DriverSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,12 @@ import java.util.List;
 public class DriverSerivceImpl implements DriverSerivce {
 
     @Autowired
-    DriverSerivce driverSerivce;
+    DriverMapper driverMapper;
 
     @Override
     public Integer register(Driver driver) {
 
+        driverMapper.insert(driver);
 
         return null;
     }
