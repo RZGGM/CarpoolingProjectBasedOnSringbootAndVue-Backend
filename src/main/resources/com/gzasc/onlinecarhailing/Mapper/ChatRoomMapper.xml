@@ -4,18 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.ChatRoomMapper">
 
-<!--创建聊天室-->
+    <!--创建聊天室-->
     <insert id="insertChatRoom" keyProperty="id" useGeneratedKeys="true">
-        insert into chatroom(name, create_date, self_id, other_id) values (#{name}, #{messageList}, NOW(), #{selfId}, #{otherId})
+        insert into chatroom(name, create_date, self_id, other_id)
+        values (#{name}, #{messageList}, NOW(), #{selfId}, #{otherId})
     </insert>
-<!--    修改聊天室-->
+    <!--    修改聊天室-->
     <update id="updateChatRoom">
 
     </update>
-<!--    判断双方是否有聊天室-->
+    <!--    判断双方是否有聊天室-->
     <select id="searchChatRoom" resultType="com.gzasc.onlinecarhailing.pojo.ChatRoom">
 
-        select * from chatroom where self_id = #{selfId} and other_id = #{otherId}
+        select *
+        from chatroom
+        where self_id = #{selfId}
+          and other_id = #{otherId}
 
     </select>
 

@@ -16,7 +16,7 @@ public class Account {
     private String account;
 //    密码
     private String password;
-//    帐号的身份
+//    帐号的身份，就是对应的用户表的里的数据的id。
     private Integer driverId;
     private Integer passengerId;
     private Integer managerId;

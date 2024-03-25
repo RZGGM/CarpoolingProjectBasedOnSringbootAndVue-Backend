@@ -5,7 +5,7 @@
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.AccountMapper">
 
 
-    <insert id="insertAccount" keyProperty="id" useGeneratedKeys="true" >
+    <insert id="insertAccount" keyProperty="id" useGeneratedKeys="true">
         insert into account(account, password, driver_id, passenger_id, manager_id)
         values (#{account}, #{password}, #{driverId}, #{passengerId}, #{managerId})
     </insert>
@@ -30,6 +30,14 @@
         from account
         where id = #{id}
     </delete>
+    <delete id="deleteAccountsById">
+
+        delete from account where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+
+    </delete>
     <select id="selectByAccount" resultType="com.gzasc.onlinecarhailing.pojo.Account">
         select *
         from account
@@ -38,5 +46,11 @@
     <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Account">
         select *
         from account
+    </select>
+    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Account">
+        select * from account where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+                              #{id}
+        </foreach>
     </select>
 </mapper>

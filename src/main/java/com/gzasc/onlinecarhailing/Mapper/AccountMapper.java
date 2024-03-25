@@ -17,7 +17,12 @@ public interface AccountMapper {
     public Integer updateAccount(Account newAccount);
 //    通过帐号，查询一条
     public Account selectByAccount(String account);
+//    查询通过id
+    public List<Account> selectById( List<Integer> ids);
 //    查询所有存在的。
     public List<Account> selectAll();
+
+// 批量删除帐号，不过在删除帐号的同时，也要删除用户才行。
+    Integer deleteAccountsById(List<Integer> ids);
 
 }

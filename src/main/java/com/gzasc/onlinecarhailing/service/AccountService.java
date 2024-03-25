@@ -18,5 +18,7 @@ import java.util.List;
      Account search(String account);
 //    查询所有
      List<Account> searchAll();
+//     通过id批量删除帐号，同时删除用户
+     Integer removeAccountsByIds(List<Integer> ids);
 
 }
