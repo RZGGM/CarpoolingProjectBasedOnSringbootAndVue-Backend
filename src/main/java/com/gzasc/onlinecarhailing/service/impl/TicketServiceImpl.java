@@ -17,27 +17,39 @@ public class TicketServiceImpl implements TicketService {
 
 
     @Override
-    public void addTicket(Ticket ticket) {
+    public Integer addTicket(Ticket ticket) {
+        ticketMapper.insertTicket(ticket);
+        return ticket.getId();
+    }
+
+    @Override
+    public Integer removeTicket(Integer ticketId) {
+
+       return ticketMapper.deleteTicket(ticketId);
 
     }
 
     @Override
-    public void removeTicket(Integer ticketId) {
+    public Integer modTicket(Ticket ticket) {
 
-    }
-
-    @Override
-    public void modTicket(Ticket ticket) {
+        return ticketMapper.updateTicket(ticket);
 
     }
 
     @Override
     public List<Ticket> searchAllTicket() {
-        return null;
+        return ticketMapper.selectAll();
     }
 
     @Override
-    public Ticket searchTicketById() {
-        return null;
+    public Ticket searchTicketById(Integer id) {
+
+        return ticketMapper.selectTicketById(id);
+    }
+
+    @Override
+    public Integer removeTickets(List<Integer> ids) {
+
+        return ticketMapper.deleteTicketByIds(ids);
     }
 }

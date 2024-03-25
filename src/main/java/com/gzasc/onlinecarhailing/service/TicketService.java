@@ -7,13 +7,17 @@ import java.util.List;
 public interface TicketService {
 
 //    增加
-     void addTicket(Ticket ticket);
+     Integer addTicket(Ticket ticket);
 //    删除
-     void removeTicket(Integer ticketId);
+     Integer removeTicket(Integer ticketId);
 //    更新
-     void modTicket(Ticket ticket);
+     Integer modTicket(Ticket ticket);
 //    查询所有
      List<Ticket> searchAllTicket();
 //查询单张票
-     Ticket searchTicketById();
+     Ticket searchTicketById(Integer id);
+
+//     批量删除车票
+     Integer removeTickets(List<Integer> ids);
+
 }

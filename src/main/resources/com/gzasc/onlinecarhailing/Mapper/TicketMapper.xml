@@ -3,36 +3,65 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.TicketMapper">
-<!--增加-->
+    <!--增加-->
     <insert id="insertTicket" keyProperty="id" useGeneratedKeys="true">
         insert into ticket(max_passenger_count,
                            departure,
-                           destination,start_time,
+                           destination, start_time,
                            price,
                            status)
-        values
-            (#{passengerCount},
-            #{departureAddress},
-            #{destinationAddress},
-            #{startTime},
-            #{price},
-             #{status}
-            )
+        values (#{passengerCount},
+                #{departureAddress},
+                #{destinationAddress},
+                #{startTime},
+                #{price},
+                #{status})
     </insert>
-<!--    修改-->
+    <!--    修改-->
     <update id="updateTicket">
-
+        update ticket
+        <set>
+            <if test="passengerCount != null">
+                max_passenger_count = #{passengerCount}
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime}
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+            <if test="price != null">
+                price = #{price}
+            </if>
+            <if test="departureAddress != null">
+                departure = #{departureAddress}
+            </if>
+            <if test="destinationAddress != null">
+                destination = #{destinationAddress}
+            </if>
+        </set>
+        where id = #{id}
     </update>
-<!--    删除-->
+    <!--    删除-->
     <delete id="deleteTicket">
+        delete from ticket where id = #{id}
+    </delete>
+    <delete id="deleteTicketByIds">
+
+        delete from ticket where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
 
     </delete>
-<!--    查询一条-->
-    <select id="selectTicketById">
-
+    <!--    查询一条-->
+    <select id="selectTicketById" resultType="com.gzasc.onlinecarhailing.pojo.Ticket">
+        select *
+        from ticket
+        where id = #{id}
     </select>
-<!--    查询所有-->
+    <!--    查询所有-->
     <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Ticket">
-
+            select * from ticket
     </select>
 </mapper>

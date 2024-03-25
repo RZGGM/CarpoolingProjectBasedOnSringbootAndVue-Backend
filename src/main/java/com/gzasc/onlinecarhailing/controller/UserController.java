@@ -1,12 +1,10 @@
 package com.gzasc.onlinecarhailing.controller;
 
-import com.gzasc.onlinecarhailing.pojo.Account;
-import com.gzasc.onlinecarhailing.pojo.Driver;
-import com.gzasc.onlinecarhailing.pojo.Passenger;
-import com.gzasc.onlinecarhailing.pojo.Result;
+import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.AccountService;
 import com.gzasc.onlinecarhailing.service.DriverSerivce;
 import com.gzasc.onlinecarhailing.service.PassengerService;
+import com.gzasc.onlinecarhailing.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +21,8 @@ public class UserController {
     PassengerService passengerService;
     @Autowired
     DriverSerivce driverSerivce;
+    @Autowired
+    TicketService ticketService;
 
 
     //    注册成为用户
@@ -86,6 +86,17 @@ public class UserController {
         return Result.error("修改失败");
     }
 
+// 浏览所有的车票
+    @RequestMapping("/viewAllTicket")
+    public Result viewAllTicket(){
 
+        List<Ticket> tickets = ticketService.searchAllTicket();
+
+        if (!tickets.isEmpty()) return Result.success("查看成功", tickets);
+        else return Result.error("查看失败");
+
+
+
+    }
 
 }
