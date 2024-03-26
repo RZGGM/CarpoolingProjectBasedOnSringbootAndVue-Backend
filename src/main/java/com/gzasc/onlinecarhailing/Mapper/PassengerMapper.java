@@ -1,5 +1,6 @@
 package com.gzasc.onlinecarhailing.Mapper;
 
+import com.gzasc.onlinecarhailing.pojo.Order;
 import com.gzasc.onlinecarhailing.pojo.Passenger;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,6 +22,8 @@ public interface PassengerMapper {
      Passenger selectById(Integer id);
 //    查询所有
      List<Passenger> selectAll();
+
+
 
 
 }

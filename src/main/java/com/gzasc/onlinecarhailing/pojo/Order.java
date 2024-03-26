@@ -20,6 +20,10 @@ public class Order {
 
 // 订单编号和ID一样是唯一的。
     private String orderId;
+
+//    订单创建者的id
+    private Integer ownerId;
+
 //    订单发起时间，这个每个乘客应该是不一样的。
     private Date createTime;
 ////    订单不再接受新的接单用户的时间
@@ -30,11 +34,11 @@ public class Order {
 //    下面的要一个，应该用一个类来接收它，这样就是可以多个用户进行修改了。不过要同一对象才行。
 //    不过现在好像也是了，都是存放在堆的数据。
 //    司机
-    private Driver driver;
+    private Integer driverId;
 //    可同行的人数，或者说是订单最大接取人数。
     private Integer manCount;
 //    乘客
-    private List<Passenger> passengers;
+    private Integer passengerId;
 //    备注
     private String tips;
 //    价格
@@ -43,5 +47,12 @@ public class Order {
 //    public void setTypeCode(Integer typeCode) {
 //        this.typeCode = typeCode;
 //    }
+
+//    订单的类型
+    private Integer orderType;
+//    订单的状态
+    private Integer state;
+//    订单对应的票的id，其它是订单一些其它信息。在购物系统里就是商品的，在这个出行的，就是行程的。
+    private Integer ticketId;
 
 }

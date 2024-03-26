@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzasc.onlinecarhailing.Mapper.OrderMapper">
+
+    <insert id="insertOrderById">
+        insert into `order`(order_id, create_time, finish_time, driver_id, man_count, passenger_id, tips, price,
+                            type, owner_id, state, ticket_id)
+        values (#{orderId}, NOW(), #{finishTime}, #{driverId}, #{manCount}, #{passengerId}, #{tips}, #{price},
+                #{orderType}, #{ownerId},
+                #{state}, #{ticketId})
+    </insert>
+    <update id="updateOrder">
+        update `order`
+        <set>
+            <if test="state != null">
+                state = #{state}
+            </if>
+        </set>
+        where id = #{orderId}
+    </update>
+
+
+    <delete id="deleteOrderById">
+        delete from `order` where owner_id = #{id}
+    </delete>
+    <select id="selectBySelfId" resultType="com.gzasc.onlinecarhailing.pojo.Order">
+        select * from `order` where owner_id = #{id}
+    </select>
+
+</mapper>

@@ -36,4 +36,5 @@ public class Passenger{
     private Date updateTime;
 
 
+
 }

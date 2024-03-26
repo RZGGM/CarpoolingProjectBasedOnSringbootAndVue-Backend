@@ -25,6 +25,9 @@ public class Ticket {
 ////    乘客
 //    private List<Passenger> passengerList;
 
+//    已经售出的数量
+    private Integer soldCount;
+
 //    预计出发地详细地址，这也许是一个类。
 //    因为它是可以沿路上下的，所以它应该是可以选择的。
 //    不要是一个类，不然太麻烦了。直接就是String吧。
