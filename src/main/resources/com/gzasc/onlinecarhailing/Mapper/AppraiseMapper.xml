@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzasc.onlinecarhailing.Mapper.AppraiseMapper">
+
+    <insert id="insertAppraise" keyProperty="id" useGeneratedKeys="true">
+
+        insert into appraise(driver_id, content, order_id)
+        values (#{driverId}, #{comment}, #{orderId})
+
+    </insert>
+    <update id="updateAppraise">
+        update appraise
+        <set>
+            <if test="comment != null">
+                content = #{comment}
+            </if>
+        </set>
+        where id = {id}
+    </update>
+    <delete id="deleteAppraiseByIds">
+        delete
+        from appraise
+        where id = #{id}
+
+    </delete>
+    <select id="selectAppraiseByDriverId" resultType="com.gzasc.onlinecarhailing.pojo.Appraise">
+
+        select *
+        from appraise
+        where driver_id = #{driverId}
+
+    </select>
+</mapper>

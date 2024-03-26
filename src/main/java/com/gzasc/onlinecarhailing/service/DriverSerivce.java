@@ -1,5 +1,6 @@
 package com.gzasc.onlinecarhailing.service;
 
+import com.gzasc.onlinecarhailing.pojo.Appraise;
 import com.gzasc.onlinecarhailing.pojo.Driver;
 import com.gzasc.onlinecarhailing.pojo.Passenger;
 
@@ -17,4 +18,7 @@ public interface DriverSerivce {
      Driver search(Integer id);
     //    查询所有
      List<Driver> searchAll();
+
+//     更新司机对应的评价
+    Integer modAppraise(Integer appraiseId);
 }

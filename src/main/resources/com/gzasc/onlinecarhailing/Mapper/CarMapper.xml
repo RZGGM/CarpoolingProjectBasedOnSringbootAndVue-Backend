@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzasc.onlinecarhailing.Mapper.CarMapper">
+    <insert id="insertCar">
+
+        insert into car(no, owner_id, color)
+        values (#{vehicleNo}, #{ownerId}, #{color})
+
+    </insert>
+    <update id="updateCar">
+        update car
+        <set>
+            <if test="no != null">
+                no = #{vehicleNo}
+            </if>
+            <if test="ownerId != null ">
+                owner_id = #{ownerId}
+            </if>
+            <if test="color != null">
+                color = #{color}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteCarById">
+
+        delete
+        from car
+        where id = #{id}
+
+    </delete>
+    <delete id="deleteCarsByIds">
+        delete from car where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Car">
+        select *
+        from car
+        where id = #{id}
+    </select>
+    <select id="selectAllCar" resultType="com.gzasc.onlinecarhailing.pojo.Car">
+        select *
+        from car
+    </select>
+    <select id="selectByOwnerId" resultType="com.gzasc.onlinecarhailing.pojo.Car">
+        select *
+        from car
+        where owner_id = #{ownerId}
+    </select>
+</mapper>

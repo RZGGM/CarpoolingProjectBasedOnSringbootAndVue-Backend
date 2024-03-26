@@ -1,5 +1,6 @@
 package com.gzasc.onlinecarhailing.service;
 
+import com.gzasc.onlinecarhailing.pojo.Appraise;
 import com.gzasc.onlinecarhailing.pojo.Order;
 
 import java.util.List;
@@ -21,7 +22,6 @@ public interface OrderService {
     //    乘客查看自己的所有订单
     List<Order> selectBySelfId(Integer id);
 
-
-
-
+//    乘客对订单进行评价
+    Integer addAppraiseIdToOrder(Appraise appraise);
 }

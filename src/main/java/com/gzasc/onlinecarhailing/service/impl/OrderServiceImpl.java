@@ -1,7 +1,10 @@
 package com.gzasc.onlinecarhailing.service.impl;
 
+import com.gzasc.onlinecarhailing.Mapper.AppraiseMapper;
+import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
 import com.gzasc.onlinecarhailing.Mapper.OrderMapper;
 import com.gzasc.onlinecarhailing.Mapper.TicketMapper;
+import com.gzasc.onlinecarhailing.pojo.Appraise;
 import com.gzasc.onlinecarhailing.pojo.Order;
 import com.gzasc.onlinecarhailing.pojo.Ticket;
 import com.gzasc.onlinecarhailing.service.OrderService;
@@ -18,7 +21,10 @@ public class OrderServiceImpl implements OrderService {
     OrderMapper orderMapper;
     @Autowired
     TicketMapper ticketMapper;
-
+    @Autowired
+    AppraiseMapper appraiseMapper;
+    @Autowired
+    DriverMapper driverMapper;
 
     //    创建订单,乘客购买车票创建的订单在乘客层
     @Override
@@ -36,8 +42,6 @@ public class OrderServiceImpl implements OrderService {
     public Integer deleteOrderById(Integer id) {
 
 
-
-
         return orderMapper.deleteOrderById(id);
     }
 
@@ -52,5 +56,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> selectBySelfId(Integer id) {
         return orderMapper.selectBySelfId(id);
+    }
+
+
+    @Override
+    public Integer addAppraiseIdToOrder(Appraise appraise) {
+
+//        插入评价
+        appraiseMapper.insertAppraise(appraise);
+
+        return orderMapper.updateOrderAppraise(appraise.getOrderId(), appraise.getId());
     }
 }

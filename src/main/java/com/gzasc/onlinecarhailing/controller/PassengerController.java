@@ -2,6 +2,7 @@ package com.gzasc.onlinecarhailing.controller;
 
 import com.gzasc.onlinecarhailing.Mapper.OrderMapper;
 import com.gzasc.onlinecarhailing.Mapper.PassengerMapper;
+import com.gzasc.onlinecarhailing.pojo.Appraise;
 import com.gzasc.onlinecarhailing.pojo.Order;
 import com.gzasc.onlinecarhailing.pojo.Passenger;
 import com.gzasc.onlinecarhailing.pojo.Result;
@@ -24,6 +25,7 @@ public class PassengerController {
     PassengerService passengerService;
     @Autowired
     OrderService orderService;
+
 
 
 
@@ -93,6 +95,15 @@ public class PassengerController {
 
 
         return Result.success("成功");
+    }
+
+// 对订单进行评价
+    public Result commentOrder(Appraise appraise){
+
+       Integer count = orderService.addAppraiseIdToOrder(appraise);
+
+        return Result.success("成功", count);
+
     }
 
 }

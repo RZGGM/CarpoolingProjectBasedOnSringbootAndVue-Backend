@@ -11,6 +11,7 @@
                 #{orderType}, #{ownerId},
                 #{state}, #{ticketId})
     </insert>
+
     <update id="updateOrder">
         update `order`
         <set>
@@ -20,13 +21,22 @@
         </set>
         where id = #{orderId}
     </update>
+    <update id="updateOrderAppraise">
+        update `order`
+        set appraise_id = #{appraise}
+        where order_id = #{orderId}
+    </update>
 
 
     <delete id="deleteOrderById">
-        delete from `order` where owner_id = #{id}
+        delete
+        from `order`
+        where owner_id = #{id}
     </delete>
     <select id="selectBySelfId" resultType="com.gzasc.onlinecarhailing.pojo.Order">
-        select * from `order` where owner_id = #{id}
+        select *
+        from `order`
+        where owner_id = #{id}
     </select>
 
 </mapper>
