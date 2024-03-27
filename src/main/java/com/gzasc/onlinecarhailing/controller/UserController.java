@@ -2,6 +2,7 @@ package com.gzasc.onlinecarhailing.controller;
 
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import java.util.List;
 
 //用户都有的接口
 @RestController
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -20,6 +22,34 @@ public class UserController {
     DriverSerivce driverSerivce;
     @Autowired
     TicketService ticketService;
+
+    //    登录
+    @RequestMapping("/login")
+    public Result login(Account account) {
+
+        if (account == null) return Result.error("错误");
+
+        String password = account.getPassword();
+
+        log.info(account.toString());
+
+
+        Integer type = account.getIt();
+
+        Account account1 = accountService.search(account.getAccount());
+
+
+        if (type == null || type > Type.OFFICIAL) return Result.error("错误");
+
+        else {
+            if (type.equals(Type.PASSENGER) && null != account1.getPassengerId()) {
+                return Result.success("成功", account1);
+            } else if (type.equals(Type.DRIVER) && null != account1.getDriverId()) {
+                return Result.success("成功", account1);
+            } else return Result.error("登录失败");
+        }
+
+    }
 
 
     //    注册成为用户
@@ -71,7 +101,6 @@ public class UserController {
     }
 
 
-
     //    修改帐号密码
     @RequestMapping("/user/newPassword")
     public Result alterAccountPassword(Account account) {
@@ -83,15 +112,14 @@ public class UserController {
         return Result.error("修改失败");
     }
 
-// 浏览所有的车票
+    // 浏览所有的车票
     @RequestMapping("/viewAllTicket")
-    public Result viewAllTicket(){
+    public Result viewAllTicket() {
 
         List<Ticket> tickets = ticketService.searchAllTicket();
 
         if (!tickets.isEmpty()) return Result.success("查看成功", tickets);
         else return Result.error("查看失败");
-
 
 
     }
@@ -103,7 +131,7 @@ public class UserController {
 
     //    插入或重新进行一个聊天室
     @RequestMapping("/chating")
-    public Result buildChatRoom(Chaters chaters){
+    public Result buildChatRoom(Chaters chaters) {
 
         Passenger passenger = chaters.getPassenger();
         Driver driver = chaters.getDriver();
@@ -113,14 +141,13 @@ public class UserController {
 
         ChatRoom chatRoom1 = chatRoomService.createChatRoom(passenger, driver);
 
-        if(chatRoom1.getId() != null){
+        if (chatRoom1.getId() != null) {
 
             chatRoom1.setName(passenger.getName());
 
             return Result.success("进行聊天", chatRoom1);
 
-        }else return Result.error("失败");
-
+        } else return Result.error("失败");
 
 
     }

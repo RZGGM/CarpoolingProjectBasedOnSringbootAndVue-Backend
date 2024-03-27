@@ -19,6 +19,8 @@ public interface AccountMapper {
     public Account selectByAccount(String account);
 //    查询通过id
     public List<Account> selectById( List<Integer> ids);
+
+
 //    查询所有存在的。
     public List<Account> selectAll();
 

@@ -41,4 +41,9 @@ public class DriverSerivceImpl implements DriverSerivce {
     public List<Driver> searchAll() {
         return null;
     }
+
+    @Override
+    public Integer modAppraise(Integer appraiseId) {
+        return null;
+    }
 }

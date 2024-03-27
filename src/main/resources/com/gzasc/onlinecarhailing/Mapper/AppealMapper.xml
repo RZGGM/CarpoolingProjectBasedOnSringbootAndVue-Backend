@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzasc.onlinecarhailing.Mapper.AppealMapper">
+    <insert id="insertAppeal">
+
+        insert into appeal(order_id, user_id, content)
+        values (#{orderId}, #{userId}, #{content})
+
+    </insert>
+    <update id="updateAppeal">
+        update appeal
+        <set>
+            <if test="content != null">
+                content = #{content}
+            </if>
+        </set>
+    </update>
+    <delete id="deleteAppeal">
+
+        delete
+        from appeal
+        where id = #{appealId}
+
+    </delete>
+    <select id="selectAppealByAppealId" resultType="com.gzasc.onlinecarhailing.pojo.Appeal">
+        select *
+        from appeal
+        where id = #{id}
+    </select>
+    <select id="selectAppealByOrderId" resultType="com.gzasc.onlinecarhailing.pojo.Appeal">
+        select *
+        from appeal
+        where order_id = #{id}
+    </select>
+    <select id="selectAppealByUserId" resultType="com.gzasc.onlinecarhailing.pojo.Appeal">
+        select *
+        from appeal
+        where order_id = #{id}
+    </select>
+
+</mapper>
