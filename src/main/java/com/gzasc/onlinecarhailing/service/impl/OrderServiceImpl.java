@@ -4,9 +4,7 @@ import com.gzasc.onlinecarhailing.Mapper.AppraiseMapper;
 import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
 import com.gzasc.onlinecarhailing.Mapper.OrderMapper;
 import com.gzasc.onlinecarhailing.Mapper.TicketMapper;
-import com.gzasc.onlinecarhailing.pojo.Appraise;
-import com.gzasc.onlinecarhailing.pojo.Order;
-import com.gzasc.onlinecarhailing.pojo.Ticket;
+import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,5 +64,36 @@ public class OrderServiceImpl implements OrderService {
         appraiseMapper.insertAppraise(appraise);
 
         return orderMapper.updateOrderAppraise(appraise.getOrderId(), appraise.getId());
+    }
+
+    @Override
+    public Integer abolishOrderByOrderId(Integer orderId) {
+
+//        先查询这个订单的信息
+        Order order = orderMapper.selectByOrderId(orderId);
+
+//        判断是否找到对应的订单，找到就进入到下一步。
+        if (order == null) return 0;
+//        判断是哪一方发起的。
+        if (UserType.PASSENGER.equals(order.getCreateUserType())) {
+//            乘客发起的进入到这里。
+//            再查询是否有司机接取了，有的话，要设置对应的司机的订单状态为乘客已经取消
+            if (order.getDriverId().equals(-1)) {
+//                设置为已经取消
+                return orderMapper.updateOrder(orderId, OrderState.CONCELED);
+            } else {
+//                设置为司机的订单为，乘客已经取消
+                return orderMapper.updateOrder(order.getOtherId(), OrderState.PASSENGER_CONCEL);
+            }
+        } else if (UserType.DRIVER.equals(order.getCreateUserType())) {
+//            司机发起的，进入到这里
+//            判断有没乘客已经接取的
+            if (order.getPassengerId().equals(-1)) {
+                return orderMapper.updateOrder(orderId, OrderState.DRIVER_CONCEL);
+            } else {
+//                设置乘客的订单为，司机已经取消
+                return orderMapper.updateOrder(order.getOtherId(), OrderState.DRIVER_CONCEL);
+            }
+        } else return 0;
     }
 }

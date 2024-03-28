@@ -2,10 +2,7 @@ package com.gzasc.onlinecarhailing.controller;
 
 import com.gzasc.onlinecarhailing.Mapper.OrderMapper;
 import com.gzasc.onlinecarhailing.Mapper.PassengerMapper;
-import com.gzasc.onlinecarhailing.pojo.Appraise;
-import com.gzasc.onlinecarhailing.pojo.Order;
-import com.gzasc.onlinecarhailing.pojo.Passenger;
-import com.gzasc.onlinecarhailing.pojo.Result;
+import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.OrderService;
 import com.gzasc.onlinecarhailing.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,60 +24,94 @@ public class PassengerController {
     OrderService orderService;
 
 
-
-
     // 修改个人信息
-    @RequestMapping("/modPersonalInfo")
-    public Result alterUserData(Passenger passenger){
+    @RequestMapping("/passenger/modPersonalInfo")
+    public Result alterUserData(Passenger passenger) {
 
-        if ( passengerService.mod(passenger) > 0){
+        if (passengerService.mod(passenger) > 0) {
 //            修改成功
             return Result.success("修改成功");
 
-        }else return Result.error("修改失败");
+        } else return Result.error("修改失败");
 
     }
+
     //    查看个人信息
-    @RequestMapping("/checkPersonalInfomation")
-    public Result searchById(Integer id){
+    @RequestMapping("/passenger/checkPersonalInfomation")
+    public Result searchById(Integer id) {
 
         Passenger passenger = passengerService.search(id);
 
-        if (null != passenger){
+        if (null != passenger) {
 
             return Result.success("查看成功", passenger);
 
-        }else return Result.error("查看失败");
+        } else return Result.error("查看失败");
 
     }
-//    购票
-    public Result buyTicket(Order order){
+
+    //    购票
+    @RequestMapping("/passenger/buyTicket")
+    public Result buyTicket(Order order) {
 
         Integer count = orderService.addTicketToPassenger(order);
 
-        if (count > 0){
+        if (count > 0) {
 
             return Result.success("买票成功");
 
 
-        }else return Result.error("买票失败");
+        } else return Result.error("买票失败");
 
 
     }
-//    查看自己的所有订单
-    public Result viewAllOrder(Integer id){
+
+    //    发出一个拼单订单
+    @RequestMapping("/passenger/createSHareTheBillP")
+    public Result createSHareTheBillP(Order order) {
+
+        if (null == order) return Result.error("订单为null");
+
+        if (null == order.getOrderType()) return Result.error("订单类型为null");
+
+//        判断订单类型。
+        if (OrderType.PASSENGER_WAIT_DRIVER.equals(order.getOrderType())) {
+
+            Integer count = orderService.addTicketToPassenger(order);
+
+            if (count > 0) return Result.success("创建订单成功");
+            else return Result.error("创建订单失败");
+        }
+        return Result.error("创建订单失败");
+    }
+
+//    取消自己的订单
+    public Result cancelOrder(Integer orderId){
+
+
+        Integer count = orderService.abolishOrderByOrderId(orderId);
+
+        if (count > 0) return Result.success("取消成功");
+        else return Result.error("取消失败");
+
+    }
+
+    //    查看自己的所有订单
+    @RequestMapping("/passenger/allOrder")
+    public Result viewAllOrder(Integer id) {
 
         List<Order> orders = orderService.selectBySelfId(id);
 
-        return Result.success("查看成功",orders );
+        return Result.success("查看成功", orders);
 
 
     }
 //    查看订单详细,应该是前端的
 
 
-//    删除订单
-    public Result removeOrderByOrderId(Integer id){
+    //    删除订单
+    @RequestMapping("/passenger/deleteOrder")
+    public Result removeOrderByOrderId(Integer id) {
 
         Integer count = orderService.deleteOrderById(id);
 
@@ -90,17 +121,18 @@ public class PassengerController {
     }
 
 //    确认订单
-    public Result confirmOrder(Order order){
 
+    public Result confirmOrder(Order order) {
 
 
         return Result.success("成功");
     }
 
-// 对订单进行评价
-    public Result commentOrder(Appraise appraise){
+    // 对订单进行评价
+    @RequestMapping("/passenger/commentOrder")
+    public Result commentOrder(Appraise appraise) {
 
-       Integer count = orderService.addAppraiseIdToOrder(appraise);
+        Integer count = orderService.addAppraiseIdToOrder(appraise);
 
         return Result.success("成功", count);
 

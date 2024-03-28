@@ -39,12 +39,12 @@ public class UserController {
         Account account1 = accountService.search(account.getAccount());
 
 
-        if (type == null || type > Type.OFFICIAL) return Result.error("错误");
+        if (type == null || type > UserType.OFFICIAL) return Result.error("错误");
 
         else {
-            if (type.equals(Type.PASSENGER) && null != account1.getPassengerId()) {
+            if (type.equals(UserType.PASSENGER) && null != account1.getPassengerId()) {
                 return Result.success("成功", account1);
-            } else if (type.equals(Type.DRIVER) && null != account1.getDriverId()) {
+            } else if (type.equals(UserType.DRIVER) && null != account1.getDriverId()) {
                 return Result.success("成功", account1);
             } else return Result.error("登录失败");
         }

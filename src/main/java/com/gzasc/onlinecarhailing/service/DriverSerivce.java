@@ -21,4 +21,6 @@ public interface DriverSerivce {
 
 //     更新司机对应的评价
     Integer modAppraise(Integer appraiseId);
+//    接受订单
+    Integer addOrderToDriver(Integer passengerOrderId, Integer driverId);
 }
