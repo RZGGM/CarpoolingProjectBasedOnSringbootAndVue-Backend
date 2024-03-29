@@ -74,19 +74,23 @@ public class PassengerController {
 
         if (null == order.getOrderType()) return Result.error("订单类型为null");
 
-//        判断订单类型。
-        if (OrderType.PASSENGER_WAIT_DRIVER.equals(order.getOrderType())) {
+//        判断订单类型。如果是一乘客发起的订单就进行
+        if (OrderType.PASSENGER_CREATE_ORDER.equals(order.getOrderType())) {
+
+//            将订单类型改为让司机可以看到
+            order.setState(OrderType.PASSENGER_WAIT_DRIVER);
 
             Integer count = orderService.addTicketToPassenger(order);
 
             if (count > 0) return Result.success("创建订单成功");
+
             else return Result.error("创建订单失败");
         }
         return Result.error("创建订单失败");
     }
 
 //    取消自己的订单
-    public Result cancelOrder(Integer orderId){
+    public Result cancelOrder(String orderId){
 
 
         Integer count = orderService.abolishOrderByOrderId(orderId);
@@ -135,6 +139,16 @@ public class PassengerController {
         Integer count = orderService.addAppraiseIdToOrder(appraise);
 
         return Result.success("成功", count);
+
+    }
+    @RequestMapping("/passenger/viewCanJoinOrder")
+    public Result viewCanJoinOrder(){
+//  查看所有可以拼单的订单
+
+        List<Order> orders = orderService.searchOrdersByOrderType(OrderType.PASSENGER_CAN_JOIN);
+
+        if (!orders.isEmpty()) return Result.success("成功", orders);
+        else return Result.success("没有可以拼单的订单");
 
     }
 

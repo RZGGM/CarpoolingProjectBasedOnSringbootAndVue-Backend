@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.util.Date;
 
-//网络预约出租汽车驾驶员资格证
+//网络预约出租汽车驾驶员资格证，我没有，所以不知道是干嘛的。
 @Data
 public class NetworkDriverLicense {
 

@@ -12,8 +12,8 @@ public class Appraise {
 
 //    id
     private Integer id;
-//    订单id
-    private Integer orderId;
+//    订单对应的编号
+    private String orderId;
 //    司机id
     private Integer driverId;
 //    评价的内容

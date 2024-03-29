@@ -87,6 +87,8 @@ public class UserController {
                 Driver driver = new Driver();
                 driver.setAccount(account.getAccount());
                 driver.setAccountId(accountId);
+//                再注册成为司机到司机表中。
+
                 driverSerivce.register(driver);
                 Integer driverId = driver.getDriverId();
 

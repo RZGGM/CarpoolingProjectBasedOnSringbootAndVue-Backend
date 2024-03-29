@@ -19,7 +19,7 @@
                 state = #{state}
             </if>
         </set>
-        where id = #{orderId}
+        where order_id = #{orderId}
     </update>
     <update id="updateOrderAppraise">
         update `order`
@@ -35,8 +35,11 @@
             <if test="passengerId != null">
                 passenger_id = #{passengerId}
             </if>
+            <if test="id != null">
+                appraise_id = #{id}
+            </if>
         </set>
-        where id = #{orderId}
+        where order_id = #{orderId}
     </update>
 
 
@@ -48,7 +51,7 @@
     <select id="selectBySelfId" resultType="com.gzasc.onlinecarhailing.pojo.Order">
         select *
         from `order`
-        where owner_id = #{id}
+        where owner_id = #{userId}
     </select>
     <select id="selectByOrderId" resultType="com.gzasc.onlinecarhailing.pojo.Order">
 
@@ -56,6 +59,18 @@
         from `order`
         where id = #{orderId}
 
+    </select>
+    <select id="selectByOrderState" resultType="com.gzasc.onlinecarhailing.pojo.Order">
+        select * from `order`
+        <where>
+            state = #{state}
+        </where>
+    </select>
+    <select id="selectByOrderType" resultType="com.gzasc.onlinecarhailing.pojo.Order">
+        select * from `order`
+        <where>
+            type = #{orderType}
+        </where>
     </select>
 
 </mapper>

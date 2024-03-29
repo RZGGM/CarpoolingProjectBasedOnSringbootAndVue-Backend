@@ -9,6 +9,7 @@ import com.gzasc.onlinecarhailing.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Integer modOrderState(Integer orderId, Integer state) {
+    public Integer modOrderState(String orderId, Integer state) {
 
 
         return orderMapper.updateOrder(orderId, state);
@@ -60,14 +61,29 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer addAppraiseIdToOrder(Appraise appraise) {
 
-//        插入评价
-        appraiseMapper.insertAppraise(appraise);
+//        返回一个数字，0是表示评价不成功，1是评价成功
+        Integer count = 0;
 
-        return orderMapper.updateOrderAppraise(appraise.getOrderId(), appraise.getId());
+//        先判断订单是否的状态是否可以评价了。
+        Order order = orderMapper.selectByOrderId(appraise.getOrderId());
+//        判断订单的状态
+        if (!order.getState().equals(OrderState.APPRAISED)) {
+//        当状态为没有评价时，进入到评价。
+//            插入评价
+            appraiseMapper.insertAppraise(appraise);
+//            更新订单的状态
+            orderMapper.updateOrder(order.getOrderId(), OrderState.APPRAISED);
+//             更新对应的订单的评论的id。
+            count = orderMapper.updateOrderAppraise(appraise.getOrderId(), appraise.getId());
+
+            return count;
+
+        } else return count;
+
     }
 
     @Override
-    public Integer abolishOrderByOrderId(Integer orderId) {
+    public Integer abolishOrderByOrderId(String orderId) {
 
 //        先查询这个订单的信息
         Order order = orderMapper.selectByOrderId(orderId);
@@ -95,5 +111,37 @@ public class OrderServiceImpl implements OrderService {
                 return orderMapper.updateOrder(order.getOtherId(), OrderState.DRIVER_CONCEL);
             }
         } else return 0;
+    }
+
+    @Override
+    public List<Order> searchOrdersByOrderState(Integer state) {
+
+
+        return null;
+    }
+
+    @Override
+    public List<Order> searchOrdersByOrderType(Integer orderType) {
+
+//        判断类型，来看是返回哪些订单
+        if (Objects.equals(orderType, OrderType.PASSENGER_WAIT_DRIVER)) {
+//            返回司机可以看到的，送乘客发起的。
+            return orderMapper.selectByOrderType(orderType);
+        } else if (orderType.equals(OrderType.PASSENGER_CAN_JOIN)) {
+//            返回乘客可以看到的拼单，并且是自己可以拼单的。
+            List<Order> orders = new ArrayList<>();
+            List<Order> ordersDriverCreate =
+                    orderMapper.selectByOrderType(OrderType.DRIVER_WAIT_PASSENGER);
+            List<Order> ordersDriverAndPassengerWait =
+                    orderMapper.selectByOrderType(OrderType.DRIVER_AND_PASSENGER_WAIT_OTHERPASSENGER);
+            List<Order> ordersPassengerAndDriverWait =
+                    orderMapper.selectByOrderType(OrderType.PASSENGER_AND_DRIVER_WAIT_OTHERPASSENGER);
+            orders.addAll(ordersDriverCreate);
+            orders.addAll(ordersDriverAndPassengerWait);
+            orders.addAll(ordersPassengerAndDriverWait);
+            return orders;
+        } else return orderMapper.selectByOrderType(orderType);
+
+
     }
 }

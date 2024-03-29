@@ -1,10 +1,10 @@
 package com.gzasc.onlinecarhailing.controller;
 
 
-import com.gzasc.onlinecarhailing.pojo.Car;
-import com.gzasc.onlinecarhailing.pojo.Order;
-import com.gzasc.onlinecarhailing.pojo.Result;
+import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
+import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.CarService;
+import com.gzasc.onlinecarhailing.service.DriverSerivce;
 import com.gzasc.onlinecarhailing.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.swing.plaf.PanelUI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class DriverController {
@@ -20,6 +21,8 @@ public class DriverController {
     CarService carService;
     @Autowired
     OrderService orderService;
+    @Autowired
+    DriverSerivce driverSerivce;
 
     //  通过所有者的id，查询车
     @RequestMapping("/driver/myCar")
@@ -44,14 +47,27 @@ public class DriverController {
 
     }
 
+    //查看可以接单的订单
+    @RequestMapping("/driver/viewCanAcceptOrder")
+    public Result viewCanAcceptOrder() {
+
+        List<Order> orders = orderService.searchOrdersByOrderType(OrderType.PASSENGER_WAIT_DRIVER);
+
+        if (!orders.isEmpty()) return Result.success("查看成功", orders);
+        else return Result.success("没有可以接受的订单");
+
+    }
+
     //    接单
     @RequestMapping("/driver/acceptOrder")
-    public Result acceptOrder(Integer passengerOrderId, Integer driverId){
+    public Result acceptOrder(String passengerOrderId, Integer driverId) {
 
 //        根据乘客订单的id，来接受订单
 
-        orderService.add
+        Integer count = driverSerivce.addOrderToDriver(passengerOrderId, driverId);
 
+        if (Objects.equals(count, OrderState.HAS_DRIVER)) return Result.error("失败，已经有司机接单了。");
+        else return Result.success("成功", count);
 
     }
 }

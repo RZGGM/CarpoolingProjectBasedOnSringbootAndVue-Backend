@@ -15,7 +15,7 @@ public interface OrderService {
     Integer deleteOrderById(Integer id);
 
 //    更改订单的状态
-    Integer modOrderState(Integer orderId, Integer state);
+    Integer modOrderState(String orderId, Integer state);
 
     //    乘客查看自己的所有订单
     List<Order> selectBySelfId(Integer id);
@@ -23,8 +23,13 @@ public interface OrderService {
 //    乘客对订单进行评价
     Integer addAppraiseIdToOrder(Appraise appraise);
 
-//    通过订单的id进行取消订单
-    Integer abolishOrderByOrderId(Integer orderId);
+//    通过订单的编号进行取消订单
+    Integer abolishOrderByOrderId(String orderId);
+
+//    根据订单的状态查询订单
+    List<Order> searchOrdersByOrderState(Integer state);
+//    根据订单的类型来查询订单
+    List<Order> searchOrdersByOrderType(Integer type);
 
 
 }

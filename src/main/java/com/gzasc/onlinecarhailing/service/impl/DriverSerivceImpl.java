@@ -20,9 +20,8 @@ public class DriverSerivceImpl implements DriverSerivce {
     @Override
     public Integer register(Driver driver) {
 
-        driverMapper.insert(driver);
 
-        return null;
+        return driverMapper.insert(driver);
     }
 
     @Override
@@ -51,7 +50,7 @@ public class DriverSerivceImpl implements DriverSerivce {
     }
 
     @Override
-    public Integer addOrderToDriver(Integer passengerOrderId, Integer driverId) {
+    public Integer addOrderToDriver(String passengerOrderId, Integer driverId) {
 
 //        查询到乘客的订单
         Order order = orderMapper.selectByOrderId(passengerOrderId);
@@ -61,19 +60,18 @@ public class DriverSerivceImpl implements DriverSerivce {
             return OrderState.HAS_DRIVER;
         } else {
 //       没有司机进入到这
-//                        要先修改下乘客的订单，更新司机到乘客的订单里。
+//       要先修改下乘客的订单，更新司机到乘客的订单里。
             order.setDriverId(driverId);
             orderMapper.updateOrderDriverOrPassenger(order);
-//            再然后，为司机生成订单
+//       再然后，为司机生成订单
             Order orderDriver = new Order();
             orderDriver.setCreateUserType(UserType.DRIVER);
             orderDriver.setOtherId(order.getOrderId());
-//            插入订单给司机
-            orderMapper.insertOrderById(orderDriver);
+//       插入订单给司机
+            return orderMapper.insertOrderById(orderDriver);
+
 
         }
 
-
-        return null;
     }
 }
