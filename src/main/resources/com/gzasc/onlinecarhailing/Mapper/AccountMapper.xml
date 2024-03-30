@@ -9,17 +9,18 @@
         insert into account(account, password, driver_id, passenger_id, manager_id)
         values (#{account}, #{password}, #{driverId}, #{passengerId}, #{managerId})
     </insert>
-    <update id="updateAccount">
+
+    <update id="updateAccount" useGeneratedKeys="true" keyProperty="id">
         update account
         <set>
             <if test="driverId != null">
-                driver_id = #{driverId}
+                driver_id = #{driverId},
             </if>
             <if test="passengerId != null">
-                passenger_id = #{passengerId}
+                passenger_id = #{passengerId},
             </if>
             <if test="password != null">
-                password = #{password}
+                password = #{password},
             </if>
         </set>
         where id = #{id}

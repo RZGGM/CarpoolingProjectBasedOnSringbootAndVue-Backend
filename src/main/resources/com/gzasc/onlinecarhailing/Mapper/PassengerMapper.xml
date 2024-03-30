@@ -3,8 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.PassengerMapper">
-    <insert id="insert">
-        insert into passenger(phone, gender, statue, name, account, account_id, update_time)
+    <insert id="insert" keyProperty="passengerId" useGeneratedKeys="true">
+        insert into passenger(phone, gender, state, name, account, account_id, update_time)
         values (#{phone}, #{gender}, #{state}, #{name}, #{account}, #{accountId}, #{updateTime})
     </insert>
 
@@ -12,16 +12,16 @@
         update passenger
         <set>
             <if test="phone != null">
-                phone = #{phone}
+                phone = #{phone},
             </if>
             <if test="gender != null">
-                gender = #{gender}
+                gender = #{gender},
             </if>
             <if test="state != null">
-                state = #{state}
+                state = #{state},
             </if>
             <if test="name != null">
-                name = #{name}
+                name = #{name},
             </if>
         </set>
         where id = #{passengerId}

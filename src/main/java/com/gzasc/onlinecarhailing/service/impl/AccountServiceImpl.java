@@ -35,8 +35,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Integer mod(Account newAccount) {
-
-
         return accountMapper.updateAccount(newAccount);
     }
 

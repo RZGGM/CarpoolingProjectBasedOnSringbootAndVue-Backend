@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 //用户都有的接口
 @RestController
@@ -27,26 +28,29 @@ public class UserController {
     @RequestMapping("/login")
     public Result login(Account account) {
 
-        if (account == null) return Result.error("错误");
+        if (account == null) return Result.error("帐号为空，登录失败。");
 
         String password = account.getPassword();
 
         log.info(account.toString());
 
-
+// 传入的帐号的类型
         Integer type = account.getIt();
 
         Account account1 = accountService.search(account.getAccount());
 
 
-        if (type == null || type > UserType.OFFICIAL) return Result.error("错误");
+        if (type == null || type > UserType.OFFICIAL) return Result.error("帐号类型为Null或是没有此类型，登录失败。");
 
         else {
+            if (account1 == null) return Result.error("此帐号不存在，或是密码错误，所以登录失败");
             if (type.equals(UserType.PASSENGER) && null != account1.getPassengerId()) {
-                return Result.success("成功", account1);
+                return Result.success("乘客登录成功", account1);
             } else if (type.equals(UserType.DRIVER) && null != account1.getDriverId()) {
-                return Result.success("成功", account1);
-            } else return Result.error("登录失败");
+                return Result.success("司机登录成功", account1);
+            } else if (type.equals(UserType.OFFICIAL) && null != account1.getManagerId()) {
+                return Result.success("管理员登录成功," ,account1);
+            } else return Result.error("帐号类型错误，登录失败");
         }
 
     }
@@ -65,22 +69,23 @@ public class UserController {
 
         } else {
 
-            if (account.getIt() == 0) {
+            if (Objects.equals(account.getIt(), UserType.PASSENGER)) {
 //            先注册了帐号
                 accountService.register(account);
                 Integer accountId = account.getId();
                 Passenger passenger = new Passenger();
                 passenger.setAccount(account.getAccount());
                 passenger.setAccountId(accountId);
-                Integer pasengerId = passengerService.register(passenger);
+                passengerService.register(passenger);
+                Integer passengerId = passenger.getPassengerId();
 
-                account.setPassengerId(pasengerId);
+                account.setPassengerId(passengerId);
 
                 accountService.mod(account);
 
-                return Result.success("乘客注册成功", passengerService.search(pasengerId));
+                return Result.success("乘客注册成功", passengerService.search(passengerId));
 
-            } else if (account.getIt() == 1) {
+            } else if (Objects.equals(account.getIt(), UserType.DRIVER)) {
                 //            先注册了帐号
                 accountService.register(account);
                 Integer accountId = account.getId();
@@ -93,7 +98,7 @@ public class UserController {
                 Integer driverId = driver.getDriverId();
 
                 account.setDriverId(driverId);
-
+//   注册成功后，要绑定司机或是乘客的表的id到帐号表。一个帐号可以有两个身份。
                 accountService.mod(account);
 
                 return Result.success("司机注册成功", driverSerivce.search(driverId));

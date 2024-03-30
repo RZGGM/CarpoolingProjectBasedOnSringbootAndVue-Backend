@@ -50,6 +50,8 @@ public class PassengerController {
 
     }
 
+
+
     //    购票
     @RequestMapping("/passenger/buyTicket")
     public Result buyTicket(Order order) {
