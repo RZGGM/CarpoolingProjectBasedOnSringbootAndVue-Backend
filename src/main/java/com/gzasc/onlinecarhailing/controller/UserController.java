@@ -39,7 +39,6 @@ public class UserController {
 
         Account account1 = accountService.search(account.getAccount());
 
-
         if (type == null || type > UserType.OFFICIAL) return Result.error("帐号类型为Null或是没有此类型，登录失败。");
 
         else {
@@ -124,9 +123,12 @@ public class UserController {
     public Result viewAllTicket() {
 
         List<Ticket> tickets = ticketService.searchAllTicket();
-
+        if (null == tickets) return Result.error("获取的票是null");
         if (!tickets.isEmpty()) return Result.success("查看成功", tickets);
-        else return Result.error("查看失败");
+
+
+        else return Result.success("获取票成功，但可惜数据库里没有票的数据。");
+
 
 
     }

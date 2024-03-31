@@ -1,5 +1,6 @@
 package com.gzasc.onlinecarhailing.pojo;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -59,9 +60,8 @@ public class Ticket {
     private Integer status;
 
 
-
-
-
-
-
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
 }

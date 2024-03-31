@@ -7,12 +7,19 @@ import com.gzasc.onlinecarhailing.pojo.Ticket;
 import com.gzasc.onlinecarhailing.service.AccountService;
 import com.gzasc.onlinecarhailing.service.CarService;
 import com.gzasc.onlinecarhailing.service.TicketService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 //管理员用的接口
+// 使用@Controller注解在前端发送Axios时会报错。不知道为什么，找到了，是因为少了@@ResponseBody这个注解
+@RestController
+@Slf4j
 public class ManagerController {
 
 
@@ -50,8 +57,13 @@ public class ManagerController {
     @RequestMapping("/system/addTicket")
     public Result addTicket(Ticket ticket) {
 
+        if (null == ticket ) return Result.error("要添加的票是null，添加失败");
+
+        log.info(String.valueOf(ticket));
 
         Ticket ticket1 = ticketService.searchTicketById(ticketService.addTicket(ticket));
+
+//        System.out.println();
 
         if (null != ticket1) {
             return Result.success("添加成功", ticket1);
