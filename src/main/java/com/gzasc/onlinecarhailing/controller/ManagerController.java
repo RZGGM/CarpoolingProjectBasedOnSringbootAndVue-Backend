@@ -10,19 +10,16 @@ import com.gzasc.onlinecarhailing.service.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 //管理员用的接口
 // 使用@Controller注解在前端发送Axios时会报错。不知道为什么，找到了，是因为少了@@ResponseBody这个注解
-@RestController
+
 @Slf4j
+@RestController
 public class ManagerController {
-
-
     @Autowired
     AccountService accountService;
     @Autowired
@@ -43,21 +40,36 @@ public class ManagerController {
     }
 
     //    管理员后台，删除帐号
-    @RequestMapping("/system/deleteAccountsById")
-    public Result deleteAccountsById(List<Integer> ids) {
+//    @RequestMapping("/system/deleteAccountsById")
+
+    @RequestMapping("/system/deleteAccountsByIds")
+    public Result deleteAccountsById(@RequestBody HashMap<String, Integer[]> ids) {
+
+//        log.info(idsArr.toString());
 
 
-        Integer countAccount = accountService.removeAccountsByIds(ids);
-        if (countAccount > 0) return Result.success("成功");
-        else return Result.error("删除失败");
+        System.out.println();
+
+        Integer[] ids1 = ids.get("ids");
+
+        if (ids1 == null) return Result.error("要删除的id为空");
+        if (ids1.length == 0) return Result.error("要删除的id的数组长度为0");
+        ArrayList<Integer> ids2 = new ArrayList<Integer>(ids1.length);
+        Collections.addAll(ids2, ids1);
+
+        Integer countAccount = ticketService.removeTickets(ids2);
+
+        if (countAccount > 0) return Result.success("批量删除成功");
+        else return Result.error("批量删除失败");
 
     }
+
 
     //增加一张车票
     @RequestMapping("/system/addTicket")
     public Result addTicket(Ticket ticket) {
 
-        if (null == ticket ) return Result.error("要添加的票是null，添加失败");
+        if (null == ticket) return Result.error("要添加的票是null，添加失败");
 
         log.info(String.valueOf(ticket));
 
@@ -83,6 +95,7 @@ public class ManagerController {
     }
 
     //    批量删除车票
+    @RequestMapping("system/deleteTicketsByIds")
     public Result removeTicketsByIds(List<Integer> ids) {
 
         Integer count = ticketService.removeTickets(ids);
@@ -116,8 +129,9 @@ public class ManagerController {
 
 
     }
-//    删除一车
-    public Result dropCar(Integer carId){
+
+    //    删除一车
+    public Result dropCar(Integer carId) {
         Integer count = carService.remove(carId);
 
         if (count > 0) {
@@ -125,16 +139,18 @@ public class ManagerController {
         } else return Result.error("失败");
 
     }
-//    批量删除
-    public Result dropCars(List<Integer> ids){
+
+    //    批量删除
+    public Result dropCars(List<Integer> ids) {
         Integer count = carService.removeByIds(ids);
 
         if (count > 0) {
             return Result.success("删除成功", ids);
         } else return Result.error("失败");
     }
-//    修改
-    public Result editCar(Car car){
+
+    //    修改
+    public Result editCar(Car car) {
         Integer count = carService.mod(car);
 
         if (count > 0) {
@@ -142,8 +158,8 @@ public class ManagerController {
         } else return Result.error("失败");
     }
 
-//    通过id查一辆车
-    public Result seekCarById(Integer id){
+    //    通过id查一辆车
+    public Result seekCarById(Integer id) {
 
         Car car = carService.searchById(id);
 
@@ -152,15 +168,15 @@ public class ManagerController {
         } else return Result.error("失败");
 
     }
-//查询所有的车
-    public Result seekAllCar(){
+
+    //查询所有的车
+    public Result seekAllCar() {
 
         List<Car> cars = carService.searchAll();
 
         return Result.success("查询成功", cars);
 
     }
-
 
 
 }
