@@ -67,7 +67,7 @@ public class ManagerController {
 
     //增加一张车票
     @RequestMapping("/system/addTicket")
-    public Result addTicket(Ticket ticket) {
+    public Result addTicket(@RequestBody Ticket ticket) {
 
         if (null == ticket) return Result.error("要添加的票是null，添加失败");
 

@@ -39,6 +39,13 @@
         </foreach>
 
     </delete>
+<!--    表里面没有区分帐号类型的属性，是靠有无对应身份的id来判断的。-->
+<!--    <resultMap id="accountMap" type="com.gzasc.onlinecarhailing.pojo.Account">-->
+
+<!--        <result column=""></result>-->
+
+<!--    </resultMap>-->
+
     <select id="selectByAccount" resultType="com.gzasc.onlinecarhailing.pojo.Account">
         select *
         from account

@@ -43,11 +43,17 @@ public class UserController {
 
         else {
             if (account1 == null) return Result.error("此帐号不存在，或是密码错误，所以登录失败");
+
+            account1.setIt(account.getIt());
+
             if (type.equals(UserType.PASSENGER) && null != account1.getPassengerId()) {
+                account1.setIt(1);
                 return Result.success("乘客登录成功", account1);
             } else if (type.equals(UserType.DRIVER) && null != account1.getDriverId()) {
+                account1.setIt(2);
                 return Result.success("司机登录成功", account1);
             } else if (type.equals(UserType.OFFICIAL) && null != account1.getManagerId()) {
+                account1.setIt(3);
                 return Result.success("管理员登录成功," ,account1);
             } else return Result.error("帐号类型错误，登录失败");
         }
