@@ -25,6 +25,20 @@
         </set>
         where id = #{id}
     </update>
+    <update id="updateAccountsPassengerIdToNullByAccountIds">
+        update account
+        <set>
+
+            passenger_id = null
+
+        </set>
+        where id in
+        <foreach collection="accountIds" item="id" separator="," open="(" close=")">
+
+            #{id}
+
+        </foreach>
+    </update>
 
     <delete id="deleteAccount">
         delete
@@ -39,12 +53,12 @@
         </foreach>
 
     </delete>
-<!--    表里面没有区分帐号类型的属性，是靠有无对应身份的id来判断的。-->
-<!--    <resultMap id="accountMap" type="com.gzasc.onlinecarhailing.pojo.Account">-->
+    <!--    表里面没有区分帐号类型的属性，是靠有无对应身份的id来判断的。-->
+    <!--    <resultMap id="accountMap" type="com.gzasc.onlinecarhailing.pojo.Account">-->
 
-<!--        <result column=""></result>-->
+    <!--        <result column=""></result>-->
 
-<!--    </resultMap>-->
+    <!--    </resultMap>-->
 
     <select id="selectByAccount" resultType="com.gzasc.onlinecarhailing.pojo.Account">
         select *
@@ -58,7 +72,7 @@
     <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Account">
         select * from account where id in
         <foreach collection="ids" item="id" separator="," open="(" close=")">
-                              #{id}
+            #{id}
         </foreach>
     </select>
 </mapper>

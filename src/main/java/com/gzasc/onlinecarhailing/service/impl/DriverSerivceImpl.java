@@ -41,7 +41,7 @@ public class DriverSerivceImpl implements DriverSerivce {
 
     @Override
     public List<Driver> searchAll() {
-        return null;
+        return driverMapper.selectAll();
     }
 
     @Override

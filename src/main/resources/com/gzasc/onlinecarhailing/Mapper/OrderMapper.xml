@@ -48,6 +48,13 @@
         from `order`
         where owner_id = #{id}
     </delete>
+    <delete id="deleteOrdersByIds">
+        delete from `order` where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+
+    </delete>
     <select id="selectBySelfId" resultType="com.gzasc.onlinecarhailing.pojo.Order">
         select *
         from `order`

@@ -1,12 +1,7 @@
 package com.gzasc.onlinecarhailing.controller;
 
-import com.gzasc.onlinecarhailing.pojo.Account;
-import com.gzasc.onlinecarhailing.pojo.Car;
-import com.gzasc.onlinecarhailing.pojo.Result;
-import com.gzasc.onlinecarhailing.pojo.Ticket;
-import com.gzasc.onlinecarhailing.service.AccountService;
-import com.gzasc.onlinecarhailing.service.CarService;
-import com.gzasc.onlinecarhailing.service.TicketService;
+import com.gzasc.onlinecarhailing.pojo.*;
+import com.gzasc.onlinecarhailing.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +21,30 @@ public class ManagerController {
     TicketService ticketService;
     @Autowired
     CarService carService;
+    @Autowired
+    PassengerService passengerService;
+    @Autowired
+    DriverSerivce driverSerivce;
+
+    //    删除乘客的
+    @RequestMapping("/system/removePassengersByIds")
+    public Result removePassengersByIds(@RequestBody HashMap<String, Integer[]> ids) {
+
+//    前端传的数组类型的数据，不知道为什么会变成HashMap类型的，所以只能处理成List类型的了。
+        Integer[] ids1 = ids.get("ids");
+        if (ids1 == null) return Result.error("要删除的id为空");
+        if (ids1.length == 0) return Result.error("要删除的id的数组长度为0");
+        ArrayList<Integer> ids2 = new ArrayList<>(ids1.length);
+
+        Collections.addAll(ids2, ids1);
+
+        Integer countAccount = passengerService.removeByIds(ids2);
+
+        if (countAccount > 0) return Result.success("批量删除成功");
+        else return Result.error("批量删除失败");
+
+    }
+
 
     //    管理员后台修改帐号信息，如改密码什么的。
     @RequestMapping("/system/editAccount")
@@ -42,13 +61,11 @@ public class ManagerController {
     //    管理员后台，删除帐号
 //    @RequestMapping("/system/deleteAccountsById")
 
-    @RequestMapping("/system/deleteAccountsByIds")
-    public Result deleteAccountsById(@RequestBody HashMap<String, Integer[]> ids) {
+    @RequestMapping("/system/removeAccountsById")
+    public Result removeAccountsById(@RequestBody HashMap<String, Integer[]> ids) {
 
 //        log.info(idsArr.toString());
 
-
-        System.out.println();
 
         Integer[] ids1 = ids.get("ids");
 
@@ -83,7 +100,7 @@ public class ManagerController {
 
     }
 
-    //    删除车票
+    //    删除一张车票
     public Result removeTicketById(Integer id) {
 
         Integer count = ticketService.removeTicket(id);
@@ -131,7 +148,7 @@ public class ManagerController {
     }
 
     //    删除一车
-    public Result dropCar(Integer carId) {
+    public Result removeCar(Integer carId) {
         Integer count = carService.remove(carId);
 
         if (count > 0) {
@@ -141,7 +158,7 @@ public class ManagerController {
     }
 
     //    批量删除
-    public Result dropCars(List<Integer> ids) {
+    public Result removeCars(List<Integer> ids) {
         Integer count = carService.removeByIds(ids);
 
         if (count > 0) {
@@ -178,5 +195,35 @@ public class ManagerController {
 
     }
 
+    //    查询所有的乘客
+    @RequestMapping("/system/seekAllPassengers")
+    public Result seekAllPassengers() {
+
+        List<Passenger> passengers = passengerService.searchAll();
+
+        return Result.success("查询成功", passengers);
+
+    }
+
+    //    查看所有司机
+    @RequestMapping("/system/seekAllDrivers")
+    public Result seekAllDrivers() {
+
+        List<Driver> drivers = driverSerivce.searchAll();
+
+        return Result.success("查看所有司机成功", drivers);
+
+    }
+
+//    查看所有的帐号
+@RequestMapping("/system/seekAllAccounts")
+    public Result seekAllAccounts(){
+
+
+        List<Account> accountList = accountService.searchAll();
+
+        return Result.success("查看所有帐号成功", accountList);
+
+    }
 
 }

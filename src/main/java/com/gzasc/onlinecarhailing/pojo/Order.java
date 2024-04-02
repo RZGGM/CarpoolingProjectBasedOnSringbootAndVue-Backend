@@ -62,4 +62,8 @@ public class Order {
 //    订单对应的票的id，其它是订单一些其它信息。在购物系统里就是商品的，在这个出行的，就是行程的。
     private Integer ticketId;
 
+//    起点
+    private String departure;
+// 终点
+    private String destination;
 }

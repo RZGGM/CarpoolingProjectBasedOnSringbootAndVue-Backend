@@ -16,6 +16,9 @@ public interface OrderMapper {
     Integer insertOrderById(Order order);
 // 删除订单一条订单，
     Integer deleteOrderById(Integer id);
+
+//    根据传入的很多的订单的id来删除订单
+    Integer deleteOrdersByIds(List<Integer> ids);
 //    修改订单的状态
     Integer updateOrder(String orderId, Integer state);
 //    修改订单的司机或是乘客或是其它，
