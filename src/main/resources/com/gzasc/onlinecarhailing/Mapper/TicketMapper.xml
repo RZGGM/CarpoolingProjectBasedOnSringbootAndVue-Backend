@@ -4,15 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.TicketMapper">
     <!--增加-->
-    <insert id="insertTicket" keyProperty="id" useGeneratedKeys="true" >
+    <insert id="insertTicket" keyProperty="id" useGeneratedKeys="true">
         insert into ticket(max_passenger_count,
                            departure,
-                           destination, start_time,
+                           sold_count,
+                           destination,
+                           start_time,
                            price,
                            status)
         values (#{passengerCount},
                 #{departureAddress},
                 #{destinationAddress},
+                #{soldCount},
                 #{startTime},
                 #{price},
                 #{status})
@@ -22,30 +25,36 @@
         update ticket
         <set>
             <if test="passengerCount != null">
-                max_passenger_count = #{passengerCount}
+                max_passenger_count = #{passengerCount},
             </if>
             <if test="startTime != null">
-                start_time = #{startTime}
+                start_time = #{startTime},
             </if>
             <if test="status != null">
-                status = #{status}
+                status = #{status},
             </if>
             <if test="price != null">
-                price = #{price}
+                price = #{price},
             </if>
             <if test="departureAddress != null">
-                departure = #{departureAddress}
+                departure = #{departureAddress},
             </if>
             <if test="destinationAddress != null">
-                destination = #{destinationAddress}
+                destination = #{destinationAddress},
+            </if>
+            <if test="soldCount != null">
+                sold_count = #{soldCount},
             </if>
         </set>
         where id = #{id}
     </update>
     <!--    删除-->
     <delete id="deleteTicket">
-        delete from ticket where id = #{id}
+        delete
+        from ticket
+        where id = #{id}
     </delete>
+
     <delete id="deleteTicketByIds">
 
         delete from ticket where id in
@@ -63,9 +72,12 @@
     <!--    查询所有-->
     <resultMap id="ticketMap" type="com.gzasc.onlinecarhailing.pojo.Ticket">
         <result column="max_passenger_count" property="passengerCount"></result>
+        <result column="departure" property="departureAddress"></result>
+        <result column="destination" property="destinationAddress"></result>
     </resultMap>
-    
+
     <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Ticket" resultMap="ticketMap">
-            select * from ticket
+        select *
+        from ticket
     </select>
 </mapper>

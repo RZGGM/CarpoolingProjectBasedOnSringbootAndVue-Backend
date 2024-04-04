@@ -90,6 +90,8 @@ public class ManagerController {
 
         log.info(String.valueOf(ticket));
 
+        if (ticket.getSoldCount() == null) ticket.setSoldCount(0);
+
         Ticket ticket1 = ticketService.searchTicketById(ticketService.addTicket(ticket));
 
 //        System.out.println();
@@ -112,26 +114,34 @@ public class ManagerController {
     }
 
     //    批量删除车票
-    @RequestMapping("system/deleteTicketsByIds")
-    public Result removeTicketsByIds(List<Integer> ids) {
+    @RequestMapping("/system/deleteTicketsByIds")
+    public Result removeTicketsByIds(@RequestBody HashMap<String, Integer[]> ids) {
 
-        Integer count = ticketService.removeTickets(ids);
+        Integer[] ids1 = ids.get("ids");
+
+        if (ids1 == null) return Result.error("要删除的id为空");
+        if (ids1.length == 0) return Result.error("要删除的id的数组长度为0");
+        ArrayList<Integer> ids2 = new ArrayList<Integer>(ids1.length);
+        Collections.addAll(ids2, ids1);
+
+        Integer count = ticketService.removeTickets(ids2);
 
         if (count > 0) {
-            return Result.success("批量删除成功", ids);
+            return Result.success("批量删除成功", ids2);
         } else return Result.error("失败");
 
     }
 
     //    修改车票信息
-    public Result editTicket(Ticket ticket) {
+    @RequestMapping("/system/updateTicket")
+    public Result editTicket(@RequestBody Ticket ticket) {
 
         Integer count = ticketService.modTicket(ticket);
 
         ticket = ticketService.searchTicketById(ticket.getId());
 
         if (count > 0) {
-            return Result.success("批量删除成功", ticket);
+            return Result.success("修改成功", ticket);
         } else return Result.error("失败");
     }
 
