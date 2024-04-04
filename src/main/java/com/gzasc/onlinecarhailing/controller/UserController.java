@@ -124,11 +124,11 @@ public class UserController {
         return Result.error("修改失败");
     }
 
-    // 浏览所有的车票
+    // 浏览所有的车票，用户的
     @RequestMapping("/viewAllTicket")
     public Result viewAllTicket() {
 
-        List<Ticket> tickets = ticketService.searchAllTicket();
+        List<Ticket> tickets = ticketService.searchAvailableTicket();
         if (null == tickets) return Result.error("获取的票是null");
         if (!tickets.isEmpty()) return Result.success("查看成功", tickets);
 

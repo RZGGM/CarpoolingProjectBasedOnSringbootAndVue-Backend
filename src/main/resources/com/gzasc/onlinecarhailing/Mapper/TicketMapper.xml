@@ -14,8 +14,8 @@
                            status)
         values (#{passengerCount},
                 #{departureAddress},
-                #{destinationAddress},
                 #{soldCount},
+                #{destinationAddress},
                 #{startTime},
                 #{price},
                 #{status})
@@ -79,5 +79,10 @@
     <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Ticket" resultMap="ticketMap">
         select *
         from ticket
+    </select>
+    <select id="selectAvailableTickets" resultType="com.gzasc.onlinecarhailing.pojo.Ticket" resultMap="ticketMap">
+        select *
+        from ticket
+        where status = 1
     </select>
 </mapper>

@@ -17,6 +17,9 @@ public interface TicketService {
 //查询单张票
      Ticket searchTicketById(Integer id);
 
+//     查询状态为可以购买的票
+     List<Ticket> searchAvailableTicket();
+
 //     批量删除车票
      Integer removeTickets(List<Integer> ids);
 

@@ -21,6 +21,9 @@ public interface TicketMapper {
     //    查询所有
     public List<Ticket> selectAll();
 
+//    查询状态为可以购买的票
+    List<Ticket> selectAvailableTickets();
+
     //    查询一条，根据ID查询
     public Ticket selectTicketById(Integer id);
 

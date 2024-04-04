@@ -236,4 +236,19 @@ public class ManagerController {
 
     }
 
+    // 浏览所有的车票，管理员的
+    @RequestMapping("/system/viewAllTicket")
+    public Result seekAllTicket() {
+
+        List<Ticket> tickets = ticketService.searchAllTicket();
+        if (null == tickets) return Result.error("获取的票是null");
+        if (!tickets.isEmpty()) return Result.success("查看成功", tickets);
+
+
+        else return Result.success("获取票成功，但可惜数据库里没有票的数据。");
+
+
+
+    }
+
 }

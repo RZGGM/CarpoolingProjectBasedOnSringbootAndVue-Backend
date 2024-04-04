@@ -48,6 +48,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<Ticket> searchAvailableTicket(){
+        return ticketMapper.selectAvailableTickets();
+    }
+
+    @Override
     public Integer removeTickets(List<Integer> ids) {
 
         return ticketMapper.deleteTicketByIds(ids);
