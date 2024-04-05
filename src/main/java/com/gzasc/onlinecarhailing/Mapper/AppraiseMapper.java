@@ -19,4 +19,7 @@ public interface AppraiseMapper {
 //    根据司机的id查询所有评价
     List<Appraise> selectAppraiseByDriverId(Integer driverId);
 
+//    根据订单的编号来查询对应的评价
+    Appraise selectAppraiseByOrderId(String orderId);
+
 }

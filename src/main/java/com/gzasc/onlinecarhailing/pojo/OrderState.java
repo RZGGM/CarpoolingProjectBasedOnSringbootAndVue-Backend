@@ -8,6 +8,10 @@ public class OrderState {
 
 //    已取消
     public static final Integer CONCELED = -3;
+
+//    等待支付的官方的订单
+    public static final Integer WAIT_PAY = -5;
+
 //    等待确认的
     public static final Integer WAIT_CONFIRM = -4;
 // 已经完成

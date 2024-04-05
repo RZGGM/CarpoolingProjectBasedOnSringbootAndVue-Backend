@@ -6,10 +6,10 @@
 
     <insert id="insertOrderById">
         insert into `order`(order_id, create_time, finish_time, driver_id, man_count, passenger_id, tips, price,
-                            type, owner_id, state, ticket_id)
+                            type, owner_id, state, ticket_id, departure, destination, create_user_type)
         values (#{orderId}, NOW(), #{finishTime}, #{driverId}, #{manCount}, #{passengerId}, #{tips}, #{price},
                 #{orderType}, #{ownerId},
-                #{state}, #{ticketId})
+                #{state}, #{ticketId}, #{departure}, #{destination}, #{createUserType})
     </insert>
 
     <update id="updateOrder">
@@ -23,7 +23,7 @@
     </update>
     <update id="updateOrderAppraise">
         update `order`
-        set appraise_id = #{appraise}
+        set appraise_id = #{appraiseId}
         where order_id = #{orderId}
     </update>
     <update id="updateOrderDriverOrPassenger">
@@ -40,6 +40,13 @@
             </if>
         </set>
         where order_id = #{orderId}
+    </update>
+    <update id="updateOrderFinishTime">
+        update `order`
+        set finish_time = NOW()
+        where order_id = #{orderId}
+
+
     </update>
 
 
@@ -64,7 +71,7 @@
 
         select *
         from `order`
-        where id = #{orderId}
+        where order_id = #{orderId}
 
     </select>
     <select id="selectByOrderState" resultType="com.gzasc.onlinecarhailing.pojo.Order">

@@ -39,8 +39,9 @@ public class Order {
     private Integer driverId = -1;
 //    可同行的人数，或者说是订单最大接取人数。司机发起的订单，就是乘客的数量，
 //    乘客发起的订单，就是是否可以拼车，只有
-    private Integer manCount;
-//    乘客， -1，乘客也一样。
+//    用这个来判断买的是票，还是拼单订单，-1就是官方的票。 0就表示不可以拼单的订单。1及以上是可以拼单，司机的话就表示是可以拼单的乘客数量 。
+    private Integer manCount = -1;
+//    乘客， -1，乘客也一样。不知道有什么用，不用买票的话，就用它来放乘客的id吧，不过其实订单的创建者的id也是乘客的id。
     private Integer passengerId = -1;
 //    备注
     private String tips;
@@ -49,6 +50,7 @@ public class Order {
 
 
 //用来区分发起拼单的，是哪一方发起的：
+//    0：乘客购买官方的票的订单。
 // 乘客：1， 司机：2
 //    乘客等待司机的：11， 司机等待乘客的：21
 //    乘客发起的，乘客和司机都有的，等待拼车乘客的：111，不等待的：112
@@ -66,4 +68,7 @@ public class Order {
     private String departure;
 // 终点
     private String destination;
+
+
+
 }

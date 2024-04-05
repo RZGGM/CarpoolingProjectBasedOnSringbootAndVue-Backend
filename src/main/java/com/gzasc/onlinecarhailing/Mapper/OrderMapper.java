@@ -23,6 +23,10 @@ public interface OrderMapper {
     Integer updateOrder(String orderId, Integer state);
 //    修改订单的司机或是乘客或是其它，
     Integer updateOrderDriverOrPassenger(Order order);
+
+//     更改订单的完成时间
+    Integer updateOrderFinishTime(String orderId);
+
     //    评价，应该是用户看到自己对订单的评价，司机有自己的评价，模仿闲鱼的。先对司机的表进行设计吧。
 //    更新订单的评价
     Integer updateOrderAppraise(String orderId, Integer appraiseId);

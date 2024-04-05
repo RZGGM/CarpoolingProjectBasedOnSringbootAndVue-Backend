@@ -23,6 +23,7 @@ public interface OrderService {
 //    乘客对订单进行评价
     Integer addAppraiseIdToOrder(Appraise appraise);
 
+
 //    通过订单的编号进行取消订单
     Integer abolishOrderByOrderId(String orderId);
 
@@ -31,5 +32,7 @@ public interface OrderService {
 //    根据订单的类型来查询订单
     List<Order> searchOrdersByOrderType(Integer type);
 
+//     根据订单的编号查询订单的评价
+    Appraise searchAppraiseByOrderId(String orderId);
 
 }

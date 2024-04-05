@@ -31,10 +31,20 @@ public class OrderServiceImpl implements OrderService {
 
         Integer ticketId = order.getTicketId();
         Ticket ticket = ticketMapper.selectTicketById(ticketId);
+// 设置这个订单的状态为等待支付。
+        order.setState(-5);
 
 //        判断是否还有票
         if (Objects.equals(ticket.getPassengerCount(), ticket.getSoldCount())) return 0;
-        else return orderMapper.insertOrderById(order);
+        else {
+
+            ticket.setSoldCount(ticket.getSoldCount() + 1);
+//            要先将票的数量减1
+            ticketMapper.updateTicket(ticket);
+
+            return orderMapper.insertOrderById(order);
+
+        }
     }
 
     @Override
@@ -46,6 +56,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer modOrderState(String orderId, Integer state) {
+
+
+//        当状态为确认订单完成时，要设置订单的完成时间
+        if (OrderState.FINSHED.equals(state)) {
+
+            orderMapper.updateOrderFinishTime(orderId);
+
+        }
 
 
         return orderMapper.updateOrder(orderId, state);
@@ -94,8 +112,17 @@ public class OrderServiceImpl implements OrderService {
         if (UserType.PASSENGER.equals(order.getCreateUserType())) {
 //            乘客发起的进入到这里。
 //            再查询是否有司机接取了，有的话，要设置对应的司机的订单状态为乘客已经取消
+//            -1表示为官方的订单和没有司机接取的订单
             if (order.getDriverId().equals(-1)) {
-//                设置为已经取消
+//                没有的司机接收的话，设置为已经取消
+
+//                在取消前，是官方的票的话，要将它售出的数量-1。
+                Ticket ticket = ticketMapper.selectTicketById(order.getTicketId());
+                if (null != ticket) {
+                    ticket.setSoldCount(ticket.getSoldCount() - 1);
+                    ticketMapper.updateTicket(ticket);
+                }
+
                 return orderMapper.updateOrder(orderId, OrderState.CONCELED);
             } else {
 //                设置为司机的订单为，乘客已经取消
@@ -142,6 +169,13 @@ public class OrderServiceImpl implements OrderService {
             return orders;
         } else return orderMapper.selectByOrderType(orderType);
 
+
+    }
+
+    @Override
+    public Appraise searchAppraiseByOrderId(String orderId) {
+
+        return appraiseMapper.selectAppraiseByOrderId(orderId);
 
     }
 }

@@ -40,5 +40,8 @@ public class OrderType {
     //类型为：满员的订单
     public static final Integer PASSENGER_MAXED = -1;
 
+// 类型为：乘客购买的官方的票的订单
+    public static final Integer OFFICIAL_TICKET = 400;
+
 
 }
