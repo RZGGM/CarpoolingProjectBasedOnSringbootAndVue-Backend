@@ -118,8 +118,8 @@ public class PassengerController {
     }
 
     //    发出一个拼单订单
-    @RequestMapping("/passenger/createSHareTheBillP")
-    public Result createSHareTheBillP(Order order) {
+    @RequestMapping("/passenger/createShareTheBill")
+    public Result createShareTheBill(@RequestBody  Order order) {
 
         if (null == order) return Result.error("订单为null");
 

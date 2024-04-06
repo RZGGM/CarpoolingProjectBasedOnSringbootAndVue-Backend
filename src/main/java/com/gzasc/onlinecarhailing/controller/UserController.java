@@ -2,9 +2,12 @@ package com.gzasc.onlinecarhailing.controller;
 
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.*;
+import com.gzasc.onlinecarhailing.utils.CountPrice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -54,7 +57,7 @@ public class UserController {
                 return Result.success("司机登录成功", account1);
             } else if (type.equals(UserType.OFFICIAL) && null != account1.getManagerId()) {
                 account1.setIt(3);
-                return Result.success("管理员登录成功," ,account1);
+                return Result.success("管理员登录成功,", account1);
             } else return Result.error("帐号类型错误，登录失败");
         }
 
@@ -136,7 +139,6 @@ public class UserController {
         else return Result.success("获取票成功，但可惜数据库里没有票的数据。");
 
 
-
     }
 
 
@@ -166,5 +168,19 @@ public class UserController {
 
 
     }
+
+    //    计算发出的接单的预计价格
+    @RequestMapping("/countPrice")
+    public Result countPrice(@RequestParam("departureAddress") String departureAddress, @RequestParam("destinationAddress") String destinationAddress) {
+
+        if (null == departureAddress || null == destinationAddress) return Result.error("传入的地址有空值");
+
+        CountPrice countPrice = new CountPrice();
+
+        return Result.success("计算好了价格", countPrice.countPrice(departureAddress, destinationAddress));
+
+
+    }
+
 
 }
