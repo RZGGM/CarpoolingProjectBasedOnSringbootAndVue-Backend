@@ -4,12 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.OrderMapper">
 
-    <insert id="insertOrderById">
+
+    <insert id="insertOrder">
         insert into `order`(order_id, create_time, finish_time, driver_id, man_count, passenger_id, tips, price,
-                            type, owner_id, state, ticket_id, departure, destination, create_user_type)
+                            type, owner_id, state, ticket_id, departure, destination, create_user_type, passenger_count,
+                            join_order_can_join, other_id)
         values (#{orderId}, NOW(), #{finishTime}, #{driverId}, #{manCount}, #{passengerId}, #{tips}, #{price},
                 #{orderType}, #{ownerId},
-                #{state}, #{ticketId}, #{departure}, #{destination}, #{createUserType})
+                #{state}, #{ticketId}, #{departureAddress}, #{destinationAddress}, #{createUserType}, #{passengerCount},
+                #{joinOrderCanJoin}, #{otherId})
     </insert>
 
     <update id="updateOrder">
@@ -30,13 +33,22 @@
         update `order`
         <set>
             <if test="driverId != null">
-                driver_id = #{driverId}
+                driver_id = #{driverId},
             </if>
-            <if test="passengerId != null">
-                passenger_id = #{passengerId}
+            <if test="passengerId != null and passengerId != -1">
+                passenger_id = #{passengerId},
             </if>
-            <if test="id != null">
-                appraise_id = #{id}
+            <if test="appraiseId != null">
+                appraise_id = #{appraiseId},
+            </if>
+            <if test="orderType != null">
+                type = #{orderType},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="otherId != null">
+                other_id = #{otherId},
             </if>
         </set>
         where order_id = #{orderId}
@@ -62,25 +74,32 @@
         </foreach>
 
     </delete>
-    <select id="selectBySelfId" resultType="com.gzasc.onlinecarhailing.pojo.Order">
+    <resultMap id="orderMap" type="com.gzasc.onlinecarhailing.pojo.Order">
+        <result column="type" property="orderType"/>
+        <result column="departure" property="departureAddress"/>
+        <result column="destination" property="destinationAddress"/>
+    </resultMap>
+
+    <select id="selectBySelfId" resultType="com.gzasc.onlinecarhailing.pojo.Order" resultMap="orderMap">
         select *
         from `order`
         where owner_id = #{userId}
     </select>
-    <select id="selectByOrderId" resultType="com.gzasc.onlinecarhailing.pojo.Order">
+
+    <select id="selectByOrderId" resultType="com.gzasc.onlinecarhailing.pojo.Order" resultMap="orderMap">
 
         select *
         from `order`
         where order_id = #{orderId}
 
     </select>
-    <select id="selectByOrderState" resultType="com.gzasc.onlinecarhailing.pojo.Order">
+    <select id="selectByOrderState" resultType="com.gzasc.onlinecarhailing.pojo.Order" resultMap="orderMap">
         select * from `order`
         <where>
             state = #{state}
         </where>
     </select>
-    <select id="selectByOrderType" resultType="com.gzasc.onlinecarhailing.pojo.Order">
+    <select id="selectByOrderType" resultType="com.gzasc.onlinecarhailing.pojo.Order" resultMap="orderMap">
         select * from `order`
         <where>
             type = #{orderType}

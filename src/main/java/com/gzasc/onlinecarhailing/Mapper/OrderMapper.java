@@ -1,8 +1,6 @@
 package com.gzasc.onlinecarhailing.Mapper;
 
 import com.gzasc.onlinecarhailing.pojo.Order;
-import com.gzasc.onlinecarhailing.pojo.OrderType;
-import com.gzasc.onlinecarhailing.pojo.Ticket;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,7 +11,7 @@ public interface OrderMapper {
 
 
     //     购票（核心功能），就是增加订单给自己
-    Integer insertOrderById(Order order);
+    Integer insertOrder(Order order);
 // 删除订单一条订单，
     Integer deleteOrderById(Integer id);
 

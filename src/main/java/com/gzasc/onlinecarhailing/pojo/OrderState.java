@@ -19,6 +19,14 @@ public class OrderState {
 //    已经有司机
     public static final Integer HAS_DRIVER = 2;
 
+//    乘客发起的拼单订单等着司机的。
+    public static final Integer PASSENGER_CREATE_SHARE_BILL_WAIT_DRIVER = 4;
+//    司机发起的拼单等待乘客
+    public static final Integer DRIVER_CREATE_SHARE_BILL_WAIT_PASSENGER = 5;
+
+//    拼单的订单在有司机和乘客后，将订单的状态设置为等待出发，至于还能拼单就是另一个订单的状态设置问题了。
+    public static final Integer WAIT_DEPART = 6;
+
 //    已经评价了
     public static final Integer APPRAISED = 3;
 

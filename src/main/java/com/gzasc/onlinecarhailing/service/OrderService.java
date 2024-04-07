@@ -2,6 +2,7 @@ package com.gzasc.onlinecarhailing.service;
 
 import com.gzasc.onlinecarhailing.pojo.Appraise;
 import com.gzasc.onlinecarhailing.pojo.Order;
+import com.gzasc.onlinecarhailing.pojo.OrderType;
 
 import java.util.List;
 
@@ -10,6 +11,10 @@ public interface OrderService {
 
     //     购票，增加订单
     Integer addTicketToPassenger(Order order);
+// 拼单，增加订单给乘客
+    Integer addJoinOrderToPassenger(Order order);
+// 拼单，增加订单给司机
+    Integer addJoinOrderToDriver(Order order);
 
     //    删除订单
     Integer deleteOrderById(Integer id);
@@ -31,6 +36,8 @@ public interface OrderService {
     List<Order> searchOrdersByOrderState(Integer state);
 //    根据订单的类型来查询订单
     List<Order> searchOrdersByOrderType(Integer type);
+
+
 
 //     根据订单的编号查询订单的评价
     Appraise searchAppraiseByOrderId(String orderId);

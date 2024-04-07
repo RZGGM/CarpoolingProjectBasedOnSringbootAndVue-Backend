@@ -12,6 +12,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class Driver{
 
+//    控制是否还能接取订单的属性，1是可以，-1是不可以。默认是可以
+    private Integer hasCanAcceptOrder = HasCan.CAN;
+
 //    司机也是一张和用户独立的表，也得有一个参数接收表的ID
     private Integer driverId;
 //    出生日期

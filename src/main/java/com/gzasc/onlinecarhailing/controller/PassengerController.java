@@ -1,20 +1,14 @@
 package com.gzasc.onlinecarhailing.controller;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.RandomUtil;
-import com.gzasc.onlinecarhailing.Mapper.OrderMapper;
-import com.gzasc.onlinecarhailing.Mapper.PassengerMapper;
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.OrderService;
 import com.gzasc.onlinecarhailing.service.PassengerService;
+import com.gzasc.onlinecarhailing.utils.OrderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 //乘客的接口
@@ -53,21 +47,36 @@ public class PassengerController {
         } else return Result.error("查看失败");
 
     }
+    //    发出一个拼单订单
+    @RequestMapping("/passenger/createShareTheBill")
+    public Result createShareTheBill(@RequestBody  Order order) {
+
+        if (null == order) return Result.error("订单为null");
+
+        if (null == order.getOrderType()) return Result.error("订单类型为null");
+
+//        判断订单是不是拼单类型的订单，如果不是就return。
+        if (JoinOrderCanJoin.NON_JOIN_ORDER.equals(order.getJoinOrderCanJoin())) return Result.error("并非是拼单订单。");
+
+//        判断订单类型。
+        if (OrderType.PASSENGER_CREATE_ORDER.equals(order.getOrderType())) {
+//如果是乘客发起的订单就进来
+            Integer count = orderService.addJoinOrderToPassenger(order);
+
+            if (count > 0) return Result.success("创建订单成功");
+
+            else return Result.error("创建订单失败");
+        }
+        return Result.error("创建订单失败，因为类型不符合。");
+    }
 
 
     //    购票
     @RequestMapping("/passenger/buyTicket")
-    public Result buyTicket(@RequestBody Order order1) {
-
-
-        String format = DateUtil.format(new Date(), "yyyyMMddHHmmss");
-        String numbers = RandomUtil.randomNumbers(5);
-        String orderCode = format + numbers;
-
-        Order order = (Order) order1;
+    public Result buyTicket(@RequestBody Order order) {
 
 //         设置订单的编号
-        order.setOrderId(orderCode);
+        order.setOrderId(OrderUtils.createOrderCode());
 
         if (order.getPassengerId() == null || order.getTicketId() == null)
             return Result.error("购票失败了，传入的信息为空。");
@@ -117,28 +126,6 @@ public class PassengerController {
 
     }
 
-    //    发出一个拼单订单
-    @RequestMapping("/passenger/createShareTheBill")
-    public Result createShareTheBill(@RequestBody  Order order) {
-
-        if (null == order) return Result.error("订单为null");
-
-        if (null == order.getOrderType()) return Result.error("订单类型为null");
-
-//        判断订单类型。如果是一乘客发起的订单就进行
-        if (OrderType.PASSENGER_CREATE_ORDER.equals(order.getOrderType())) {
-
-//            将订单类型改为让司机可以看到
-            order.setState(OrderType.PASSENGER_WAIT_DRIVER);
-
-            Integer count = orderService.addTicketToPassenger(order);
-
-            if (count > 0) return Result.success("创建订单成功");
-
-            else return Result.error("创建订单失败");
-        }
-        return Result.error("创建订单失败");
-    }
 
     //    取消自己的订单
     @RequestMapping("/passenger/cancelOrder")
