@@ -79,7 +79,8 @@ public class DriverSerivceImpl implements DriverSerivce {
             order.setOtherId(orderDriver.getOrderId());
 //            将司机订单更新对应的乘客订单
             orderDriver.setOtherId(order.getOrderId());
-
+// 设置司机订单的乘客的id
+            orderDriver.setPassengerId(order.getId());
 
 // 更新乘客的订单
             orderMapper.updateOrderDriverOrPassenger(order);
