@@ -1,15 +1,20 @@
 package com.gzasc.onlinecarhailing.controller;
 
 import com.gzasc.onlinecarhailing.pojo.*;
+import com.gzasc.onlinecarhailing.service.DriverSerivce;
 import com.gzasc.onlinecarhailing.service.OrderService;
 import com.gzasc.onlinecarhailing.service.PassengerService;
 import com.gzasc.onlinecarhailing.utils.OrderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 //乘客的接口
 
@@ -20,7 +25,8 @@ public class PassengerController {
     PassengerService passengerService;
     @Autowired
     OrderService orderService;
-
+    @Autowired
+    DriverSerivce driverSerivce;
 
     // 修改个人信息
     @RequestMapping("/passenger/modPersonalInfo")
@@ -47,9 +53,10 @@ public class PassengerController {
         } else return Result.error("查看失败");
 
     }
+
     //    发出一个拼单订单
     @RequestMapping("/passenger/createShareTheBill")
-    public Result createShareTheBill(@RequestBody  Order order) {
+    public Result createShareTheBill(@RequestBody Order order) {
 
         if (null == order) return Result.error("订单为null");
 
@@ -141,9 +148,10 @@ public class PassengerController {
 
     //    查看自己的所有订单
     @RequestMapping("/passenger/allOrder")
-    public Result viewAllOrder(Integer id) {
+    public Result viewAllOrder(Integer createUserType, Integer passengerId) {
 
-        List<Order> orders = orderService.selectBySelfId(id);
+        List<Order> orders = orderService.searchOrdersByCreateUserTypeAndOwnerId(createUserType, passengerId);
+
 
         return Result.success("查看成功", orders);
 
@@ -166,7 +174,7 @@ public class PassengerController {
 
     // 对订单进行评价
     @RequestMapping("/passenger/commentOrder")
-    public Result commentOrder(@RequestBody  Appraise appraise) {
+    public Result commentOrder(@RequestBody Appraise appraise) {
 
         Integer count = orderService.addAppraiseIdToOrder(appraise);
 
@@ -174,18 +182,45 @@ public class PassengerController {
 
     }
 
+    //    乘客接受司机的订单，应该设计和购票一样，可以自己选择自己这一订单的同行人数。
+//     所以传入的参数应该有两个，一个是司机的基本拼车的订单，另一个是自己填写的拼车订单。
+//     要自己填写的拼单信息是为了自己的同行人数，和乘客的id，和价格。
+    @RequestMapping("/passenger/acceptOrder")
+    public Result acceptOrder(@RequestBody HashMap<String, Order> orderHashMap) {
+
+//    前端传的数组类型的数据，不知道为什么会变成HashMap类型的，所以只能处理成List类型的了。
+        Order driverCreateJoinOrder = orderHashMap.get("driverCreateJoinOrder");
+        Order passengerOrder = orderHashMap.get("passengerOrder");
+
+        if (driverCreateJoinOrder != null && passengerOrder != null) {
+
+            if (driverCreateJoinOrder.getDriverId() == null || passengerOrder.getPassengerCount()==null){
+                return Result.error("传入的订单有Null");
+            }
+
+//        根据订单来生成订单。
+            Integer count = passengerService.addOrderOnJoinOrderToPassenger(driverCreateJoinOrder, passengerOrder);
+
+            if (Objects.equals(count, OrderState.PASSENGER_COUNT_MAX)) return Result.error("失败，空位不足。");
+
+            else return Result.success("拼车成功", count);
+        }
+        return Result.error("错误，拼车的其中有个订单为null");
+    }
+
     @RequestMapping("/passenger/viewCanJoinOrder")
     public Result viewCanJoinOrder() {
 //  查看所有可以拼单的订单
+//        根据状态查询司机发起的可以拼车的订单
+        List<Order> orders = orderService.searchOrdersByOrderState(OrderState.DRIVER_CREATE_SHARE_BILL_WAIT_PASSENGER);
 
-        List<Order> orders = orderService.searchOrdersByOrderType(OrderType.PASSENGER_CAN_JOIN);
-
-        if (!orders.isEmpty()) return Result.success("成功", orders);
+        if (!orders.isEmpty()) return Result.success("乘客查询可以拼车的订单成功", orders);
         else return Result.success("没有可以拼单的订单");
 
     }
+
     @RequestMapping("/passenger/viewAppraise")
-    public Result viewAppraise(@RequestBody String orderId){
+    public Result viewAppraise(@RequestBody String orderId) {
 
 //        判断传入的参数是否正确
         if (orderId == null) return Result.error("查询评价传入的订单的编号为null");

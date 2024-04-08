@@ -12,6 +12,12 @@ import java.util.List;
 //对乘客功能的实现
 public interface PassengerService {
 
+    //    接受订单
+    Integer addOrderToPassenger(String driverOrderId, Integer driverId);
+
+//    基于司机发出的拼车订单生成订单
+Integer addOrderOnJoinOrderToPassenger(Order driverCreateJoinOrder, Order passengerOrder);
+
     //    注册帐号
     Integer register(Passenger passenger);
 

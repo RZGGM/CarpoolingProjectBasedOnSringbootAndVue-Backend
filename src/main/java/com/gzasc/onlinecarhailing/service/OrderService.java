@@ -42,4 +42,8 @@ public interface OrderService {
 //     根据订单的编号查询订单的评价
     Appraise searchAppraiseByOrderId(String orderId);
 
+//
+//    根据订单的所有者的身份和对应身份的id来获取订单
+    List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId);
+
 }

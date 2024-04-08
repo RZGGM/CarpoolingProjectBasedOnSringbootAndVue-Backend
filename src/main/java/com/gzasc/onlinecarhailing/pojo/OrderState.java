@@ -27,6 +27,9 @@ public class OrderState {
 //    拼单的订单在有司机和乘客后，将订单的状态设置为等待出发，至于还能拼单就是另一个订单的状态设置问题了。
     public static final Integer WAIT_DEPART = 6;
 
+//    当司机发起的订单，已经满员时的状态
+    public static final Integer PASSENGER_COUNT_MAX = 7;
+
 //    已经评价了
     public static final Integer APPRAISED = 3;
 

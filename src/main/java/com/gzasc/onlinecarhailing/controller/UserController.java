@@ -170,17 +170,31 @@ public class UserController {
     }
 
     //    计算发出的接单的预计价格
-    @RequestMapping("/countPrice")
-    public Result countPrice(@RequestParam("departureAddress") String departureAddress, @RequestParam("destinationAddress") String destinationAddress) {
+    @RequestMapping("/countPriceOfAddress")
+    public Result countPriceOfAddress(@RequestParam("departureAddress") String departureAddress, @RequestParam("destinationAddress") String destinationAddress) {
 
         if (null == departureAddress || null == destinationAddress) return Result.error("传入的地址有空值");
 
         CountPrice countPrice = new CountPrice();
 
-        return Result.success("计算好了价格", countPrice.countPrice(departureAddress, destinationAddress));
+        return Result.success("根据地址计算好了价格", countPrice.countPrice(departureAddress, destinationAddress));
 
 
     }
+    //    计算发出的接单的预计价格
+    @RequestMapping("/countPriceOfPassengerCount")
+    public Result countPriceOfPassengerCount(Integer passengerCount, Integer orderPrice) {
+
+        if (passengerCount == 0) return Result.error("人数为0");
+
+        CountPrice countPrice = new CountPrice();
+
+        return Result.success("根据人数计算好了价格", countPrice.countPriceOfPassengerCount(passengerCount, orderPrice));
+
+
+    }
+
+
 
 
 }

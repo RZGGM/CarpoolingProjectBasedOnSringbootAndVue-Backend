@@ -50,6 +50,9 @@
             <if test="otherId != null">
                 other_id = #{otherId},
             </if>
+            <if test="manCount != null">
+                man_count = #{manCount},
+            </if>
         </set>
         where order_id = #{orderId}
     </update>
@@ -104,6 +107,15 @@
         <where>
             type = #{orderType}
         </where>
+    </select>
+    <select id="selectByCreateUserTypeAndOwnerId" resultType="com.gzasc.onlinecarhailing.pojo.Order"
+            resultMap="orderMap">
+
+        select *
+        from `order`
+        where create_user_type = #{createUserType}
+          and owner_id = #{ownerId}
+
     </select>
 
 </mapper>

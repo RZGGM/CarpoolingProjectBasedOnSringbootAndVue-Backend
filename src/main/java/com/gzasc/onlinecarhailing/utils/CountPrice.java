@@ -15,5 +15,13 @@ public class CountPrice {
         return  RandomUtil.randomInt(10, 9999999);
 
     }
-//
+// 根据人数计算价格
+    public Integer countPriceOfPassengerCount(Integer passengerCount, Integer price){
+
+
+
+        return passengerCount * price;
+    }
+
+
 }

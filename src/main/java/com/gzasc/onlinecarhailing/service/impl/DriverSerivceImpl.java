@@ -56,7 +56,7 @@ public class DriverSerivceImpl implements DriverSerivce {
 //        查询到乘客的订单
         Order order = orderMapper.selectByOrderId(passengerOrderId);
 //        判断这个订单是否有司机了
-        if (order.getDriverId() != -1) {
+        if ( order.getDriverId() != -1) {
 //            已经有司机接取，就会进入到这
             return OrderState.HAS_DRIVER;
         } else {

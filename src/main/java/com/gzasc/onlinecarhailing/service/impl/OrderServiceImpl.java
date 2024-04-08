@@ -67,16 +67,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer addJoinOrderToDriver(Order order) {
-
         //            将订单类型改为司机等待乘客，这样，乘客就可以看到这个订单了。
         order.setOrderType(OrderType.DRIVER_WAIT_PASSENGER);
 //        修改订单的状态为等待乘客
         order.setState(OrderState.DRIVER_CREATE_SHARE_BILL_WAIT_PASSENGER);
-
-
 //        生成订单编号
         order.setOrderId(OrderUtils.createOrderCode());
-
 //        调用mapper将这个订单给放入到数据库
         return orderMapper.insertOrder(order);
 
@@ -220,6 +216,13 @@ public class OrderServiceImpl implements OrderService {
     public Appraise searchAppraiseByOrderId(String orderId) {
 
         return appraiseMapper.selectAppraiseByOrderId(orderId);
+
+    }
+//    根据订单的所有者的身份和对应身份的id来获取订单
+    @Override
+    public List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId){
+
+        return orderMapper.selectByCreateUserTypeAndOwnerId(createUserType, ownerId);
 
     }
 }

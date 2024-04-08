@@ -39,10 +39,11 @@ public class DriverController {
 
     //    查看自己的订单
     @RequestMapping("/driver/orders")
-    public Result seekOrders(Integer driverId) {
+    public Result seekOrders( Integer createUserType, Integer driverId) {
 
-        List<Order> orders = orderService.selectBySelfId(driverId);
+//        List<Order> orders = orderService.selectBySelfId(driverId);
 
+        List<Order> orders = orderService.searchOrdersByCreateUserTypeAndOwnerId(createUserType, driverId);
         if (orders.isEmpty()) return Result.success("没有订单");
         else return Result.success("查询成功", orders);
 
@@ -100,7 +101,6 @@ public class DriverController {
             else return Result.error("创建订单失败");
         } else if (OrderType.DRIVER_CREATE.equals(order.getOrderType())) {
 //            如果是司机发起的就进入到这
-
             Integer count = orderService.addJoinOrderToDriver(order);
 
             if (count > 0) return Result.success("创建订单成功");

@@ -16,9 +16,6 @@ public class OrderType {
     //    满员的订单：-1
 //    //  不发起拼单的乘客查看可以拼单的订单：0，只是用来作用参数传递的，不会保存到数据库里。
     public static final Integer PASSENGER_CAN_JOIN = 0;
-
-
-
     //    乘客发起的,可以拼车的订单
     public static final Integer PASSENGER_CREATE_ORDER = 1;
 
@@ -29,6 +26,9 @@ public class OrderType {
     public static final Integer PASSENGER_AND_DRIVER_WAIT_OTHER_PASSENGER = 111;
     //    不等待的，就是不拼单的。
     public static final Integer PASSENGER_AND_DRIVER_NOWAIT = 112;
+
+//    乘客接收司机
+
     //    司机发起的
     public static final Integer DRIVER_CREATE = 2;
     //    司机发起的，等待乘客的订单
@@ -38,6 +38,9 @@ public class OrderType {
     //    司机发起的，不等待的（其实应该是满客了的）
     public static final Integer DRIVER_AND_PASSENGER_NOWAIT = 212;
 
+//    司机发起的，乘客接收后生成的。
+    public static final Integer DRIVER_HAVE_PASSENGER = 213;
+//
 
     //类型为：满员的订单
     public static final Integer PASSENGER_MAXED = -1;

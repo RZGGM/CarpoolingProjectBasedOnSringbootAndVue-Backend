@@ -38,5 +38,8 @@ public interface OrderMapper {
 //    根据订单的类型来返回订单
     List<Order> selectByOrderType(Integer orderType);
 
+//    根据订单的所有者的身份和对应身份的id来获取订单
+    List<Order> selectByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId);
+
 
 }
