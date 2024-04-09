@@ -18,8 +18,16 @@
     <delete id="deleteById">
         delete from driver where id = #{id}
     </delete>
-    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Driver">
+
+    <resultMap id="driverMap" type="com.gzasc.onlinecarhailing.pojo.Driver">
+        <result  column="id" property="driverId" />
+    </resultMap>
+
+    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Driver"  resultMap="driverMap">
         select * from driver where id = #{id}
+    </select>
+    <select id="selectByDriverId" resultType="com.gzasc.onlinecarhailing.pojo.Driver" resultMap="driverMap">
+        select * from driver where id = #{driverId}
     </select>
     <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Driver">
         select * from driver

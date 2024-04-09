@@ -8,10 +8,31 @@ import com.gzasc.onlinecarhailing.service.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ChatRoomServiceImpl implements ChatRoomService {
     @Autowired
     ChatRoomMapper chatRoomMapper;
+
+
+    //     乘客查看自己的聊天室，传入的参数为乘客id。
+    @Override
+    public List<ChatRoom> searchChatRoomsByPassengerId(Integer passengerId){
+
+
+        return chatRoomMapper.selectChatRoomsByPassengerId( passengerId);
+
+    }
+    //     根据乘客和司机的id查看聊天室
+    @Override
+    public ChatRoom searchChatRoomByPassengerIdAndDriverId(Integer passengerId, Integer driverId){
+
+
+        return chatRoomMapper.searchChatRoom(passengerId, driverId);
+
+
+    }
 
 //    创建一个聊天室
     @Override
@@ -29,7 +50,6 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
             chatRoom1.setSelfId(self.getPassengerId());
             chatRoom1.setOtherId(other.getDriverId());
-
 
             chatRoom1.setId(chatRoomMapper.insertChatRoom(chatRoom1));
 

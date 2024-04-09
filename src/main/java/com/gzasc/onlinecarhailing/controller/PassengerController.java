@@ -1,10 +1,12 @@
 package com.gzasc.onlinecarhailing.controller;
 
 import com.gzasc.onlinecarhailing.pojo.*;
+import com.gzasc.onlinecarhailing.service.ChatRoomService;
 import com.gzasc.onlinecarhailing.service.DriverSerivce;
 import com.gzasc.onlinecarhailing.service.OrderService;
 import com.gzasc.onlinecarhailing.service.PassengerService;
 import com.gzasc.onlinecarhailing.utils.OrderUtils;
+import com.zaxxer.hikari.util.DriverDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,8 @@ public class PassengerController {
     OrderService orderService;
     @Autowired
     DriverSerivce driverSerivce;
+    @Autowired
+    ChatRoomService chatRoomService;
 
     // 修改个人信息
     @RequestMapping("/passenger/modPersonalInfo")
@@ -194,7 +198,7 @@ public class PassengerController {
 
         if (driverCreateJoinOrder != null && passengerOrder != null) {
 
-            if (driverCreateJoinOrder.getDriverId() == null || passengerOrder.getPassengerCount()==null){
+            if (driverCreateJoinOrder.getDriverId() == null || passengerOrder.getPassengerCount() == null) {
                 return Result.error("传入的订单有Null");
             }
 
@@ -232,5 +236,44 @@ public class PassengerController {
         else return Result.success("查询订单评价失败", null);
 
     }
+
+    //    添加司机到聊天
+    @RequestMapping("/passenger/chatAndDriver")
+    public Result chatAndDriver(Integer passengerId, Integer driverId) {
+
+//        先判断这个司机是否已经在聊天表里了。如果是就不用添加了。（就是判断乘客和司机是否已经有聊天室了。）
+        ChatRoom chatRoom = chatRoomService.searchChatRoomByPassengerIdAndDriverId(passengerId, driverId);
+
+
+        if (chatRoom == null) {
+//            没有聊天室就创建一个聊天室再返回。
+            Passenger passenger = passengerService.search(passengerId);
+            Driver driver = driverSerivce.search(driverId);
+
+
+            return Result.success("创建聊天室", chatRoomService.createChatRoom(passenger, driver));
+
+
+        } else return Result.success("已经有聊天室了", chatRoom);
+
+
+    }
+
+
+//    查看乘客自己的所有的聊天室
+    @RequestMapping("/passenger/viewAllChatRooms")
+    public Result viewAllChatRooms(Integer passengerId){
+
+        List<ChatRoom> chatRooms = chatRoomService.searchChatRoomsByPassengerId(passengerId);
+
+        if (chatRooms == null) return Result.error("没有聊天室");
+
+        if (chatRooms.isEmpty()) return Result.error("聊天室的列表为空，没有找到聊天室");
+
+        else return Result.success("这就是所有的聊天室了。", chatRooms);
+
+
+    }
+
 
 }

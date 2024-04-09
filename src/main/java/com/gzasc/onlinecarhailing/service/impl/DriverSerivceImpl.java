@@ -37,7 +37,7 @@ public class DriverSerivceImpl implements DriverSerivce {
 
     @Override
     public Driver search(Integer id) {
-        return null;
+        return driverMapper.selectById(id);
     }
 
     @Override

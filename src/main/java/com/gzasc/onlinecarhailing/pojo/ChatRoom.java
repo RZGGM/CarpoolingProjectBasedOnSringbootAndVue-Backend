@@ -13,7 +13,7 @@ public class ChatRoom {
 
 //    id
     private Integer id;
-//    聊天室的名字
+//    聊天室的名字， 一般是显示和你聊天的那个人。
     private String name;
 //  用户间的交流的信息
     private List<Message> messageList;

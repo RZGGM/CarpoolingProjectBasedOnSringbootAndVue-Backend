@@ -17,6 +17,9 @@ public interface DriverMapper {
     public Integer update(Driver driver);
     //    查询，根据司机的id查一条
     public Driver selectById(Integer id);
+//    根据司机的id查看
+    Driver selectByDriverId(Integer driverId);
+
     //    查询所有
     public List<Driver> selectAll();
 
