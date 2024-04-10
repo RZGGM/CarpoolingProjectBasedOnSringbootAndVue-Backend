@@ -48,7 +48,7 @@ public class ManagerController {
 
     //    管理员后台修改帐号信息，如改密码什么的。
     @RequestMapping("/system/editAccount")
-    public Result editAccount(Account account) {
+    public Result editAccount(@RequestBody Account account) {
 
         Integer count = accountService.mod(account);
 
@@ -74,10 +74,10 @@ public class ManagerController {
         ArrayList<Integer> ids2 = new ArrayList<Integer>(ids1.length);
         Collections.addAll(ids2, ids1);
 
-        Integer countAccount = ticketService.removeTickets(ids2);
+        Integer countAccount = accountService.removeAccountsByIds(ids2);
 
-        if (countAccount > 0) return Result.success("批量删除成功");
-        else return Result.error("批量删除失败");
+        if (countAccount > 0) return Result.success("批量删除帐号成功");
+        else return Result.error("批量删除帐号失败");
 
     }
 
@@ -146,8 +146,8 @@ public class ManagerController {
     }
 
     //增加车
-    @RequestMapping("")
-    public Result addCar(Car car) {
+    @RequestMapping("/system/addCar")
+    public Result addCar(@RequestBody  Car car) {
         Integer count = carService.addCar(car);
 
         if (count > 0) {
@@ -168,21 +168,29 @@ public class ManagerController {
     }
 
     //    批量删除
-    public Result removeCars(List<Integer> ids) {
-        Integer count = carService.removeByIds(ids);
+    @RequestMapping("/system/removeCarsByIds")
+    public Result removeCarsByIds(@RequestBody List<Integer> idsArr) {
+
+        if (idsArr ==null) return Result.error("失败，传入的ids为null");
+
+        Integer count = carService.removeByIds(idsArr);
 
         if (count > 0) {
-            return Result.success("删除成功", ids);
+            return Result.success("删除成功", idsArr);
         } else return Result.error("失败");
     }
 
     //    修改
-    public Result editCar(Car car) {
+    @RequestMapping("/system/editCar")
+    public Result editCar(@RequestBody Car car) {
+
+        if (car == null) return Result.error("修改的车的为null");
+
         Integer count = carService.mod(car);
 
         if (count > 0) {
-            return Result.success("修改成功", car);
-        } else return Result.error("失败");
+            return Result.success("修改车辆信息成功", car);
+        } else return Result.error("失败，修改车辆信息失败。");
     }
 
     //    通过id查一辆车
@@ -197,11 +205,12 @@ public class ManagerController {
     }
 
     //查询所有的车
+    @RequestMapping("/system/seekAllCars")
     public Result seekAllCar() {
 
         List<Car> cars = carService.searchAll();
 
-        return Result.success("查询成功", cars);
+        return Result.success("查询车辆成功", cars);
 
     }
 

@@ -4,6 +4,7 @@ package com.gzasc.onlinecarhailing.controller;
 import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.CarService;
+import com.gzasc.onlinecarhailing.service.DriverLicenseService;
 import com.gzasc.onlinecarhailing.service.DriverSerivce;
 import com.gzasc.onlinecarhailing.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,22 @@ public class DriverController {
     OrderService orderService;
     @Autowired
     DriverSerivce driverSerivce;
+    @Autowired
+    DriverLicenseService driverLicenseService;
 
+//     查看自己的驾驶证
+    @RequestMapping("/driver/viewDriverLicense")
+    public Result  viewDriverLicenseByDriverLicenseId(Integer driverLicenseId){
+        if (driverLicenseId == null) return Result.error("传入的驾驶证的id为null");
+
+        DriverLicense driverLicense = driverLicenseService.searchDriverLicenseById(driverLicenseId);
+
+        if (driverLicense == null) return Result.error("失败，找到的驾驶证为null");
+
+        return Result.success("成功找到了驾驶证", driverLicense );
+
+
+    }
     //  通过所有者的id，查询车
     @RequestMapping("/driver/myCar")
     public Result seekCars(Integer ownerId) {
@@ -60,6 +76,21 @@ public class DriverController {
         if (!orders.isEmpty()) return Result.success("查看乘客发起的拼单订单成功", orders);
 
         else return Result.success("没有可以接受乘客发起的拼单订单");
+
+    }
+
+//    保存修改后的个人信息
+    @RequestMapping("/driver/saveStanding")
+    public Result saveStanding(@RequestBody Driver driver){
+
+        if (driver == null) return Result.error("传入的司机的身份是空的");
+
+        Integer count = driverSerivce.mod(driver);
+
+        if (count > 0 ) return Result.success("更改司机的信息成功");
+
+        else return Result.error("更改司机的信息失败");
+
 
     }
 

@@ -4,8 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.MessageMapper">
 
-<!--将信息保存到数据库-->
+    <!--将信息保存到数据库-->
     <insert id="insertMessage" keyProperty="id" useGeneratedKeys="true">
 
+        insert into message(owner_id, data, chat_room_id)
+        values (#{ownerId}, #{data}, #{chatRoomId})
+
     </insert>
+    <!--    根据聊天室的id找到对应的消息-->
+    <select id="selectMessagesByChatRoomId" resultType="com.gzasc.onlinecarhailing.pojo.Message">
+
+        select *
+        from message
+        where chat_room_id = #{chatRoomId}
+
+    </select>
 </mapper>

@@ -13,5 +13,7 @@ public class Message {
     private Integer ownerId;
 //    内容
     private String data;
+//    对就的聊天室id
+    private Integer chatRoomId;
 
 }

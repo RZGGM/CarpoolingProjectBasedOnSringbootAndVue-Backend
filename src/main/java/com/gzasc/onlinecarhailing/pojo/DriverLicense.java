@@ -10,7 +10,6 @@ public class DriverLicense {
 
 //    在数据库里的唯一标识ID
     private Integer id;
-
     //    机动车驾驶证号
     private String licenseId;
     //    初次领取驾驶证日期

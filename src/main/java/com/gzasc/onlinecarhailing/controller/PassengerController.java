@@ -1,10 +1,7 @@
 package com.gzasc.onlinecarhailing.controller;
 
 import com.gzasc.onlinecarhailing.pojo.*;
-import com.gzasc.onlinecarhailing.service.ChatRoomService;
-import com.gzasc.onlinecarhailing.service.DriverSerivce;
-import com.gzasc.onlinecarhailing.service.OrderService;
-import com.gzasc.onlinecarhailing.service.PassengerService;
+import com.gzasc.onlinecarhailing.service.*;
 import com.gzasc.onlinecarhailing.utils.OrderUtils;
 import com.zaxxer.hikari.util.DriverDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,9 @@ import java.util.Objects;
 
 @RestController
 public class PassengerController {
+
+    @Autowired
+    MessageService messageService;
 
     @Autowired
     PassengerService passengerService;
@@ -274,6 +274,37 @@ public class PassengerController {
 
 
     }
+//    根据传入的聊天室的id找信息
+    @RequestMapping("/passenger/viewAllMessagesByChatRoomId")
+    public Result viewAllMessagesByChatRoomId(Integer chatRoomId){
+
+        if (chatRoomId == null) return Result.error("传入的聊天室的id为null");
+
+        List<Message> messages = messageService.selectMessagesByChatRoomId(chatRoomId);
+
+        if (messages == null) return Result.error("信息为null");
+
+        if (messages.isEmpty()) return Result.success("信息为空，", messages);
+
+        return Result.success("找到信息了", messages);
+
+    }
+//    将信息保存到数据库
+    @RequestMapping("/passenger/submitMessage")
+    public Result submitMessage(@RequestBody Message message){
+
+        if (message == null) return Result.error("失败，传入的信息为空");
+
+        Integer count = messageService.createMessage(message);
+
+//        根据返回的count，如果为0就说明失败了。大于0才是成功的。
+        if (count > 0) return Result.success("插入信息成功");
+
+        else return Result.error("失败");
+
+
+    }
+
 
 
 }

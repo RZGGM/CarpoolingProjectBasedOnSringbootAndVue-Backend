@@ -12,14 +12,14 @@
     <update id="updateCar">
         update car
         <set>
-            <if test="no != null">
-                no = #{vehicleNo}
+            <if test="vehicleNo != null">
+                no = #{vehicleNo},
             </if>
             <if test="ownerId != null ">
-                owner_id = #{ownerId}
+                owner_id = #{ownerId},
             </if>
             <if test="color != null">
-                color = #{color}
+                color = #{color},
             </if>
         </set>
         where id = #{id}
@@ -37,16 +37,19 @@
             #{id}
         </foreach>
     </delete>
-    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Car">
+    <resultMap id="carMap" type="com.gzasc.onlinecarhailing.pojo.Car">
+        <result column="no" property="vehicleNo" />
+    </resultMap>
+    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Car" resultMap="carMap">
         select *
         from car
         where id = #{id}
     </select>
-    <select id="selectAllCar" resultType="com.gzasc.onlinecarhailing.pojo.Car">
+    <select id="selectAllCar" resultType="com.gzasc.onlinecarhailing.pojo.Car" resultMap="carMap">
         select *
         from car
     </select>
-    <select id="selectByOwnerId" resultType="com.gzasc.onlinecarhailing.pojo.Car">
+    <select id="selectByOwnerId" resultType="com.gzasc.onlinecarhailing.pojo.Car" resultMap="carMap">
         select *
         from car
         where owner_id = #{ownerId}

@@ -1,6 +1,7 @@
 package com.gzasc.onlinecarhailing.Mapper;
 
 import com.gzasc.onlinecarhailing.pojo.ChatRoom;
+import com.gzasc.onlinecarhailing.pojo.Message;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,6 +19,5 @@ public interface ChatRoomMapper {
      ChatRoom searchChatRoom(Integer selfId, Integer otherId);
 //    根据乘客的id返回它的聊天室
      List<ChatRoom> selectChatRoomsByPassengerId(Integer passengerId);
-
 
 }

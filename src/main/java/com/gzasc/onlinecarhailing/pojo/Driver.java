@@ -24,7 +24,7 @@ public class Driver{
 //    通信地址
     private String driverAddress;
 //    驾驶证
-    private DriverLicense driverLicense;
+    private Integer driverLicenseId;
     //    更新时间
     private Date updateTime;
     //    手机号

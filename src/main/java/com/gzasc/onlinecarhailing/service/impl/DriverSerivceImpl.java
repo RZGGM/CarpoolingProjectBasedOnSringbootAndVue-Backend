@@ -32,7 +32,7 @@ public class DriverSerivceImpl implements DriverSerivce {
 
     @Override
     public Integer mod(Driver newDriver) {
-        return null;
+        return driverMapper.update(newDriver);
     }
 
     @Override

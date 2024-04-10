@@ -194,6 +194,23 @@ public class UserController {
 
     }
 
+//    登录之后，根据身份和身份对应的id找到对应的身份信息
+    @RequestMapping("/viewStanding")
+    public Result viewStanding(@RequestBody Account account){
+
+        if (account == null) return Result.error("传入的帐号为null");
+
+        if (Objects.equals(account.getIt(), UserType.PASSENGER)){
+            return Result.success("找到乘客信息成功了，", passengerService.search(account.getPassengerId()));
+        } else if (account.getIt().equals(UserType.DRIVER)) {
+
+            return Result.success("找到司机的身份信息成功", driverSerivce.search(account.getDriverId()));
+
+        }else return Result.success("管理员没有身份信息");
+
+
+    }
+
 
 
 

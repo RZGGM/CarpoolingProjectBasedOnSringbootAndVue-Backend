@@ -68,5 +68,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         return chatRoomMapper.searchChatRoom(passenger.getPassengerId(), driver.getDriverId());
     }
+// 根据聊天室的id查找它对应的信息
+
+
 
 }

@@ -5,31 +5,71 @@
 <mapper namespace="com.gzasc.onlinecarhailing.Mapper.DriverMapper">
 
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="driverId" >
-        insert into driver(driver_birthday, driver_nation, driver_address, driver_license, update_time, phone, gender,
+    <insert id="insert" useGeneratedKeys="true" keyProperty="driverId">
+        insert into driver(driver_birthday, driver_nation, driver_address, driver_license_id, update_time, phone,
+                           gender,
                            state, name, account_id, account)
-        values (#{driverBirthday},#{driverNation},#{driverAddress},#{driverLicense},#{updateTime},#{phone},
-                #{gender},#{state},#{name},#{accountId},#{account})
+        values (#{driverBirthday}, #{driverNation}, #{driverAddress}, #{driverLicenseId}, NOW(), #{phone},
+                #{gender}, #{state}, #{name}, #{accountId}, #{account})
     </insert>
     <update id="update">
+
+        update driver
+
+        <set>
+            <if test="driverBirthday != null">
+                driver_birthday = #{driverBirthday},
+            </if>
+            <if test="driverNation != null">
+
+                driver_nation = #{driverNation},
+            </if>
+            <if test="driverAddress != null">
+                driver_address = #{driverAddress},
+            </if>
+            <if test="driverLicenseId != null">
+                driver_license_id = #{driverLicenseId},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="true">
+                update_time = NOW()
+            </if>
+
+        </set>
+        where id = #{driverId}
 
     </update>
 
     <delete id="deleteById">
-        delete from driver where id = #{id}
+        delete
+        from driver
+        where id = #{id}
     </delete>
 
     <resultMap id="driverMap" type="com.gzasc.onlinecarhailing.pojo.Driver">
-        <result  column="id" property="driverId" />
+        <result column="id" property="driverId"/>
     </resultMap>
 
-    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Driver"  resultMap="driverMap">
-        select * from driver where id = #{id}
+    <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Driver" resultMap="driverMap">
+        select *
+        from driver
+        where id = #{id}
     </select>
     <select id="selectByDriverId" resultType="com.gzasc.onlinecarhailing.pojo.Driver" resultMap="driverMap">
-        select * from driver where id = #{driverId}
+        select *
+        from driver
+        where id = #{driverId}
     </select>
-    <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Driver">
-        select * from driver
+    <select id="selectAll" resultType="com.gzasc.onlinecarhailing.pojo.Driver" resultMap="driverMap">
+        select *
+        from driver
     </select>
 </mapper>
