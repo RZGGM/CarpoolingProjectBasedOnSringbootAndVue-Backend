@@ -16,8 +16,13 @@ public interface ChatRoomMapper {
      void updateChatRoom(ChatRoom chatRoom);
 
 //    判断双方有无聊天室
-     ChatRoom searchChatRoom(Integer selfId, Integer otherId);
+     ChatRoom searchChatRoom(Integer passengerId, Integer driverId);
 //    根据乘客的id返回它的聊天室
      List<ChatRoom> selectChatRoomsByPassengerId(Integer passengerId);
+
+     //    根据司机的的id返回它的聊天室
+     List<ChatRoom> selectChatRoomsByDriverId(Integer driverId);
+
+
 
 }

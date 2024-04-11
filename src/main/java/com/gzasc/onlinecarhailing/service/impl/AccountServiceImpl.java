@@ -35,6 +35,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Integer mod(Account newAccount) {
+
         return accountMapper.updateAccount(newAccount);
     }
 
@@ -52,7 +53,6 @@ public class AccountServiceImpl implements AccountService {
     public Integer removeAccountsByIds(List<Integer> ids) {
 
 //        先查询到数据库对应的表的数据，然后判断有无乘客信息或是司机信息，然后删除。
-
         List<Account> accountList = accountMapper.selectById(ids);
 
         for (Account account : accountList) {
@@ -69,6 +69,19 @@ public class AccountServiceImpl implements AccountService {
         Integer countDeleteAccount = accountMapper.deleteAccountsById(ids);
 
         return  countDeleteAccount;
+
+    }
+    //     根据手机号查询帐号
+    @Override
+    public Account searchByPhond(String phone){
+
+       return accountMapper.selectByPhone( phone);
+
+    }
+    @Override
+    public Account searchByPhoneAndAccount(Account account){
+
+        return accountMapper.selectByPhoneAndAccount(account);
 
     }
 }

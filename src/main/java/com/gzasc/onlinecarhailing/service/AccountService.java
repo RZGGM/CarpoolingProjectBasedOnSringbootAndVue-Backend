@@ -14,6 +14,14 @@ import java.util.List;
      Integer remove(Integer id);
 //    修改
      Integer mod(Account newAccount);
+
+//     根据帐号和和手机号查询帐号
+     Account searchByPhoneAndAccount(Account account);
+
+//     根据手机号查询帐号
+     Account searchByPhond(String phone);
+
+
 //    根据帐号查询
      Account search(String account);
 //    查询所有

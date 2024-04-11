@@ -7,10 +7,28 @@
     <!--将信息保存到数据库-->
     <insert id="insertMessage" keyProperty="id" useGeneratedKeys="true">
 
-        insert into message(owner_id, data, chat_room_id)
-        values (#{ownerId}, #{data}, #{chatRoomId})
+        insert into message(owner_id, data, chat_room_id, owner_type, owner_name)
+        values (#{ownerId}, #{data}, #{chatRoomId}, #{ownerType}, #{ownerName})
 
     </insert>
+    <update id="updateMessage">
+        update message
+        <set>
+            <if test="ownerId">
+                owner_id = #{ownerId},
+            </if>
+            <if test="data != null">
+                data = #{data},
+            </if>
+            <if test="ownerType =! null">
+                owner_type = #{ownerType},
+            </if>
+            <if test="ownerName != null">
+                owner_name = #{ownerName},
+            </if>
+        </set>
+            where id = #{id}
+    </update>
     <!--    根据聊天室的id找到对应的消息-->
     <select id="selectMessagesByChatRoomId" resultType="com.gzasc.onlinecarhailing.pojo.Message">
 

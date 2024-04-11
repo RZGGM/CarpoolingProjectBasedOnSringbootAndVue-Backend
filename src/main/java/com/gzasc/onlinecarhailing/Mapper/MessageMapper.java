@@ -16,5 +16,8 @@ public interface MessageMapper {
     // 根据聊天室的id查找它对应的信息
     List<Message> selectMessagesByChatRoomId(Integer chatRoomId);
 
+//    更新信息
+    Integer updateMessage(Message message);
+
 
 }

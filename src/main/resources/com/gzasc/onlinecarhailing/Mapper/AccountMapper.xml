@@ -6,8 +6,8 @@
 
 
     <insert id="insertAccount" keyProperty="id" useGeneratedKeys="true">
-        insert into account(account, password, driver_id, passenger_id, manager_id)
-        values (#{account}, #{password}, #{driverId}, #{passengerId}, #{managerId})
+        insert into account(account, password, driver_id, passenger_id, manager_id, phone)
+        values (#{account}, #{password}, #{driverId}, #{passengerId}, #{managerId}, #{phone})
     </insert>
 
     <update id="updateAccount" useGeneratedKeys="true" keyProperty="id">
@@ -21,6 +21,9 @@
             </if>
             <if test="password != null">
                 password = #{password},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
             </if>
         </set>
         where id = #{id}
@@ -74,5 +77,20 @@
         <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
+    </select>
+    <select id="selectByPhoneAndAccount" resultType="com.gzasc.onlinecarhailing.pojo.Account">
+
+        select *
+        from account
+        where phone = #{phone}
+          and account = #{account}
+
+    </select>
+    <select id="selectByPhone" resultType="com.gzasc.onlinecarhailing.pojo.Account">
+
+        select *
+        from account
+        where phone = #{phone}
+
     </select>
 </mapper>

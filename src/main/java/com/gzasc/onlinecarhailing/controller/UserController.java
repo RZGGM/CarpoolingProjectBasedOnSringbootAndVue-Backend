@@ -41,24 +41,37 @@ public class UserController {
         Integer type = account.getIt();
 
         Account account1 = accountService.search(account.getAccount());
-
+// 判断传入的帐号是否为null或是身份有问题。
         if (type == null || type > UserType.OFFICIAL) return Result.error("帐号类型为Null或是没有此类型，登录失败。");
 
         else {
-            if (account1 == null) return Result.error("此帐号不存在，或是密码错误，所以登录失败");
+//
+            if (account1 == null) return Result.error("帐号或密码错误，登录失败");
 
             account1.setIt(account.getIt());
 
+//            验证身份
             if (type.equals(UserType.PASSENGER) && null != account1.getPassengerId()) {
                 account1.setIt(1);
-                return Result.success("乘客登录成功", account1);
+
+//                判断密码
+                if (account.getPassword().equals(account1.getPassword())) return Result.success("乘客登录成功", account1);
+                else return Result.error("帐号或密码错误，登录失败");
+
+
             } else if (type.equals(UserType.DRIVER) && null != account1.getDriverId()) {
                 account1.setIt(2);
-                return Result.success("司机登录成功", account1);
+                //                判断密码
+                if (account.getPassword().equals(account1.getPassword())) return Result.success("乘客登录成功", account1);
+                else return Result.error("帐号或密码错误，登录失败");
+
             } else if (type.equals(UserType.OFFICIAL) && null != account1.getManagerId()) {
                 account1.setIt(3);
-                return Result.success("管理员登录成功,", account1);
-            } else return Result.error("帐号类型错误，登录失败");
+                //                判断密码
+                if (account.getPassword().equals(account1.getPassword())) return Result.success("乘客登录成功", account1);
+                else return Result.error("帐号或密码错误，登录失败");
+
+            } else return Result.error("帐号或是密码错误，登录失败");
         }
 
     }
@@ -69,6 +82,10 @@ public class UserController {
     public Result registerPassenger(Account account) {
 //        处理下null
         if (null == account.getAccount() || null == account.getIt()) return Result.error("要输入东酉");
+
+//        先判断下这个手机号是否有绑定的帐号
+        if (accountService.searchByPhond(account.getPhone()) != null) return Result.error("此手机号已经注册了");
+
 //        要先判断帐号是否存在
         if (accountService.search(account.getAccount()) != null) {
 
@@ -112,6 +129,23 @@ public class UserController {
                 return Result.success("司机注册成功", driverSerivce.search(driverId));
             } else return Result.error("注册失败");
         }
+
+    }
+
+//    在用户忘记帐号密码时，可以通过手机号和帐号来修改密码
+    @RequestMapping("/user/modPasswordByPhoneAndAccountCode")
+    public Result alterPasswordByPhoneAndAccountCode(@RequestBody Account account){
+
+        if (account == null) return Result.error("传入的帐号为null");
+
+        Account account1 = accountService.searchByPhoneAndAccount(account);
+
+        account1.setPassword(account.getPassword());
+
+        if (account1 == null) return Result.error("没有找到对应的帐号");
+
+        return Result.success("修改密码成功",accountService.mod(account1));
+
 
     }
 
@@ -194,7 +228,7 @@ public class UserController {
 
     }
 
-//    登录之后，根据身份和身份对应的id找到对应的身份信息
+    //    登录之后，根据身份和身份对应的id找到对应的身份信息
     @RequestMapping("/viewStanding")
     public Result viewStanding(@RequestBody Account account){
 

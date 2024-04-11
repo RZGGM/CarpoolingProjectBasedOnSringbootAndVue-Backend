@@ -305,6 +305,21 @@ public class PassengerController {
 
     }
 
+//    修改乘客的信息
+    @RequestMapping("/passenger/saveStanding")
+    public Result saveStanding(@RequestBody Passenger passenger){
+
+        if (passenger == null) return Result.error("传入的乘客的身份是空的");
+
+        Integer count = passengerService.mod(passenger);
+
+        if (count > 0 ) return Result.success("更改乘客的信息成功");
+
+        else return Result.error("更改乘客的信息失败");
+
+
+    }
+
 
 
 }

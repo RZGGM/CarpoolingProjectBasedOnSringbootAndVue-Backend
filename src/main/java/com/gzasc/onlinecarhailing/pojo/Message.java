@@ -15,5 +15,9 @@ public class Message {
     private String data;
 //    对就的聊天室id
     private Integer chatRoomId;
+//    所有者的类型
+    private Integer ownerType;
+//    所有者的名字
+    private String ownerName;
 
 }

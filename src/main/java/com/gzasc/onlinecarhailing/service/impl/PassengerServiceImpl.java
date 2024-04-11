@@ -199,7 +199,10 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public Passenger search(Integer id) {
-        return passengerMapper.selectById(id);
+
+       Passenger passenger =  passengerMapper.selectById(id);
+
+        return passenger;
     }
 
     @Override

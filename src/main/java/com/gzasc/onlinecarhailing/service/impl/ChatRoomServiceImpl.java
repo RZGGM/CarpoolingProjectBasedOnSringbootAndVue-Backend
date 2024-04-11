@@ -1,6 +1,8 @@
 package com.gzasc.onlinecarhailing.service.impl;
 
 import com.gzasc.onlinecarhailing.Mapper.ChatRoomMapper;
+import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
+import com.gzasc.onlinecarhailing.Mapper.PassengerMapper;
 import com.gzasc.onlinecarhailing.pojo.ChatRoom;
 import com.gzasc.onlinecarhailing.pojo.Driver;
 import com.gzasc.onlinecarhailing.pojo.Passenger;
@@ -8,20 +10,54 @@ import com.gzasc.onlinecarhailing.service.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ChatRoomServiceImpl implements ChatRoomService {
     @Autowired
     ChatRoomMapper chatRoomMapper;
+    @Autowired
+    PassengerMapper passengerMapper;
+    @Autowired
+    DriverMapper driverMapper;
 
 
     //     乘客查看自己的聊天室，传入的参数为乘客id。
     @Override
     public List<ChatRoom> searchChatRoomsByPassengerId(Integer passengerId){
 
+        List<ChatRoom> chatRooms =     chatRoomMapper.selectChatRoomsByPassengerId( passengerId);
 
-        return chatRoomMapper.selectChatRoomsByPassengerId( passengerId);
+        List<ChatRoom> chatRooms1 = new ArrayList<>();
+
+        for (ChatRoom chatRoom : chatRooms) {
+
+            chatRoom.setName(driverMapper.selectById(chatRoom.getDriverId()).getName());
+
+            chatRooms1.add(chatRoom);
+        }
+
+        return chatRooms1;
+
+
+    }
+    //     司机查看自己的聊天室，传入的参数为司机id。
+    @Override
+    public List<ChatRoom> searchChatRoomsByDriverId(Integer driverId){
+
+        List<ChatRoom> chatRooms =     chatRoomMapper.selectChatRoomsByDriverId( driverId);
+
+        List<ChatRoom> chatRooms1 = new ArrayList<>();
+
+        for (ChatRoom chatRoom : chatRooms) {
+
+            chatRoom.setName(passengerMapper.selectById(chatRoom.getPassengerId()).getName());
+
+            chatRooms1.add(chatRoom);
+        }
+
+        return chatRooms1;
 
     }
     //     根据乘客和司机的id查看聊天室
@@ -48,8 +84,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
             ChatRoom chatRoom1 = new ChatRoom();
 
-            chatRoom1.setSelfId(self.getPassengerId());
-            chatRoom1.setOtherId(other.getDriverId());
+            chatRoom1.setPassengerId(self.getPassengerId());
+            chatRoom1.setDriverId(other.getDriverId());
 
             chatRoom1.setId(chatRoomMapper.insertChatRoom(chatRoom1));
 

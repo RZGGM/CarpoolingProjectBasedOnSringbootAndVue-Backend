@@ -11,24 +11,26 @@ import java.util.List;
 public interface AccountMapper {
 
 //    增加
-    public Integer insertAccount(Account account);
+     Integer insertAccount(Account account);
 //    删除byId。
-    public Integer deleteAccount(Integer id);
+     Integer deleteAccount(Integer id);
 //    修改
-    public Integer updateAccount(Account newAccount);
+     Integer updateAccount(Account newAccount);
 
 //    修改对应的乘客的id为null
     Integer updateAccountsPassengerIdToNullByAccountIds(List<Integer> accountIds);
 
 //    通过帐号，查询一条
-    public Account selectByAccount(String account);
+     Account selectByAccount(String account);
 //    查询通过id
-    public List<Account> selectById( List<Integer> ids);
-//
-
+     List<Account> selectById( List<Integer> ids);
+// 根据帐号和手机号查询帐号的信息
+    Account selectByPhoneAndAccount(Account account);
+//    根据手机号查询帐号
+    Account selectByPhone(String phone);
 
 //    查询所有存在的。
-    public List<Account> selectAll();
+     List<Account> selectAll();
 
 // 批量删除帐号，不过在删除帐号的同时，也要删除用户才行。
     Integer deleteAccountsById(List<Integer> ids);

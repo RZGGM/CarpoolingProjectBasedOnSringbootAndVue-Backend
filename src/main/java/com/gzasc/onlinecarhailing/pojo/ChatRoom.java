@@ -21,8 +21,8 @@ public class ChatRoom {
     private Date createDate;
 //    应该还有聊天室用户的id，方便查找
 
-    private Integer selfId;
-    private Integer otherId;
+    private Integer passengerId;
+    private Integer driverId;
 
     public ChatRoom(String name, List<Message> messageList, Date createDate) {
         this.name = name;

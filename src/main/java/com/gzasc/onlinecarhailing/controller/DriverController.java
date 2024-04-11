@@ -3,10 +3,7 @@ package com.gzasc.onlinecarhailing.controller;
 
 import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
 import com.gzasc.onlinecarhailing.pojo.*;
-import com.gzasc.onlinecarhailing.service.CarService;
-import com.gzasc.onlinecarhailing.service.DriverLicenseService;
-import com.gzasc.onlinecarhailing.service.DriverSerivce;
-import com.gzasc.onlinecarhailing.service.OrderService;
+import com.gzasc.onlinecarhailing.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +17,8 @@ import java.util.Objects;
 public class DriverController {
 
     @Autowired
+    PassengerService passengerService;
+    @Autowired
     CarService carService;
     @Autowired
     OrderService orderService;
@@ -27,20 +26,26 @@ public class DriverController {
     DriverSerivce driverSerivce;
     @Autowired
     DriverLicenseService driverLicenseService;
+    @Autowired
+    ChatRoomService chatRoomService;
+    @Autowired
+    MessageService messageService;
 
-//     查看自己的驾驶证
+
+    //     查看自己的驾驶证
     @RequestMapping("/driver/viewDriverLicense")
-    public Result  viewDriverLicenseByDriverLicenseId(Integer driverLicenseId){
+    public Result viewDriverLicenseByDriverLicenseId(Integer driverLicenseId) {
         if (driverLicenseId == null) return Result.error("传入的驾驶证的id为null");
 
         DriverLicense driverLicense = driverLicenseService.searchDriverLicenseById(driverLicenseId);
 
         if (driverLicense == null) return Result.error("失败，找到的驾驶证为null");
 
-        return Result.success("成功找到了驾驶证", driverLicense );
+        return Result.success("成功找到了驾驶证", driverLicense);
 
 
     }
+
     //  通过所有者的id，查询车
     @RequestMapping("/driver/myCar")
     public Result seekCars(Integer ownerId) {
@@ -55,7 +60,7 @@ public class DriverController {
 
     //    查看自己的订单
     @RequestMapping("/driver/orders")
-    public Result seekOrders( Integer createUserType, Integer driverId) {
+    public Result seekOrders(Integer createUserType, Integer driverId) {
 
 //        List<Order> orders = orderService.selectBySelfId(driverId);
 
@@ -79,15 +84,15 @@ public class DriverController {
 
     }
 
-//    保存修改后的个人信息
+    //    保存修改后的个人信息
     @RequestMapping("/driver/saveStanding")
-    public Result saveStanding(@RequestBody Driver driver){
+    public Result saveStanding(@RequestBody Driver driver) {
 
         if (driver == null) return Result.error("传入的司机的身份是空的");
 
         Integer count = driverSerivce.mod(driver);
 
-        if (count > 0 ) return Result.success("更改司机的信息成功");
+        if (count > 0) return Result.success("更改司机的信息成功");
 
         else return Result.error("更改司机的信息失败");
 
@@ -109,7 +114,8 @@ public class DriverController {
         else return Result.success("成功", count);
 
     }
-//    发出拼单
+
+    //    发出拼单
     @RequestMapping("/driver/createShareTheBill")
     public Result createShareTheBill(@RequestBody Order order) {
 
@@ -136,7 +142,7 @@ public class DriverController {
 
             if (count > 0) return Result.success("创建订单成功");
 
-        }else return Result.error("订单类型错误");
+        } else return Result.error("订单类型错误");
         return Result.error("创建订单失败，因为类型不符合。");
     }
 
@@ -150,5 +156,110 @@ public class DriverController {
         else return Result.error("司机取消订单失败");
 
     }
+
+
+    //    查看乘客自己的所有的聊天室
+    @RequestMapping("/driver/viewAllChatRooms")
+    public Result viewAllChatRooms(Integer driverId){
+
+        List<ChatRoom> chatRooms = chatRoomService.searchChatRoomsByDriverId(driverId);
+
+        if (chatRooms == null) return Result.error("没有聊天室");
+
+        if (chatRooms.isEmpty()) return Result.error("聊天室的列表为空，没有找到聊天室");
+
+        else return Result.success("这就是所有的聊天室了。", chatRooms);
+
+
+    }
+
+    //    根据传入的聊天室的id找信息
+    @RequestMapping("/driver/viewAllMessagesByChatRoomId")
+    public Result viewAllMessagesByChatRoomId(Integer chatRoomId){
+
+        if (chatRoomId == null) return Result.error("传入的聊天室的id为null");
+
+        List<Message> messages = messageService.selectMessagesByChatRoomId(chatRoomId);
+
+        if (messages == null) return Result.error("信息为null");
+
+        if (messages.isEmpty()) return Result.success("信息为空，", messages);
+
+        return Result.success("找到信息了", messages);
+
+    }
+    @RequestMapping("/driver/viewAppraise")
+    public Result viewAppraise(@RequestBody String orderId) {
+
+//        判断传入的参数是否正确
+        if (orderId == null) return Result.error("查询评价传入的订单的编号为null");
+
+        Appraise appraise = orderService.searchAppraiseByOrderId(orderId);
+
+        if (appraise != null) return Result.success("查询订单评价成功", appraise);
+
+        else return Result.success("查询订单评价失败", null);
+
+    }
+
+    // 对订单进行评价
+    @RequestMapping("/driver/commentOrder")
+    public Result commentOrder(@RequestBody Appraise appraise) {
+
+        Integer count = orderService.addAppraiseIdToOrder(appraise);
+
+        return Result.success("成功", count);
+
+    }
+    // 确认订单
+    @RequestMapping("/driver/confirmOrder")
+    public Result confirmOrder(@RequestBody String orderId) {
+
+        Integer count = orderService.modOrderState(orderId, OrderState.FINSHED);
+
+        if (count > 0) {
+
+            return Result.success("订单支付成功");
+
+
+        } else return Result.error("买票失败，没有票了。");
+
+    }
+    //    添加司机到聊天
+    @RequestMapping("/driver/chatAndPassenger")
+    public Result chatAndPassenger(Integer passengerId, Integer driverId) {
+
+//        先判断这个司机是否已经在聊天表里了。如果是就不用添加了。（就是判断乘客和司机是否已经有聊天室了。）
+        ChatRoom chatRoom = chatRoomService.searchChatRoomByPassengerIdAndDriverId(passengerId, driverId);
+
+        if (chatRoom == null) {
+//            没有聊天室就创建一个聊天室再返回。
+            Passenger passenger = passengerService.search(passengerId);
+            Driver driver = driverSerivce.search(driverId);
+
+            return Result.success("创建聊天室", chatRoomService.createChatRoom(passenger, driver));
+
+
+        } else return Result.success("已经有聊天室了", chatRoom);
+
+
+    }
+    //
+//    将信息保存到数据库
+    @RequestMapping("/driver/submitMessage")
+    public Result submitMessage(@RequestBody Message message) {
+
+        if (message == null) return Result.error("失败，传入的信息为空");
+
+        Integer count = messageService.createMessage(message);
+
+//        根据返回的count，如果为0就说明失败了。大于0才是成功的。
+        if (count > 0) return Result.success("插入信息成功");
+
+        else return Result.error("失败");
+
+
+    }
+
 
 }

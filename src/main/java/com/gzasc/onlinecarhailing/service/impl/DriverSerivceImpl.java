@@ -37,7 +37,10 @@ public class DriverSerivceImpl implements DriverSerivce {
 
     @Override
     public Driver search(Integer id) {
-        return driverMapper.selectById(id);
+
+        Driver driver = driverMapper.selectById(id);
+
+        return driver;
     }
 
     @Override

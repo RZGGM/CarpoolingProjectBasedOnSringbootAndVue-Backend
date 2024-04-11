@@ -23,6 +23,9 @@
             <if test="name != null">
                 name = #{name},
             </if>
+            <if test="true">
+                update_time = NOW()
+            </if>
         </set>
         where id = #{passengerId}
     </update>
@@ -44,6 +47,8 @@
         <!--<result column="name" property="name"/>-->
         <result column="id" property="passengerId"/>
     </resultMap>
+
+
 
     <select id="selectById" resultType="com.gzasc.onlinecarhailing.pojo.Passenger" resultMap="PassengerMap">
         select *
