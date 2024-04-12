@@ -7,8 +7,8 @@
     <!--将信息保存到数据库-->
     <insert id="insertMessage" keyProperty="id" useGeneratedKeys="true">
 
-        insert into message(owner_id, data, chat_room_id, owner_type, owner_name)
-        values (#{ownerId}, #{data}, #{chatRoomId}, #{ownerType}, #{ownerName})
+        insert into message(owner_id, data, chat_room_id, owner_type, owner_name, send_time)
+        values (#{ownerId}, #{data}, #{chatRoomId}, #{ownerType}, #{ownerName}, NOW())
 
     </insert>
     <update id="updateMessage">

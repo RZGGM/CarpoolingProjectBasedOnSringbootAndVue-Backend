@@ -62,7 +62,7 @@ public class UserController {
             } else if (type.equals(UserType.DRIVER) && null != account1.getDriverId()) {
                 account1.setIt(2);
                 //                判断密码
-                if (account.getPassword().equals(account1.getPassword())) return Result.success("乘客登录成功", account1);
+                if (account.getPassword().equals(account1.getPassword())) return Result.success("司机登录成功", account1);
                 else return Result.error("帐号或密码错误，登录失败");
 
             } else if (type.equals(UserType.OFFICIAL) && null != account1.getManagerId()) {

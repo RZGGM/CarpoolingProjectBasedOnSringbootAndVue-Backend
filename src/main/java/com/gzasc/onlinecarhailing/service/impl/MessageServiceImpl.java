@@ -54,6 +54,10 @@ public class MessageServiceImpl implements MessageService {
 
         List<Message> messages = messageMapper.selectMessagesByChatRoomId(chatRoomId);
 
+        if (messages == null) return null;
+
+        if (messages.isEmpty()) return null;
+
 //        判断是否要更新，用第一个来判断
         if (messages.get(0).getOwnerName() == null) {
 

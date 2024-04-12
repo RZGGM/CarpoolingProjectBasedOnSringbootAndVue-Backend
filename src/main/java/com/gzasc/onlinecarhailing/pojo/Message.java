@@ -3,6 +3,8 @@ package com.gzasc.onlinecarhailing.pojo;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
+import java.util.Date;
+
 //系统中各用户交流发的信息的类
 @Data
 public class Message {
@@ -19,5 +21,7 @@ public class Message {
     private Integer ownerType;
 //    所有者的名字
     private String ownerName;
+//    发送的时间
+    private Date sendTime;
 
 }
