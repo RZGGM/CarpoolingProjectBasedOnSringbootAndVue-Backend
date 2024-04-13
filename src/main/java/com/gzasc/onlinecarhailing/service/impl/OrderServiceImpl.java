@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
 //            要先将票的数量减1
             ticketMapper.updateTicket(ticket);
 // 设置乘客订单的手机号
-           order.setPhone( RandomUtil.randomNumbers(11));
+            order.setPhone(RandomUtil.randomNumbers(11));
 
 //            为乘客插入订单
             return orderMapper.insertOrder(order);
@@ -179,7 +179,7 @@ public class OrderServiceImpl implements OrderService {
 //                已经有乘客接单的：设置乘客的订单为，司机已经取消
                 orderMapper.updateOrder(order.getOtherId(), OrderState.DRIVER_CONCEL);
 //                再设置自己的订单的状态为：已经取消
-                return  orderMapper.updateOrder(orderId, OrderState.CONCELED);
+                return orderMapper.updateOrder(orderId, OrderState.CONCELED);
             }
         } else return 0;
     }
@@ -190,6 +190,27 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.selectByOrderState(state);
     }
+
+    @Override
+    public List<Order> searchOrdersByAccount(Account account) {
+
+//        判断传入的帐号的类型，判断要找出什么类型的订单。
+        if (account.getIt().equals(UserType.PASSENGER)) {
+
+//            找出司机创建的，因为是乘客要接的。所以是司机创建的
+            return orderMapper.selectByOrderStateAndDriverId(
+                    OrderState.DRIVER_CREATE_SHARE_BILL_WAIT_PASSENGER,
+                    account.getDriverId()
+            );
+        } else {
+            return orderMapper.selectByOrderStateAndPassengerId(
+                    OrderState.PASSENGER_CREATE_SHARE_BILL_WAIT_DRIVER,
+                    account.getPassengerId()
+            );
+        }
+
+    }
+
 
     @Override
     public List<Order> searchOrdersByOrderType(Integer orderType) {
@@ -222,9 +243,10 @@ public class OrderServiceImpl implements OrderService {
         return appraiseMapper.selectAppraiseByOrderId(orderId);
 
     }
-//    根据订单的所有者的身份和对应身份的id来获取订单
+
+    //    根据订单的所有者的身份和对应身份的id来获取订单
     @Override
-    public List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId){
+    public List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId) {
 
         return orderMapper.selectByCreateUserTypeAndOwnerId(createUserType, ownerId);
 

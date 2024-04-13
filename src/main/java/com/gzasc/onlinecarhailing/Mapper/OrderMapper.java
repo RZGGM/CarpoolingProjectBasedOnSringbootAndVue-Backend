@@ -1,5 +1,6 @@
 package com.gzasc.onlinecarhailing.Mapper;
 
+import com.gzasc.onlinecarhailing.pojo.Account;
 import com.gzasc.onlinecarhailing.pojo.Order;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -34,6 +35,11 @@ public interface OrderMapper {
     Order selectByOrderId(String orderId);
 //    根据订单的状态返回订单
     List<Order> selectByOrderState(Integer state);
+
+//    找出不是自己另一个身份发出的拼车的订单，第一个参数要是订单的状态，第二个是司机的id.
+    List<Order> selectByOrderStateAndDriverId(Integer state, Integer driverId);
+    //    找出不是自己另一个身份发出的拼车的订单，第一个参数要是订单的状态，第二个是司机的id.
+    List<Order> selectByOrderStateAndPassengerId(Integer state, Integer passengerId);
 //    根据订单的类型来返回订单
     List<Order> selectByOrderType(Integer orderType);
 

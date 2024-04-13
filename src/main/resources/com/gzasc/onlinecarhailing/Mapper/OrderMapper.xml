@@ -100,7 +100,7 @@
 
     </select>
 
-<!--    根据订单的状态来返回-->
+    <!--    根据订单的状态来返回-->
 
     <select id="selectByOrderState" resultType="com.gzasc.onlinecarhailing.pojo.Order" resultMap="orderMap">
         select * from `order`
@@ -122,6 +122,31 @@
         where create_user_type = #{createUserType}
           and owner_id = #{ownerId}
 
+    </select>
+
+    <select id="selectByOrderStateAndDriverId" resultType="com.gzasc.onlinecarhailing.pojo.Order">
+        select * from `order`
+        <where>
+            <if test="state != null">
+                and  state = #{state}
+            </if>
+            <if test="driverId != null">
+                and driver_id != #{driverId}
+            </if>
+
+        </where>
+    </select>
+    <select id="selectByOrderStateAndPassengerId" resultType="com.gzasc.onlinecarhailing.pojo.Order">
+        select * from `order`
+        <where>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+            <if test="passengerId != null">
+                and driver_id != #{passengerId}
+            </if>
+
+        </where>
     </select>
 
 </mapper>

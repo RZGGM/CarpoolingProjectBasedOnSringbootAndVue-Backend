@@ -58,8 +58,6 @@ public class DriverSerivceImpl implements DriverSerivce {
 
     @Override
     public Integer addOrderToDriver(String passengerOrderId, Integer driverId) {
-
-
 //        查询到乘客的订单
         Order order = orderMapper.selectByOrderId(passengerOrderId);
 //        判断这个订单是否有司机了

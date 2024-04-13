@@ -106,9 +106,7 @@ public class DriverController {
         if (passengerOrderId == null || driverId == null) return Result.error("错误，订单或是司机的id为null");
 
 //        根据乘客订单的id，来接受订单
-
         Integer count = driverSerivce.addOrderToDriver(passengerOrderId, driverId);
-
 
         if (Objects.equals(count, OrderState.HAS_DRIVER)) return Result.error("失败，已经有司机接单了。");
         else return Result.success("成功", count);

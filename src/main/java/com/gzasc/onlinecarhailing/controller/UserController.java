@@ -27,6 +27,12 @@ public class UserController {
     @Autowired
     TicketService ticketService;
 
+    @Autowired
+    ChatRoomService chatRoomService;
+
+    @Autowired
+    OrderService orderService;
+
     //    登录
     @RequestMapping("/login")
     public Result login(Account account) {
@@ -179,10 +185,6 @@ public class UserController {
     }
 
 
-    @Autowired
-    ChatRoomService chatRoomService;
-
-
     //    插入或重新进行一个聊天室
     @RequestMapping("/chating")
     public Result buildChatRoom(Chaters chaters) {
@@ -251,7 +253,7 @@ public class UserController {
 
     //    帐号再注册另一个身份，如乘客注册成为司机，司机注册成功乘客
     @RequestMapping("/becomeOther")
-    public Result becomeOther( Integer accountId) {
+    public Result becomeOther(Integer accountId) {
 
 //        判断传入的参数是否为null
         if (accountId == null) return Result.error("传入的用户的id为null");
@@ -284,13 +286,12 @@ public class UserController {
 
                     Integer count = driverSerivce.register(driver);
 
-                    if ( count!= 0 && driver != null && null != driver.getDriverId()) {
+                    if (count != 0 && driver != null && null != driver.getDriverId()) {
                         //                    修改帐号绑定的身份
                         account.setDriverId(driver.getDriverId());
                         accountService.mod(account);
                         return Result.success("注册司机身份成功", account);
-                    }
-                    else return Result.error("注册司机身份失败");
+                    } else return Result.error("注册司机身份失败");
                 } else if (account.getPassengerId() == null) {
                     //                    先得到司机身份的信息
                     Passenger passenger = new Passenger();
@@ -306,14 +307,12 @@ public class UserController {
                     Integer count = passengerService.register(passenger);
 
 
-
-                    if (count!= 0 && passenger != null && null != passenger.getPassengerId()) {
+                    if (count != 0 && passenger != null && null != passenger.getPassengerId()) {
                         //                    修改帐号绑定的身份
-                        account.setPassengerId( passenger.getPassengerId());
+                        account.setPassengerId(passenger.getPassengerId());
                         accountService.mod(account);
                         return Result.success("注册乘客身份成功", account);
-                    }
-                    else return Result.error("注册乘客身份失败");
+                    } else return Result.error("注册乘客身份失败");
                 }
 
 
@@ -323,6 +322,21 @@ public class UserController {
         }
 
         return Result.error("注册身份失败");
+    }
+
+    //    传入帐号数据找出自己可以接取的拼车订单
+    @RequestMapping("/getCanAcceptJoinOrders")
+    public Result viewCanAcceptJoinOrders(@RequestBody Account account) {
+
+//        判断传入的参数是否为空
+        if (account == null) return Result.error("传入的帐号为null");
+
+//        找出可以拼车的订单
+        List<Order> orders = orderService.searchOrdersByAccount(account);
+
+        return Result.success("找出了", orders);
+
+
     }
 
 

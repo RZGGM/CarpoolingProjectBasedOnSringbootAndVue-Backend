@@ -1,5 +1,6 @@
 package com.gzasc.onlinecarhailing.service;
 
+import com.gzasc.onlinecarhailing.pojo.Account;
 import com.gzasc.onlinecarhailing.pojo.Appraise;
 import com.gzasc.onlinecarhailing.pojo.Order;
 import com.gzasc.onlinecarhailing.pojo.OrderType;
@@ -34,6 +35,11 @@ public interface OrderService {
 
 //    根据订单的状态查询订单
     List<Order> searchOrdersByOrderState(Integer state);
+//    返回非自己帐号创建的拼车订单，司机的
+    List<Order> searchOrdersByAccount(Account account);
+
+
+
 //    根据订单的类型来查询订单
     List<Order> searchOrdersByOrderType(Integer type);
 
