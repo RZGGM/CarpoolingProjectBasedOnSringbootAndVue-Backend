@@ -19,6 +19,8 @@ import java.util.Objects;
 
 @RestController
 public class PassengerController {
+    @Autowired
+    AccountService accountService;
 
     @Autowired
     MessageService messageService;
@@ -260,9 +262,9 @@ public class PassengerController {
     }
 
 
-//    查看乘客自己的所有的聊天室
+    //    查看乘客自己的所有的聊天室
     @RequestMapping("/passenger/viewAllChatRooms")
-    public Result viewAllChatRooms(Integer passengerId){
+    public Result viewAllChatRooms(Integer passengerId) {
 
         List<ChatRoom> chatRooms = chatRoomService.searchChatRoomsByPassengerId(passengerId);
 
@@ -274,9 +276,10 @@ public class PassengerController {
 
 
     }
-//    根据传入的聊天室的id找信息
+
+    //    根据传入的聊天室的id找信息
     @RequestMapping("/passenger/viewAllMessagesByChatRoomId")
-    public Result viewAllMessagesByChatRoomId(Integer chatRoomId){
+    public Result viewAllMessagesByChatRoomId(Integer chatRoomId) {
 
         if (chatRoomId == null) return Result.error("传入的聊天室的id为null");
 
@@ -289,9 +292,10 @@ public class PassengerController {
         return Result.success("找到信息了", messages);
 
     }
-//    将信息保存到数据库
+
+    //    将信息保存到数据库
     @RequestMapping("/passenger/submitMessage")
-    public Result submitMessage(@RequestBody Message message){
+    public Result submitMessage(@RequestBody Message message) {
 
         if (message == null) return Result.error("失败，传入的信息为空");
 
@@ -305,21 +309,79 @@ public class PassengerController {
 
     }
 
-//    修改乘客的信息
+    //    修改乘客的信息
     @RequestMapping("/passenger/saveStanding")
-    public Result saveStanding(@RequestBody Passenger passenger){
+    public Result saveStanding(@RequestBody Passenger passenger) {
 
         if (passenger == null) return Result.error("传入的乘客的身份是空的");
 
         Integer count = passengerService.mod(passenger);
 
-        if (count > 0 ) return Result.success("更改乘客的信息成功");
+        if (count > 0) return Result.success("更改乘客的信息成功");
 
         else return Result.error("更改乘客的信息失败");
 
 
     }
 
+    // 接收乘客的投诉
+    @RequestMapping("/passenger/complaint")
+    public Result complaintPassenger(Integer passengerId,
+                                     String orderCode) {
+
+// 判断前端传过来的数据是否是null
+        if (passengerId == null || orderCode == null) return Result.error("传入的数据有null");
+
+//        找到管理员，然后得到它的id。管理员没有身份只有帐号。
+        List<Account> managerAccounts = accountService.searchAllMangerAccount();
+
+        if (managerAccounts == null) return Result.error("找不到客服");
+        if (managerAccounts.isEmpty()) return Result.error("找不到客服");
+
+        int index = (int) (Math.random() * managerAccounts.size());
+        Account managerAccount = managerAccounts.get(index);
+
+
+//        判断是否存在聊天室
+        ChatRoom chatRoom = chatRoomService.searchChatRoom(
+                null, passengerId, managerAccount.getManagerId()
+        );
+
+//  先创建一个聊天室
+        if (chatRoom != null) {
+//            有聊天室就直接发送信息
+            Message message = new Message();
+            message.setData(orderCode);
+            message.setOwnerId(passengerId);
+            message.setOwnerType(UserType.PASSENGER);
+            message.setChatRoomId(chatRoom.getId());
+
+            messageService.createMessage(message);
+
+            return Result.success("已经有聊天室了", chatRoom);
+        }
+        else {
+//            创建一个聊天室
+            chatRoom = new ChatRoom();
+
+            chatRoom.setPassengerId(passengerId);
+            chatRoom.setManagerId(managerAccount.getManagerId());
+
+            chatRoom = chatRoomService.createChatRoom(chatRoom);
+//            将订单编号发送过去
+
+            Message message = new Message();
+            message.setData(orderCode);
+            message.setOwnerId(passengerId);
+            message.setOwnerType(UserType.PASSENGER);
+            message.setChatRoomId(chatRoom.getId());
+
+            messageService.createMessage(message);
+
+            return Result.success("创建聊天室成功", chatRoom);
+        }
+
+    }
 
 
 }

@@ -55,20 +55,23 @@ public class UserController {
                 account1.setIt(1);
 
 //                判断密码
-                if (account.getPassword().equals(account1.getPassword())) return Result.success("乘客登录成功", account1);
+                if (account.getPassword().equals(account1.getPassword()))
+                    return Result.success("乘客登录成功", account1);
                 else return Result.error("帐号或密码错误，登录失败");
 
 
             } else if (type.equals(UserType.DRIVER) && null != account1.getDriverId()) {
                 account1.setIt(2);
                 //                判断密码
-                if (account.getPassword().equals(account1.getPassword())) return Result.success("司机登录成功", account1);
+                if (account.getPassword().equals(account1.getPassword()))
+                    return Result.success("司机登录成功", account1);
                 else return Result.error("帐号或密码错误，登录失败");
 
             } else if (type.equals(UserType.OFFICIAL) && null != account1.getManagerId()) {
                 account1.setIt(3);
                 //                判断密码
-                if (account.getPassword().equals(account1.getPassword())) return Result.success("乘客登录成功", account1);
+                if (account.getPassword().equals(account1.getPassword()))
+                    return Result.success("乘客登录成功", account1);
                 else return Result.error("帐号或密码错误，登录失败");
 
             } else return Result.error("帐号或是密码错误，登录失败");
@@ -132,9 +135,9 @@ public class UserController {
 
     }
 
-//    在用户忘记帐号密码时，可以通过手机号和帐号来修改密码
+    //    在用户忘记帐号密码时，可以通过手机号和帐号来修改密码
     @RequestMapping("/user/modPasswordByPhoneAndAccountCode")
-    public Result alterPasswordByPhoneAndAccountCode(@RequestBody Account account){
+    public Result alterPasswordByPhoneAndAccountCode(@RequestBody Account account) {
 
         if (account == null) return Result.error("传入的帐号为null");
 
@@ -144,7 +147,7 @@ public class UserController {
 
         if (account1 == null) return Result.error("没有找到对应的帐号");
 
-        return Result.success("修改密码成功",accountService.mod(account1));
+        return Result.success("修改密码成功", accountService.mod(account1));
 
 
     }
@@ -215,6 +218,7 @@ public class UserController {
 
 
     }
+
     //    计算发出的接单的预计价格
     @RequestMapping("/countPriceOfPassengerCount")
     public Result countPriceOfPassengerCount(Integer passengerCount, Integer orderPrice) {
@@ -230,22 +234,96 @@ public class UserController {
 
     //    登录之后，根据身份和身份对应的id找到对应的身份信息
     @RequestMapping("/viewStanding")
-    public Result viewStanding(@RequestBody Account account){
+    public Result viewStanding(@RequestBody Account account) {
 
         if (account == null) return Result.error("传入的帐号为null");
 
-        if (Objects.equals(account.getIt(), UserType.PASSENGER)){
+        if (Objects.equals(account.getIt(), UserType.PASSENGER)) {
             return Result.success("找到乘客信息成功了，", passengerService.search(account.getPassengerId()));
         } else if (account.getIt().equals(UserType.DRIVER)) {
 
             return Result.success("找到司机的身份信息成功", driverSerivce.search(account.getDriverId()));
 
-        }else return Result.success("管理员没有身份信息");
+        } else return Result.success("管理员没有身份信息");
 
 
     }
 
+    //    帐号再注册另一个身份，如乘客注册成为司机，司机注册成功乘客
+    @RequestMapping("/becomeOther")
+    public Result becomeOther( Integer accountId) {
 
+//        判断传入的参数是否为null
+        if (accountId == null) return Result.error("传入的用户的id为null");
+
+//        用来判断是否已经有了另一个身份
+        Account account = accountService.searchByAccountId(accountId);
+
+//        判断是否找到
+        if (account == null) {
+//            没有找到帐号
+            return Result.error("没有找到帐号");
+        } else {
+//            判断是否两个身份都有了
+            if (account.getPassengerId() != null && account.getDriverId() != null) {
+//                两个身份都有了
+                return Result.error("已经有了另一个身份了，无法再次成为");
+            } else {
+//                进入注册，判断是哪个身份没有
+                if (account.getDriverId() == null) {
+//                    先得到乘客身份的信息
+                    Passenger passenger = passengerService.search(account.getPassengerId());
+
+//                    司机身份没有，就成为司机
+                    Driver driver = new Driver();
+                    driver.setName(passenger.getName());
+                    driver.setPhone(passenger.getPhone());
+                    driver.setGender(passenger.getGender());
+                    driver.setAccount(passenger.getAccount());
+                    driver.setAccountId(passenger.getAccountId());
+
+                    Integer count = driverSerivce.register(driver);
+
+                    if ( count!= 0 && driver != null && null != driver.getDriverId()) {
+                        //                    修改帐号绑定的身份
+                        account.setDriverId(driver.getDriverId());
+                        accountService.mod(account);
+                        return Result.success("注册司机身份成功", account);
+                    }
+                    else return Result.error("注册司机身份失败");
+                } else if (account.getPassengerId() == null) {
+                    //                    先得到司机身份的信息
+                    Passenger passenger = new Passenger();
+
+//                    司机身份没有，就成为司机
+                    Driver driver = driverSerivce.search(account.getDriverId());
+                    passenger.setPhone(driver.getPhone());
+                    passenger.setGender(driver.getGender());
+                    passenger.setName(driver.getName());
+                    passenger.setAccount(driver.getAccount());
+                    passenger.setAccountId(driver.getAccountId());
+
+                    Integer count = passengerService.register(passenger);
+
+
+
+                    if (count!= 0 && passenger != null && null != passenger.getPassengerId()) {
+                        //                    修改帐号绑定的身份
+                        account.setPassengerId( passenger.getPassengerId());
+                        accountService.mod(account);
+                        return Result.success("注册乘客身份成功", account);
+                    }
+                    else return Result.error("注册乘客身份失败");
+                }
+
+
+            }
+
+
+        }
+
+        return Result.error("注册身份失败");
+    }
 
 
 }

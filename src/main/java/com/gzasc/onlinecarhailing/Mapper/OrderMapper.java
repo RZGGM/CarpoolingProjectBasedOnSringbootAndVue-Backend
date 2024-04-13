@@ -9,7 +9,6 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-
     //     购票（核心功能），就是增加订单给自己
     Integer insertOrder(Order order);
 // 删除订单一条订单，

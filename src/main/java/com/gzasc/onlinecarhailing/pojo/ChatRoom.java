@@ -23,6 +23,8 @@ public class ChatRoom {
 
     private Integer passengerId;
     private Integer driverId;
+//    管理员的id
+    private Integer managerId;
 
     public ChatRoom(String name, List<Message> messageList, Date createDate) {
         this.name = name;

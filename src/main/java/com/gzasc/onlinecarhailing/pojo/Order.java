@@ -79,6 +79,8 @@ public class Order {
 // 终点
     private String destinationAddress;
 
+//    联系用的手机号
+    private String phone;
 
 
 

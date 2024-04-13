@@ -93,4 +93,15 @@
         where phone = #{phone}
 
     </select>
+    <select id="selectManagerAccount" resultType="com.gzasc.onlinecarhailing.pojo.Account">
+        select *
+        from account
+        where manager_id is not null
+    </select>
+    <select id="selectByAccountId" resultType="com.gzasc.onlinecarhailing.pojo.Account">
+
+        select *
+        from account
+        where id = #{accountId}
+    </select>
 </mapper>

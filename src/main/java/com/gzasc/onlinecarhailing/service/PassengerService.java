@@ -3,6 +3,7 @@ package com.gzasc.onlinecarhailing.service;
 
 import com.gzasc.onlinecarhailing.Mapper.PassengerMapper;
 import com.gzasc.onlinecarhailing.pojo.Account;
+import com.gzasc.onlinecarhailing.pojo.Driver;
 import com.gzasc.onlinecarhailing.pojo.Order;
 import com.gzasc.onlinecarhailing.pojo.Passenger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ Integer addOrderOnJoinOrderToPassenger(Order driverCreateJoinOrder, Order passen
 
     //    查询所有
     List<Passenger> searchAll();
+
 
 
 //

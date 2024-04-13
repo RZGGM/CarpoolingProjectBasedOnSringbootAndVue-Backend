@@ -10,7 +10,7 @@ import java.util.List;
 public interface DriverMapper {
 
     //    增加
-    public Integer insert(Driver driver);
+     Integer insert(Driver driver);
     //    删除，通过id删除
     public Integer deleteById(Integer id);
     //    修改

@@ -26,12 +26,13 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Integer createMessage(Message message) {
 
-//        根据信息所有者的id和类型找出设置所有者的名字
+
+//
+//        根据信息所有者的id和类型找出并且：设置所有者的名字， 所以一个必要所有者类型和所有者id和data。
 //        判断所有者的类型
         if (message.getOwnerType().equals(UserType.PASSENGER)) {
 //            所有者为乘客进入到这
             message.setOwnerName(passengerMapper.selectById(message.getOwnerId()).getName());
-
 
         } else if (message.getOwnerType().equals(UserType.DRIVER)) {
 

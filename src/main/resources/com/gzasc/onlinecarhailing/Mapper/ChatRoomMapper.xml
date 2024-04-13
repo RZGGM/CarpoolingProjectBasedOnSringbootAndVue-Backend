@@ -6,8 +6,8 @@
 
     <!--创建聊天室-->
     <insert id="insertChatRoom" keyProperty="id" useGeneratedKeys="true">
-        insert into chatroom(name, create_date, passenger_id, driver_id)
-        values (#{name},NOW(),  #{passengerId}, #{driverId})
+        insert into chatroom(name, create_date, passenger_id, driver_id, manager_id)
+        values (#{name}, NOW(), #{passengerId}, #{driverId}, #{managerId})
     </insert>
     <!--    修改聊天室-->
     <update id="updateChatRoom">
@@ -24,12 +24,75 @@
     </select>
     <select id="selectChatRoomsByPassengerId" resultType="com.gzasc.onlinecarhailing.pojo.ChatRoom">
 
-        select * from chatroom where passenger_id = #{passengerId}
+        select *
+        from chatroom
+        where passenger_id = #{passengerId}
 
     </select>
     <select id="selectChatRoomsByDriverId" resultType="com.gzasc.onlinecarhailing.pojo.ChatRoom">
 
-        select * from chatroom where driver_id = #{driverId}
+        select *
+        from chatroom
+        where driver_id = #{driverId}
+
+    </select>
+    <select id="searchChatRoomBypassengerIdAndManagerId" resultType="com.gzasc.onlinecarhailing.pojo.ChatRoom">
+        select *
+        from chatroom
+        where passenger_id = #{passengerId}
+          and manager_id = #{managerId}
+    </select>
+    <select id="searchChatRoomByDriverIdAndManagerId" resultType="com.gzasc.onlinecarhailing.pojo.ChatRoom">
+        select *
+        from chatroom
+        where driver_id = #{driverId}
+          and manager_id = #{managerId}
+    </select>
+    <select id="searchChatRoomByDriverIdAndManagerIdAndPassengerId"
+            resultType="com.gzasc.onlinecarhailing.pojo.ChatRoom">
+        select *
+        from chatroom
+        # where driver_id = #{driverId}
+        # and passenger_id = #{passengerId}
+        # and manager_id = #{managerId}
+        <where>
+            <if test="driverId != null">
+                driver_id = #{driverId} and
+            </if>
+            <if test="passengerId != null">
+                passenger_id = #{passengerId} and
+            </if>
+            <if test="managerId != null">
+                manager_id = #{managerId}
+            </if>
+        </where>
+
+    </select>
+    <select id="selectChatRoomsManagerId" resultType="com.gzasc.onlinecarhailing.pojo.ChatRoom">
+        select *
+        from chatroom
+        where manager_id = #{managerId}
+    </select>
+    <select id="selectByChatRoomId" resultType="com.gzasc.onlinecarhailing.pojo.ChatRoom">
+        select *
+        from chatroom
+        where id = #{chatRoomId}
+    </select>
+    <select id="searchChatRoomByDriverIdOrManagerIdOrPassengerId"
+            resultType="com.gzasc.onlinecarhailing.pojo.ChatRoom">
+        select *
+        from chatroom
+        <where>
+            <if test="driverId != null">
+                driver_id = #{driverId} and
+            </if>
+            <if test="passengerId != null">
+                passenger_id = #{passengerId} and
+            </if>
+            <if test="managerId != null">
+                manager_id = #{managerId}
+            </if>
+        </where>
 
     </select>
 

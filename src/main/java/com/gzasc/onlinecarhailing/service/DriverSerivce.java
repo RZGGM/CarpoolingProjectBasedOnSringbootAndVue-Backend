@@ -10,6 +10,8 @@ public interface DriverSerivce {
 
     //    注册帐号
      Integer register(Driver driver);
+
+
     //    删除，通过id
      Integer remove(Integer id);
     //    修改

@@ -25,6 +25,10 @@ public class ManagerController {
     PassengerService passengerService;
     @Autowired
     DriverSerivce driverSerivce;
+    @Autowired
+    ChatRoomService chatRoomService;
+    @Autowired
+    MessageService messageService;
 
     //    删除乘客的
     @RequestMapping("/system/removePassengersByIds")
@@ -256,6 +260,51 @@ public class ManagerController {
 
         else return Result.success("获取票成功，但可惜数据库里没有票的数据。");
 
+
+
+    }
+//   浏览所有的自己的聊天室
+    @RequestMapping("/system/viewAllChatRooms")
+    public Result viewAllChatRoom(Integer managerId) {
+
+        List<ChatRoom> chatRooms = chatRoomService.searchChatRoomsByManagerId(managerId);
+
+        if (chatRooms == null) return Result.error("没有聊天室");
+
+        if (chatRooms.isEmpty()) return Result.error("聊天室的列表为空，没有找到聊天室");
+
+        else return Result.success("这就是所有的聊天室了。", chatRooms);
+
+
+    }
+    //    根据传入的聊天室的id找信息
+    @RequestMapping("/system/viewAllMessagesByChatRoomId")
+    public Result viewAllMessagesByChatRoomId(Integer chatRoomId) {
+
+        if (chatRoomId == null) return Result.error("传入的聊天室的id为null");
+
+        List<Message> messages = messageService.selectMessagesByChatRoomId(chatRoomId);
+
+        if (messages == null) return Result.error("信息为null");
+
+        if (messages.isEmpty()) return Result.success("信息为空，", messages);
+
+        return Result.success("找到信息了", messages);
+
+    }
+
+    //    将信息保存到数据库
+    @RequestMapping("/system/submitMessage")
+    public Result submitMessage(@RequestBody Message message) {
+
+        if (message == null) return Result.error("失败，传入的信息为空");
+
+        Integer count = messageService.createMessage(message);
+
+//        根据返回的count，如果为0就说明失败了。大于0才是成功的。
+        if (count > 0) return Result.success("插入信息成功");
+
+        else return Result.error("失败");
 
 
     }

@@ -71,6 +71,12 @@ public class AccountServiceImpl implements AccountService {
         return  countDeleteAccount;
 
     }
+
+    @Override
+    public List<Account> searchAllMangerAccount( ) {
+        return accountMapper.selectManagerAccount();
+    }
+
     //     根据手机号查询帐号
     @Override
     public Account searchByPhond(String phone){
@@ -78,6 +84,14 @@ public class AccountServiceImpl implements AccountService {
        return accountMapper.selectByPhone( phone);
 
     }
+
+    @Override
+    public Account searchByAccountId(Integer accountId) {
+
+
+        return accountMapper.selectByAccountId(accountId);
+    }
+
     @Override
     public Account searchByPhoneAndAccount(Account account){
 

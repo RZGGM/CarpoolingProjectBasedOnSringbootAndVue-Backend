@@ -1,5 +1,6 @@
 package com.gzasc.onlinecarhailing.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.gzasc.onlinecarhailing.Mapper.AppraiseMapper;
 import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
 import com.gzasc.onlinecarhailing.Mapper.OrderMapper;
@@ -43,7 +44,10 @@ public class OrderServiceImpl implements OrderService {
             ticket.setSoldCount(ticket.getSoldCount() + 1);
 //            要先将票的数量减1
             ticketMapper.updateTicket(ticket);
+// 设置乘客订单的手机号
+           order.setPhone( RandomUtil.randomNumbers(11));
 
+//            为乘客插入订单
             return orderMapper.insertOrder(order);
 
         }

@@ -2,6 +2,7 @@ package com.gzasc.onlinecarhailing.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.gzasc.onlinecarhailing.pojo.Driver;
 import com.gzasc.onlinecarhailing.pojo.Order;
 import com.gzasc.onlinecarhailing.pojo.OrderState;
 import com.gzasc.onlinecarhailing.pojo.UserType;
@@ -189,4 +190,7 @@ public static Order onDriverCreateJoinOrderToCreateForUser(Order order, Integer 
 
         return order1;
     }
+
+
+
 }

@@ -20,6 +20,9 @@ public interface AccountMapper {
 //    修改对应的乘客的id为null
     Integer updateAccountsPassengerIdToNullByAccountIds(List<Integer> accountIds);
 
+//    通过帐号的id查询得到了帐号
+    Account selectByAccountId(Integer accountId);
+
 //    通过帐号，查询一条
      Account selectByAccount(String account);
 //    查询通过id
@@ -34,5 +37,8 @@ public interface AccountMapper {
 
 // 批量删除帐号，不过在删除帐号的同时，也要删除用户才行。
     Integer deleteAccountsById(List<Integer> ids);
+
+//    查找所有管理员的帐号
+    List<Account> selectManagerAccount();
 
 }

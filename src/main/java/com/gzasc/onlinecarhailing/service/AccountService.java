@@ -22,11 +22,18 @@ import java.util.List;
      Account searchByPhond(String phone);
 
 
+//     根据帐号的id查询帐号
+     Account searchByAccountId(Integer accountId);
+
 //    根据帐号查询
      Account search(String account);
 //    查询所有
      List<Account> searchAll();
 //     通过id批量删除帐号，同时删除用户
      Integer removeAccountsByIds(List<Integer> ids);
+
+//     根据管理员的id找帐号
+     List<Account> searchAllMangerAccount( );
+
 
 }

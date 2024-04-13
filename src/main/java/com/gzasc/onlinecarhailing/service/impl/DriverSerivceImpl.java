@@ -2,6 +2,7 @@ package com.gzasc.onlinecarhailing.service.impl;
 
 import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
 import com.gzasc.onlinecarhailing.Mapper.OrderMapper;
+import com.gzasc.onlinecarhailing.Mapper.PassengerMapper;
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.DriverSerivce;
 import com.gzasc.onlinecarhailing.utils.OrderUtils;
@@ -17,6 +18,8 @@ public class DriverSerivceImpl implements DriverSerivce {
     DriverMapper driverMapper;
     @Autowired
     OrderMapper orderMapper;
+    @Autowired
+    PassengerMapper passengerMapper;
 
     @Override
     public Integer register(Driver driver) {
@@ -56,10 +59,11 @@ public class DriverSerivceImpl implements DriverSerivce {
     @Override
     public Integer addOrderToDriver(String passengerOrderId, Integer driverId) {
 
+
 //        查询到乘客的订单
         Order order = orderMapper.selectByOrderId(passengerOrderId);
 //        判断这个订单是否有司机了
-        if ( order.getDriverId() != -1) {
+        if (order.getDriverId() != -1) {
 //            已经有司机接取，就会进入到这
             return OrderState.HAS_DRIVER;
         } else {
@@ -67,12 +71,19 @@ public class DriverSerivceImpl implements DriverSerivce {
 //       要先修改下乘客的订单，更新司机到乘客的订单里。
             //将乘客的订单的状态设置为：已经有司机了，所以其它司机不可以看到这个订单
             order.setDriverId(driverId);
+
+//            得到司机
+            Driver driver = driverMapper.selectByDriverId(driverId);
+//            得到乘客
+            Passenger passenger = passengerMapper.selectById(order.getPassengerId());
+
+
 //            先判断下这个订单是否接受拼单
-            if (order.getJoinOrderCanJoin().equals(JoinOrderCanJoin.CAN_JOIN_ORDER)){
+            if (order.getJoinOrderCanJoin().equals(JoinOrderCanJoin.CAN_JOIN_ORDER)) {
 //              接受拼车进入到这
                 order.setOrderType(OrderType.PASSENGER_AND_DRIVER_WAIT_OTHER_PASSENGER);
 
-            }else order.setOrderType(OrderType.PASSENGER_AND_DRIVER_NOWAIT);
+            } else order.setOrderType(OrderType.PASSENGER_AND_DRIVER_NOWAIT);
 //                设置乘客的订单的状态为等待出行。
             order.setState(OrderState.WAIT_DEPART);
 
@@ -83,7 +94,11 @@ public class DriverSerivceImpl implements DriverSerivce {
 //            将司机订单更新对应的乘客订单
             orderDriver.setOtherId(order.getOrderId());
 // 设置司机订单的乘客的id
-            orderDriver.setPassengerId(order.getId());
+            orderDriver.setPassengerId(order.getPassengerId());
+//            设置乘客订单的司机的手机号
+            order.setPhone(driver.getPhone());
+//            设置司机的订单的乘客的手机号
+            orderDriver.setPhone(passenger.getPhone());
 
 // 更新乘客的订单
             orderMapper.updateOrderDriverOrPassenger(order);

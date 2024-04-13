@@ -8,11 +8,11 @@
     <insert id="insertOrder">
         insert into `order`(order_id, create_time, finish_time, driver_id, man_count, passenger_id, tips, price,
                             type, owner_id, state, ticket_id, departure, destination, create_user_type, passenger_count,
-                            join_order_can_join, other_id)
+                            join_order_can_join, other_id, phone)
         values (#{orderId}, NOW(), #{finishTime}, #{driverId}, #{manCount}, #{passengerId}, #{tips}, #{price},
                 #{orderType}, #{ownerId},
                 #{state}, #{ticketId}, #{departureAddress}, #{destinationAddress}, #{createUserType}, #{passengerCount},
-                #{joinOrderCanJoin}, #{otherId})
+                #{joinOrderCanJoin}, #{otherId}, #{phone})
     </insert>
 
     <update id="updateOrder">
@@ -52,6 +52,9 @@
             </if>
             <if test="manCount != null">
                 man_count = #{manCount},
+            </if>
+            <if test="phone != null">
+                phone = #{phone}
             </if>
         </set>
         where order_id = #{orderId}
@@ -96,6 +99,9 @@
         where order_id = #{orderId}
 
     </select>
+
+<!--    根据订单的状态来返回-->
+
     <select id="selectByOrderState" resultType="com.gzasc.onlinecarhailing.pojo.Order" resultMap="orderMap">
         select * from `order`
         <where>
