@@ -1,0 +1,123 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class node0 as "account  /* 帐号表， */" {
+   passenger_id  /* 是否是乘客 */: int
+   driver_id  /* 是否是司机，司机的表的id */: int
+   account  /* 帐号 */: varchar(20)
+   password  /* 密码 */: varchar(20)
+   manager_id  /* 管理员信息的id */: int
+   phone  /* 帐号的手机号，用来在忘记密码时使用 */: varchar(20)
+   id  /* id */: int
+}
+class node4 as "appraise  /* 评价表 */" {
+   driver_id  /* 对应的司机的id */: int
+   comment  /* 评价的内容 */: varchar(200)
+   order_id  /* 对就的订单的id */: varchar(20)
+   id  /* id */: int
+}
+class node5 as "car  /* 车辆表 */" {
+   no  /* 车牌号 */: varchar(20)
+   owner_id  /* 所有者的id */: int
+   color  /* 车辆颜色 */: varchar(20)
+   id  /* id */: int
+}
+class node7 as "chatroom  /* 聊天室 */" {
+   name  /* 聊天室的名字（感觉应该在前端定义） */: varchar(15)
+   create_date  /* 创建时间 */: datetime
+   passenger_id  /* 聊天室的乘客的id */: int
+   driver_id  /* 司机的id */: int
+   manager_id  /* 管理员的id */: int
+   id  /* 聊天室的id */: int
+}
+class node2 as "driver  /* 司机表 */" {
+   driver_birthday  /* 出生日 */: date
+   driver_nation  /* 民族 */: varchar(10)
+   driver_address  /* 通信地址 */: varchar(200)
+   driver_license_id  /* 驾驶证的id */: int
+   update_time  /* 更新时间 */: datetime
+   phone  /* 手机号 */: varchar(20)
+   gender  /* 性别  */: varchar(1)
+   state  /* 状态 */: int
+   name  /* 称谓 */: varchar(20)
+   account_id  /* 帐号id */: int
+   account  /* 帐号 */: varchar(20)
+   id  /* id */: int
+}
+class node9 as "driverlicense  /* 驾驶证表 */" {
+   license_id  /* 驾驶编号  */: varchar(255)
+   get_driver_license_date  /* 获得驾驶证的日期 */: date
+   driver_license_on  /* 驾驶证有效期 */: date
+   driver_license_off  /* 驾驶证有效期止 */: date
+   id: int
+}
+class message {
+   owner_id  /* 发出者的id */: int
+   data  /* 信息的内容 */: varchar(200)
+   chat_room_id  /* 这条信息对应的聊天室id */: int
+   owner_type  /* 所有者的类型 */: int
+   owner_name  /* 发出者的名字 */: varchar(20)
+   send_time  /* 发送的时间 */: datetime
+   id  /* 信息的id */: int
+}
+class node8 as "order  /* 订单 */" {
+   order_id  /* 订单编号 */: varchar(30)
+   create_time  /* 订单的发起时间 */: datetime
+   finish_time  /* 订单的完成时间 */: datetime
+   driver_id  /* 司机 */: int
+   man_count  /* 同行人数，这用来让乘客控制是否可以接单其它人拼单，和司机发出的接单的最大乘客数。 */: int
+   passenger_id  /* 乘客的id */: int
+   tips  /* 备注，下单时的备注 */: varchar(200)
+   price  /* 价格 */: int
+   type  /* 类型 */: int
+   owner_id  /* 订单创建者的id */: int
+   state  /* 订单的状态 */: int
+   ticket_id  /* 对应的ticket的id， */: int
+   appraise_id  /* 对应的评价的id */: int
+   other_id  /* 是拼单订单产生的订单，会和另一个订单绑定，这个另一个订单的订单编号  */: varchar(20)
+   create_user_type  /* 订单创建者的类型 */: int
+   departure  /* 上车点 */: varchar(20)
+   destination  /* 下车点 */: varchar(20)
+   passenger_count  /* 乘客的人数，拼单时乘客设置他们这一单的人数。 */: int
+   join_order_can_join  /* 判断拼单订单是否可以拼单的，还能用来判断是否是拼单订单。 */: int
+   phone  /* 联系用的手机号 */: varchar(20)
+   id  /* id */: int
+}
+class node1 as "passenger  /* 乘客表 */" {
+   phone  /* 手机号 */: varchar(20)
+   gender  /* 性别 */: varchar(1)
+   state  /* 状态 */: int
+   name  /* 这个是应该是虚拟名，跟qq名一样。 */: varchar(20)
+   account  /* 帐号 */: varchar(20)
+   account_id  /* 对应的帐号表的id */: int
+   update_time  /* 更新时间 */: datetime
+   id  /* id */: int
+}
+class node3 as "ticket  /* 官方提供的票 */" {
+   max_passenger_count  /* 最大乘客数量或者说是票的数量 */: int
+   start_time  /* 发车时间 */: datetime
+   status  /* 是否可以购买 */: int
+   price  /* 价格 */: int
+   departure  /* 出发点 */: varchar(200)
+   destination  /* 目的地 */: varchar(200)
+   sold_count  /* 已经售出的数量 */: int
+   id  /* id */: int
+}
+
+node0    -[#595959,plain]-^  node2   : "driver_id:id"
+node0    -[#595959,plain]-^  node1   : "passenger_id:id"
+node4    -[#595959,plain]-^  node2   : "driver_id:id"
+node4    -[#595959,plain]-^  node8   : "order_id:id"
+node7    -[#595959,plain]-^  node2   : "driver_id:id"
+node7    -[#595959,plain]-^  node1   : "passenger_id:id"
+node2    -[#595959,plain]-^  node0   : "account_id:id"
+node8    -[#595959,plain]-^  node4   : "appraise_id:id"
+node8    -[#595959,plain]-^  node2   : "driver_id:id"
+node8    -[#595959,plain]-^  node8   : "order_id:id"
+node8    -[#595959,plain]-^  node1   : "passenger_id:id"
+node8    -[#595959,plain]-^  node3   : "ticket_id:id"
+node1    -[#595959,plain]-^  node0   : "account_id:id"
+@enduml

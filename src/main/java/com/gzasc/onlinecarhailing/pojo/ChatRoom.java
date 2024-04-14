@@ -15,8 +15,8 @@ public class ChatRoom {
     private Integer id;
 //    聊天室的名字， 一般是显示和你聊天的那个人。
     private String name;
-//  用户间的交流的信息
-    private List<Message> messageList;
+//  用户间的交流的信息，最终还是通过信息类里记录的聊天室的id来得到。
+//    private List<Message> messageList;
 //    创建时间，方便以后自动销毁
     private Date createDate;
 //    应该还有聊天室用户的id，方便查找
@@ -26,9 +26,5 @@ public class ChatRoom {
 //    管理员的id
     private Integer managerId;
 
-    public ChatRoom(String name, List<Message> messageList, Date createDate) {
-        this.name = name;
-        this.messageList = messageList;
-        this.createDate = createDate;
-    }
+
 }

@@ -28,8 +28,8 @@ public class Passenger{
     //    帐号
     private String account;
 
-    //    乘客的订单
-    private List<Order> orders;
+//    //    乘客的订单，用订单里记录的用户的id来得到。
+//    private List<Order> orders;
     //    帐号
     private Integer accountId;
     //    更新时间
