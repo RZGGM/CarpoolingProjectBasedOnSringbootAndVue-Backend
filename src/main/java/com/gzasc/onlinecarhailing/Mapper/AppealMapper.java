@@ -1,6 +1,5 @@
 package com.gzasc.onlinecarhailing.Mapper;
 
-import com.gzasc.onlinecarhailing.pojo.Appeal;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

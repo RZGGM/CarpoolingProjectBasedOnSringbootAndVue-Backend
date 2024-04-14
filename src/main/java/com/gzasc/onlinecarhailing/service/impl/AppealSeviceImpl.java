@@ -1,7 +1,6 @@
 package com.gzasc.onlinecarhailing.service.impl;
 
 import com.gzasc.onlinecarhailing.Mapper.AppealMapper;
-import com.gzasc.onlinecarhailing.pojo.Appeal;
 import com.gzasc.onlinecarhailing.service.AppealSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

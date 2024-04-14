@@ -1,8 +1,6 @@
 package com.gzasc.onlinecarhailing.service;
 
 
-import com.gzasc.onlinecarhailing.pojo.Appeal;
-
 import java.util.List;
 
 public interface AppealSevice {

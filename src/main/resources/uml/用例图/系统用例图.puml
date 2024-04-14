@@ -1,0 +1,11 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+:无身份系统用户:
+:乘客:
+:管理员:
+(登录注册)
+无身份系统用户 -->(登录注册)
+
+
+@enduml

@@ -1,0 +1,95 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+|用户|
+start
+:进入系统的首页;
+:输入帐号密码选择登入的身份;
+:点击登录;
+|系统|
+:对参数进行校验;
+
+if (参数校验) then(不通过)
+:提示参数不正确;
+stop
+else (通过)
+
+|系统|
+if (对输入的帐号密码进行校验？)  then (不通过)
+|系统|
+:提示帐号或密码错误;
+stop
+|系统|
+else (通过，根据身份进入不同的页面)
+fork
+:进入管理员页面;
+|用户|
+:选择功能;
+split
+:车票管理;
+'split
+':添加;
+':输入要新增的票的信息;
+'
+'split again
+':批量删除;
+'if (勾选票？) then(有勾选)
+':提示删除成功;
+'else (无勾选)
+':提示删除失败;
+'endif
+'
+'split again
+':编辑;
+'end split
+split again
+:乘客管理;
+split again
+:司机管理;
+split again
+:帐号管理;
+split again
+:车票管理;
+split again
+:投诉管理;
+end split
+|系统|
+fork again
+:进入司机页面;
+
+|用户|
+:选择功能;
+
+split
+:拼车;
+split again
+:订单;
+split again
+:聊天;
+split again
+:我的;
+end split
+
+|系统|
+fork again
+:进入乘客页面;
+|用户|
+:选择功能;
+
+split
+:车票;
+split again
+:拼车;
+split again
+:订单;
+split again
+:聊天;
+split again
+:我的;
+end split
+
+end fork
+
+stop
+endif
+
+@enduml
