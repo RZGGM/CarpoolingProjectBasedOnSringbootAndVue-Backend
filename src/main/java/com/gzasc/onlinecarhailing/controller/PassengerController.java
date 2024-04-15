@@ -1,5 +1,7 @@
 package com.gzasc.onlinecarhailing.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.*;
 import com.gzasc.onlinecarhailing.utils.OrderUtils;
@@ -163,6 +165,21 @@ public class PassengerController {
 
 
     }
+
+//    查看自己的所有订单，但是是分页的
+    @RequestMapping("/passenger/viewOrdersSplit")
+    public  Result viewAllOrdersSplit(@RequestBody  OrderQuery orderQuery){
+
+        PageHelper.startPage(orderQuery.getPageNum(), orderQuery.getPageSize());
+        List<Order> orders = orderService.searchOrdersByCreateUserTypeAndOwnerId(
+                orderQuery.getCreateUserType(),
+                orderQuery.getCreateUserId()
+        );
+        PageInfo<Order> pageInfo = new PageInfo<>(orders);//分页信息
+
+        return Result.success("查看成功", pageInfo);
+    }
+
 //    查看订单详细,应该是前端的
 
 
