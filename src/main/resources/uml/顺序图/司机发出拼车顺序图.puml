@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor driver
+participant 拼车界面
+control 程序逻辑层
+database 程序数据库
+
+
+driver -> 拼车界面: 进入拼车界面
+activate 拼车界面
+driver -> 拼车界面: 点击发出拼车
+拼车界面 -> 拼车界面: 显示拼车订单输入框
+driver -> 拼车界面: 输入拼车订单信息
+拼车界面 -> 程序逻辑层: 提交拼车订单
+activate 程序逻辑层
+程序逻辑层 -> 程序数据库:提交拼车订单
+activate 程序数据库
+程序数据库 -> 程序数据库: 保存订单
+程序数据库 -> 程序逻辑层: 返回提交订单结果
+程序逻辑层 -> 拼车界面: 返回提交订单结果
+
+deactivate 拼车界面
+deactivate 程序逻辑层
+deactivate 程序数据库
+
+@enduml

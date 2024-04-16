@@ -27,7 +27,8 @@ public class OrderType {
     //    不等待的，就是不拼单的。
     public static final Integer PASSENGER_AND_DRIVER_NOWAIT = 112;
 
-//    乘客接收司机
+//    乘客接收司机拼车订单，生成的订单的类型；
+    public static final Integer BASE_ON_DRIVER_CREATE_JOIN_ORDER_CREATE_TO_PASSENGER = 113;
 
     //    司机发起的
     public static final Integer DRIVER_CREATE = 2;
@@ -38,8 +39,8 @@ public class OrderType {
     //    司机发起的，不等待的（其实应该是满客了的）
     public static final Integer DRIVER_AND_PASSENGER_NOWAIT = 212;
 
-//    司机发起的，乘客接收后生成的。
-    public static final Integer DRIVER_HAVE_PASSENGER = 213;
+//    司机发起的，乘客接收后生成给司机的。
+    public static final Integer BASE_ON_DRIVER_CREATE_JOIN_ORDER_CREATE_TO_DRIVER = 213;
 //
 
     //类型为：满员的订单

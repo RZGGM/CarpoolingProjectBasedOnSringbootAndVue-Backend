@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+autoactivate on
+
+actor passenger
+
+participant 乘客界面
+entity order
+control 程序逻辑层
+database 程序数据库
+
+
+passenger -> 乘客界面: 点击接取订单
+乘客界面 --> 乘客界面: 返回将要创建的订单的信息
+passenger --> 乘客界面: 确认订单的信息
+乘客界面 -> order: 提交信息创建订单
+order -> 程序逻辑层: 提交订单
+
+程序逻辑层 -> order: 修改司机订单
+程序逻辑层 -> 程序数据库: 保存订单
+order -> 程序数据库: 保存修改后的司机订单
+
+程序逻辑层 --> order: 返回成功结果
+
+order -> order: 根据结果创建订单
+
+order --> 乘客界面: 返回根据结果创建的订单
+
+deactivate order
+deactivate 程序数据库
+
+
+@enduml

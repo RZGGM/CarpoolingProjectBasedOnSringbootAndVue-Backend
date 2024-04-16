@@ -1,6 +1,8 @@
 package com.gzasc.onlinecarhailing.controller;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.*;
@@ -68,6 +70,20 @@ public class DriverController {
         if (orders.isEmpty()) return Result.success("没有订单");
         else return Result.success("查询成功", orders);
 
+    }
+
+    //    查看自己的所有订单，但是是分页的
+    @RequestMapping("/driver/viewOrdersSplit")
+    public  Result viewAllOrdersSplit(@RequestBody  OrderQuery orderQuery){
+
+        PageHelper.startPage(orderQuery.getPageNum(), orderQuery.getPageSize());
+        List<Order> orders = orderService.searchOrdersByCreateUserTypeAndOwnerId(
+                orderQuery.getCreateUserType(),
+                orderQuery.getCreateUserId()
+        );
+        PageInfo<Order> pageInfo = new PageInfo<>(orders);//分页信息
+
+        return Result.success("查看成功", pageInfo);
     }
 
     //查看可以接单的订单

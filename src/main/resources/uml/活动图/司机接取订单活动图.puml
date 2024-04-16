@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+|司机|
+start
+:选择要接取的订单;
+|系统|
+if (其它司机已经接取？)  then(false)
+:为司机生成订单;
+:修改乘客订单;
+else (true)
+:返回其它司机已经接取了;
+endif
+
+stop
+
+@enduml

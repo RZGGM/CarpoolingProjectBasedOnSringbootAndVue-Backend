@@ -35,6 +35,10 @@ public class Passenger{
     //    更新时间
     private Date updateTime;
 
+//   帐号类的
+//    这个属性其实没用到，只是方便我画类图
+    private Account account1;
+
 
 
 }

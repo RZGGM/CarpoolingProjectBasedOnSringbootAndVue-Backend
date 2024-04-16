@@ -2,10 +2,7 @@ package com.gzasc.onlinecarhailing.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.gzasc.onlinecarhailing.pojo.Driver;
-import com.gzasc.onlinecarhailing.pojo.Order;
-import com.gzasc.onlinecarhailing.pojo.OrderState;
-import com.gzasc.onlinecarhailing.pojo.UserType;
+import com.gzasc.onlinecarhailing.pojo.*;
 
 import java.util.Date;
 import java.util.Objects;
@@ -100,8 +97,8 @@ public static Order onDriverCreateJoinOrderToCreateForUser(Order order, Integer 
         order1.setDestinationAddress(driverCreateJoinOrder.getDestinationAddress());
 //        设置订单的类型为等待出发
         order1.setState(OrderState.WAIT_DEPART);
-//        设置订单的类型为：先设置和发起拼单的人的类型一致吧。
-        order1.setOrderType(driverCreateJoinOrder.getOrderType());
+//        设置订单的类型为：
+        order1.setOrderType(OrderType.BASE_ON_DRIVER_CREATE_JOIN_ORDER_CREATE_TO_PASSENGER);
 //        为订单分配一个编号
         order1.setOrderId(OrderUtils.createOrderCode());
 //        价格
@@ -127,7 +124,7 @@ public static Order onDriverCreateJoinOrderToCreateForUser(Order order, Integer 
 
         Order order = new Order();
 //        设置类型
-        order.setOrderType(driverCreateJoinOrder.getOrderType());
+        order.setOrderType(OrderType.BASE_ON_DRIVER_CREATE_JOIN_ORDER_CREATE_TO_DRIVER);
 //        设置司机的id为自己的
         order.setDriverId(driverCreateJoinOrder.getDriverId());
 //        设置备注为乘客的备注

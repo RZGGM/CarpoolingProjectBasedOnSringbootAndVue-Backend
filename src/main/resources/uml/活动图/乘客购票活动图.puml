@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+|乘客|
+start
+
+:选择票;
+:选择上车点和上车点;
+split
+:填写备注;
+split again
+:不填写备注;
+end split
+:提交票;
+|系统|
+
+if (票数量足够？) then(true)
+:创建购票订单;
+:返回购票订单;
+else (false)
+:返回票数量不足;
+endif
+stop
+@enduml

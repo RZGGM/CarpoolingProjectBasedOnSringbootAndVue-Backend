@@ -81,6 +81,9 @@ public class Order {
 
 //    联系用的手机号
     private String phone;
+//    评价
+//    这个属性其实没用到，只是方便我画类图
+    private Appraise appraise;
 
 
 

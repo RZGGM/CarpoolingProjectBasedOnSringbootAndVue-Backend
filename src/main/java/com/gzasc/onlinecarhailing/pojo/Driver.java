@@ -40,4 +40,11 @@ public class Driver{
 //    帐号
     private String account;
 
+    //   帐号类的
+    private Account account1;
+
+//    驾驶证
+//    这个属性其实没用到，只是方便我画类图
+    private DriverLicense driverLicense;
+
 }
