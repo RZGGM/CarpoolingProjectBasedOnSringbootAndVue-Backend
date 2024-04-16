@@ -1,3 +1,5 @@
+package uml.类图;
+
 @startuml
 
 !theme plain
