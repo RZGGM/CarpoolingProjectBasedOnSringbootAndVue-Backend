@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:进入聊天或是管理员投诉界面;
+:加载聊天室列表;
+:点击某一个聊天室;
+:展示聊天室，显示聊天记录;
+if (发送信息？) then(是)
+:发送后会显示在聊天室里;
+else (不发送)
+stop
+endif
+stop
+
+@enduml

@@ -16,7 +16,6 @@ import java.util.UUID;
 //生成JWT令牌的工具类。
 public class GeneratorJWTUtils {
 //    秘钥
-
     private static String SECRET = "rz2008011326 Sharing is only supported for boot loader classes because bootstrap classpath has been appended";
 
     // 加密密钥实例
@@ -64,5 +63,8 @@ public class GeneratorJWTUtils {
                 .build()
                 .parseSignedClaims(token);
     }
+
+//    使用HUTOOL来生成JWT
+    public static void testJwt(){}
 
 }

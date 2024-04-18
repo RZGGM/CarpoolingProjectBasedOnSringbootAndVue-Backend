@@ -4,6 +4,7 @@ import com.gzasc.onlinecarhailing.pojo.Account;
 import com.gzasc.onlinecarhailing.pojo.Appraise;
 import com.gzasc.onlinecarhailing.pojo.Order;
 import com.gzasc.onlinecarhailing.pojo.OrderType;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public interface OrderService {
     Integer modOrderState(String orderId, Integer state);
 
     //    乘客查看自己的所有订单
+
     List<Order> selectBySelfId(Integer id);
 
 //    乘客对订单进行评价

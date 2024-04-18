@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+
+:点击发出拼车按钮;
+:填写发出的订单的信息;
+if (订单信息验证通过？) then (通过)
+:更新给用户，保存给自己;
+else (不通过)
+:提示;
+stop
+endif
+
+
+stop
+
+@enduml

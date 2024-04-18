@@ -22,6 +22,16 @@
 
 
     <dependencies>
+<!--        redis和springboot缓存-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+<!--        引入redis依赖启动器-->
+        <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 <!--        mybatis的分页插件-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>

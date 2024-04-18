@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+
+:点击批量删除功能;
+if (是否有勾选要删除的数据？) then(有)
+:将要删除的数据删除掉;
+else (无)
+:提示用户没有勾选数据;
+stop
+endif
+
+:重新获取删除后的数据，显示在页面上;
+
+stop
+
+@enduml

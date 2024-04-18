@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:进入我的界面;
+:显示个人信息;
+
+split
+
+:修改个人信息;
+:保存;
+stop
+split again
+if (司机没有乘客身份？) then (没有)
+:显示成为乘客按钮;
+if (点击成为乘客按钮？) then (是)
+:帐号拥有乘客身份;
+stop
+else (不)
+stop
+endif
+else (有)
+:不显示;
+
+
+stop
+
+@enduml
