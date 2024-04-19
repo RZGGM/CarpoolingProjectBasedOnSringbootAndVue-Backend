@@ -9,6 +9,8 @@ import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.OrderService;
 import com.gzasc.onlinecarhailing.utils.OrderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 //订单管理
+
+@CacheConfig(cacheNames = "order") //使用这个注解来管理这个类中使用其它如cacheable这些注解里的属性
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
@@ -107,6 +111,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable
     public List<Order> selectBySelfId(Integer id) {
 
         return orderMapper.selectBySelfId(id);
@@ -185,6 +190,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable
     public List<Order> searchOrdersByOrderState(Integer state) {
 
 
@@ -192,6 +198,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable
     public List<Order> searchOrdersByAccount(Account account) {
 
 //        判断传入的帐号的类型，判断要找出什么类型的订单。
@@ -213,6 +220,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
+    @Cacheable
     public List<Order> searchOrdersByOrderType(Integer orderType) {
 
 //        判断类型，来看是返回哪些订单
@@ -238,6 +246,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable
     public Appraise searchAppraiseByOrderId(String orderId) {
 
         return appraiseMapper.selectAppraiseByOrderId(orderId);
@@ -246,6 +255,7 @@ public class OrderServiceImpl implements OrderService {
 
     //    根据订单的所有者的身份和对应身份的id来获取订单
     @Override
+    @Cacheable
     public List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId) {
 
         return orderMapper.selectByCreateUserTypeAndOwnerId(createUserType, ownerId);

@@ -17,12 +17,12 @@ import java.util.UUID;
 public class GeneratorJWTUtils {
 //    秘钥
 
-    private static String SECRET = "rz2008011326 Sharing is only supported for boot loader classes because bootstrap classpath has been appended";
+    private static final String SECRET = "rz2008011326 Sharing is only supported for boot loader classes because bootstrap classpath has been appended";
 
     // 加密密钥实例
-    private static SecretKey  ENCRYPTION_KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private static final SecretKey  ENCRYPTION_KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
     //    生成的JWT的有效时间
-    private static Date EFFECTIVE_LENGTH = new Date(System.currentTimeMillis()+259200000L);
+    private static final Date EFFECTIVE_LENGTH = new Date(System.currentTimeMillis()+259200000L);
 
     // 生成JWT令牌
 //    形参 claims是自定义的内容，一般里面装的是用户特有的信息，如id，，，，
@@ -36,7 +36,7 @@ public class GeneratorJWTUtils {
                 .add("typ", "JWT")
                 .add("alg", "HS256")
                 .and()
-                // 设置自定义的信息，一般是用户唯一的，所以是id
+                // 设置自定义的信息，一般是用户唯一的，所以是id也可以是 帐号id，身份id，帐号，就这三个吧。
                 .claims(claims)
 //                JWT还要ID？可能是新版特性
                 .id(uuid)
@@ -64,5 +64,7 @@ public class GeneratorJWTUtils {
                 .build()
                 .parseSignedClaims(token);
     }
+
+
 
 }

@@ -3,6 +3,7 @@ package com.gzasc.onlinecarhailing.controller;
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.*;
 import com.gzasc.onlinecarhailing.utils.CountPrice;
+import com.gzasc.onlinecarhailing.utils.GeneratorJWTUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +47,7 @@ public class UserController {
 
 // 传入的帐号的类型
         Integer type = account.getIt();
-
+        HashMap<String, Object> userMap = new HashMap<>();
         Account account1 = accountService.search(account.getAccount());
 // 判断传入的帐号是否为null或是身份有问题。
         if (type == null || type > UserType.OFFICIAL) return Result.error("帐号类型为Null或是没有此类型，登录失败。");
@@ -61,24 +63,59 @@ public class UserController {
                 account1.setIt(1);
 
 //                判断密码
-                if (account.getPassword().equals(account1.getPassword()))
-                    return Result.success("乘客登录成功", account1);
-                else return Result.error("帐号或密码错误，登录失败");
+                if (account.getPassword().equals(account1.getPassword())){
+
+//                    保存在jwt令牌中的数据
+//                    身份
+                    userMap.put("id", account1.getId());
+                    userMap.put("account", account1.getAccount());
+                    userMap.put("type", account.getIt());
+
+
+//                    生成JWT令牌
+                String jwt = GeneratorJWTUtils.generateJWT(userMap);
+
+                return Result.successHaveJwt("乘客登录成功", account1, jwt);
+            } else return Result.error("帐号或密码错误，登录失败");
 
 
             } else if (type.equals(UserType.DRIVER) && null != account1.getDriverId()) {
                 account1.setIt(2);
                 //                判断密码
-                if (account.getPassword().equals(account1.getPassword()))
-                    return Result.success("司机登录成功", account1);
-                else return Result.error("帐号或密码错误，登录失败");
+                if (account.getPassword().equals(account1.getPassword())) {
+
+//                    保存在jwt令牌中的数据
+//                    身份
+
+                    userMap.put("id", account1.getId());
+                    userMap.put("account", account1.getAccount());
+                    userMap.put("type", account.getIt());
+
+
+//                    生成JWT令牌
+                    String jwt = GeneratorJWTUtils.generateJWT(userMap);
+                    return Result.successHaveJwt("司机登录成功", account1, jwt);
+                }else return Result.error("帐号或密码错误，登录失败");
 
             } else if (type.equals(UserType.OFFICIAL) && null != account1.getManagerId()) {
                 account1.setIt(3);
                 //                判断密码
-                if (account.getPassword().equals(account1.getPassword()))
-                    return Result.success("乘客登录成功", account1);
-                else return Result.error("帐号或密码错误，登录失败");
+                if (account.getPassword().equals(account1.getPassword())) {
+
+//                    保存在jwt令牌中的数据
+//                    身份
+
+                    userMap.put("id", account1.getId());
+                    userMap.put("account", account1.getAccount());
+                    userMap.put("type", account.getIt());
+
+
+//                    生成JWT令牌
+                    String jwt = GeneratorJWTUtils.generateJWT(userMap);
+
+
+                    return Result.successHaveJwt("管理员登录成功", account1, jwt);
+                }else return Result.error("帐号或密码错误，登录失败");
 
             } else return Result.error("帐号或是密码错误，登录失败");
         }

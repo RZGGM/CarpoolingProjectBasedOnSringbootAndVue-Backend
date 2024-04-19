@@ -4,11 +4,14 @@ import com.gzasc.onlinecarhailing.Mapper.TicketMapper;
 import com.gzasc.onlinecarhailing.pojo.Ticket;
 import com.gzasc.onlinecarhailing.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 //对票的管理
+
 @Service
 public class TicketServiceImpl implements TicketService {
 
@@ -37,17 +40,20 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Cacheable(cacheNames = "ticket")
     public List<Ticket> searchAllTicket() {
         return ticketMapper.selectAll();
     }
 
     @Override
+    @Cacheable(cacheNames = "ticket")
     public Ticket searchTicketById(Integer id) {
 
         return ticketMapper.selectTicketById(id);
     }
 
     @Override
+    @Cacheable(cacheNames = "ticket")
     public List<Ticket> searchAvailableTicket(){
         return ticketMapper.selectAvailableTickets();
     }
