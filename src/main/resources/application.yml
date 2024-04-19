@@ -7,9 +7,9 @@ spring:
     username: root
     password: 123456
 #    redis的，现在用来作缓存。
-  redis:
-    host: 127.0.0.1
-    port: 6379
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
 
 # mybatis的配置
 mybatis:

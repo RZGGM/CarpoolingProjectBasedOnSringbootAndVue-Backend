@@ -34,15 +34,7 @@ class OnlineCarHailingApplicationTests {
 
         System.out.println("加密前的"+userMap);
 
-//        String jwt = GeneratorJWTUtils.generateJWT(userMap);
-
-        String jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9" +
-                "." +
-                "eyJpZCI6MSwiYWNjb3VudCI6IjExMjIzMyIsImp0aSI6ImVkOTM2ODk2" +
-                "LWY5ZjYtNGNiOS04ZmM0LTA4OWRkYzdiZGI5OSIsImV4cCI6MTcxMjEzMTQ4OCw" +
-                "iaWF0IjoxNzExODcyMjg4LCJpc3MiOiJ6ciIsInN1YiI6InVzZXIifQ" +
-                "." +
-                "TxdgmPxGrl6tPQmZkH2Ef0_HvDEMkgLxt4tqLJuxHPU";
+        String jwt = GeneratorJWTUtils.generateJWT(userMap);
 
         System.out.println("加密后的："+jwt);
 

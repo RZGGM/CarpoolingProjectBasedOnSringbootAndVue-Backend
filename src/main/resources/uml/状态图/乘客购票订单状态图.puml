@@ -1,9 +1,0 @@
-@startuml
-'https://plantuml.com/state-diagram
-hide empty description
-[*] -right-> 待支付
-待支付 --> 待确认
-待确认 -left-> 待评价
-待评价 -up-> [*]
-
-@enduml
