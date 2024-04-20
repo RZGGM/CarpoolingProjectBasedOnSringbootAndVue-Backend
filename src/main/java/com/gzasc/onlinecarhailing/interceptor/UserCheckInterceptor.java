@@ -27,7 +27,7 @@ public class UserCheckInterceptor implements HandlerInterceptor {
         String jwt = req.getHeader("Jwt");
 
 //        如果请求的路径是login直接放行
-        if (url.contains("login")){
+        if (url.contains("login")) {
 
             return true;
 
@@ -35,15 +35,23 @@ public class UserCheckInterceptor implements HandlerInterceptor {
 
 
 //        判断是否有令牌
-        if (!StringUtils.hasLength(jwt)){
+        if (!StringUtils.hasLength(jwt)) {
 // 没有令牌进入到这
             resp.getWriter().write(JSONObject.toJSONString(Result.error("请登录")));
             return false;
         }
+
+        System.out.println("");
+
 //        解析Jwt
-        try{
+        try {
+
             GeneratorJWTUtils.parseClaim(jwt);
-        }catch (Exception exception){
+
+//            log.info(url);
+
+
+        } catch (Exception exception) {
 //            解析失败进入到这
 
             resp.getWriter().write(JSONObject.toJSONString(Result.error("请登录")));
@@ -57,8 +65,6 @@ public class UserCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
-
 
 
     }

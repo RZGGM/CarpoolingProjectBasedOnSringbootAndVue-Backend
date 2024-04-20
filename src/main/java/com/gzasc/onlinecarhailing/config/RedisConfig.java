@@ -8,7 +8,7 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-// 解决直接查看redis中文不显示
+// 解决直接查看redis中文不显示（没解决2024-04-20 20:03:27）
 @Configuration
 public class RedisConfig {
     @Bean(name="redisTemplate")
