@@ -35,6 +35,8 @@ public class UserController {
     @Autowired
     OrderService orderService;
 
+//    使用jwt免登录，其实就是免输入帐号或是密码。不对不行，因为登录前还要先身份，所以不能使用免登录。
+
     //    登录
     @RequestMapping("/login")
     public Result login(Account account) {

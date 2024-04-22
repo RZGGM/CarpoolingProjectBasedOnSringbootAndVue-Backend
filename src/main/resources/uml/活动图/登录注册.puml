@@ -1,13 +1,12 @@
 @startuml
 'https://plantuml.com/activity-diagram-beta
 
-|用户|
 start
  split
  :登录;
  :输入帐号密码并选择身份;
  :点击登录;
-|系统|
+
 :对参数进行校验;
 if (参数校验) then(不通过)
 :提示参数不正确;
@@ -15,11 +14,11 @@ stop
 else (通过)
 :提示成功;
 endif
-|用户|
+
  split again
  :注册;
  :输入必要信息;
- |系统|
+
  :对信息进行核验;
  if (信息核验) then (通过)
  :提示注册成功;
@@ -27,11 +26,11 @@ endif
  :提示注册失败;
  stop
  endif
- |用户|
+
  split again
  :忘记密码;
  :输入必要信息，并且输入新的密码;
- |系统|
+
  :对提交的信息进入核验;
  if (参数校验) then(不通过)
  :提示参数不正确;

@@ -17,19 +17,7 @@ split again
     end split;
 split again
 :订单;
-    split
-    :取消订单;
-    split again
-    :发送信息;
-    split again
-    :投诉;
-    split again
-    :评价订单;
-    split again
-    :查看订单评价;
-    split again
-    :支付;
-    end split;
+:订单状态改变;
 split again
 :聊天;
 :选择聊天对象;
