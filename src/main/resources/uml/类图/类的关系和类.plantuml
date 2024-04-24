@@ -1,0 +1,251 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Account {
+  - password: String
+  - driverId: Integer
+  - managerId: Integer
+  - it: Integer
+  - passengerId: Integer
+  - id: Integer
+  - account: String
+  - phone: String
+  + hashCode(): int
+  # canEqual(Object): boolean
+  + toString(): String
+  + equals(Object): boolean
+   managerId: Integer
+   password: String
+   phone: String
+   driverId: Integer
+   passengerId: Integer
+   id: Integer
+   it: Integer
+   account: String
+}
+class Appraise {
+  - driverId: Integer
+  - id: Integer
+  - orderId: String
+  - comment: String
+  # canEqual(Object): boolean
+  + toString(): String
+  + hashCode(): int
+  + equals(Object): boolean
+   comment: String
+   orderId: String
+   id: Integer
+   driverId: Integer
+}
+class Car {
+  - ownerId: Integer
+  - vehicleNo: String
+  - id: Integer
+  - color: String
+  + toString(): String
+  + hashCode(): int
+  # canEqual(Object): boolean
+  + equals(Object): boolean
+   vehicleNo: String
+   id: Integer
+   color: String
+   ownerId: Integer
+}
+class ChatRoom {
+  - createDate: Date
+  - messageList: List<Message>
+  - driverId: Integer
+  - managerId: Integer
+  - name: String
+  - id: Integer
+  - passengerId: Integer
+  + toString(): String
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+   name: String
+   managerId: Integer
+   messageList: List<Message>
+   createDate: Date
+   driverId: Integer
+   passengerId: Integer
+   id: Integer
+}
+class Driver {
+  - phone: String
+  - driverAddress: String
+  - account: String
+  - driverLicenseId: Integer
+  - hasCanAcceptOrder: Integer
+  - driverId: Integer
+  - updateTime: Date
+  - state: Integer
+  - name: String
+  - driverNation: String
+  - driverBirthday: Date
+  - gender: String
+  - account1: Account
+  - accountId: Integer
+  - driverLicense: DriverLicense
+  + toString(): String
+  + equals(Object): boolean
+  + hashCode(): int
+  # canEqual(Object): boolean
+   driverBirthday: Date
+   driverLicenseId: Integer
+   gender: String
+   driverAddress: String
+   phone: String
+   driverId: Integer
+   hasCanAcceptOrder: Integer
+   updateTime: Date
+   account1: Account
+   name: String
+   driverLicense: DriverLicense
+   driverNation: String
+   state: Integer
+   account: String
+   accountId: Integer
+}
+class DriverLicense {
+  - getDriverLicenseDate: Date
+  - licenseId: String
+  - id: Integer
+  - driverLicenseOff: Date
+  - driverLicenseOn: Date
+  + hashCode(): int
+  # canEqual(Object): boolean
+  + equals(Object): boolean
+  + toString(): String
+   driverLicenseOff: Date
+   driverLicenseOn: Date
+   id: Integer
+   licenseId: String
+   getDriverLicenseDate: Date
+}
+class Message {
+  - ownerName: String
+  - sendTime: Date
+  - chatRoomId: Integer
+  - ownerId: Integer
+  - data: String
+  - id: Integer
+  - ownerType: Integer
+  + toString(): String
+  + hashCode(): int
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+   sendTime: Date
+   chatRoomId: Integer
+   ownerName: String
+   ownerType: Integer
+   id: Integer
+   data: String
+   ownerId: Integer
+}
+class Order {
+  - appraiseId: Integer
+  - phone: String
+  - createTime: Date
+  - tips: String
+  - id: Integer
+  - appraise: Appraise
+  - ownerId: Integer
+  - createUserType: Integer
+  - state: Integer
+  - destinationAddress: String
+  - otherId: String
+  - manCount: Integer
+  - departureAddress: String
+  - joinOrderCanJoin: Integer
+  - passengerId: Integer
+  - finishTime: Date
+  - price: float
+  - ticketId: Integer
+  - orderId: String
+  - orderType: Integer
+  - passengerCount: Integer
+  - driverId: Integer
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + equals(Object): boolean
+  + toString(): String
+   departureAddress: String
+   joinOrderCanJoin: Integer
+   appraiseId: Integer
+   orderId: String
+   createUserType: Integer
+   phone: String
+   driverId: Integer
+   ticketId: Integer
+   price: float
+   id: Integer
+   otherId: String
+   createTime: Date
+   manCount: Integer
+   appraise: Appraise
+   state: Integer
+   tips: String
+   finishTime: Date
+   destinationAddress: String
+   passengerCount: Integer
+   passengerId: Integer
+   orderType: Integer
+   ownerId: Integer
+}
+class Passenger {
+  - accountId: Integer
+  - state: Integer
+  - name: String
+  - updateTime: Date
+  - account1: Account
+  - gender: String
+  - account: String
+  - passengerId: Integer
+  - phone: String
+  + equals(Object): boolean
+  + toString(): String
+  # canEqual(Object): boolean
+  + hashCode(): int
+   name: String
+   gender: String
+   phone: String
+   state: Integer
+   updateTime: Date
+   passengerId: Integer
+   account1: Account
+   account: String
+   accountId: Integer
+}
+class Ticket {
+  - destinationAddress: String
+  - passengerCount: Integer
+  - soldCount: Integer
+  - id: Integer
+  - startTime: Date
+  - status: Integer
+  - departureAddress: String
+  - price: float
+  + hashCode(): int
+  # canEqual(Object): boolean
+  + equals(Object): boolean
+  + toString(): String
+   departureAddress: String
+   startTime: Date
+   status: Integer
+   price: float
+   destinationAddress: String
+   passengerCount: Integer
+   id: Integer
+   soldCount: Integer
+}
+
+ChatRoom      "1" *-[#595959,plain]-> "messageList\n*" Message       
+Driver        "1" *-[#595959,plain]-> "account1\n1" Account       
+Driver        "1" *-[#595959,plain]-> "driverLicense\n1" DriverLicense 
+Order         "1" *-[#595959,plain]-> "appraise\n1" Appraise      
+Passenger     "1" *-[#595959,plain]-> "account1\n1" Account       
+@enduml

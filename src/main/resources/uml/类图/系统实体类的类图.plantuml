@@ -1,0 +1,23 @@
+@startuml
+
+!theme plain
+left to right direction
+skinparam linetype ortho
+
+class Account
+class Appraise
+class Car
+class ChatRoom
+class Driver
+class DriverLicense
+class Message
+class Order
+class Passenger
+class Ticket
+
+ChatRoom      "1" *-[#595959,plain]-> "messageList\n*" Message
+Driver        "1" *-[#595959,plain]-> "account1\n1" Account       
+Driver        "1" *-[#595959,plain]-> "driverLicense\n1" DriverLicense 
+Order         "1" *-[#595959,plain]-> "appraise\n1" Appraise      
+Passenger     "1" *-[#595959,plain]-> "account1\n1" Account       
+@enduml
