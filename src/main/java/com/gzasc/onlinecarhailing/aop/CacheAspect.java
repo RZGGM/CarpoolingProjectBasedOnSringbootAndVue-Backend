@@ -21,6 +21,7 @@ public class CacheAspect {
 
 //    当缓存的数据在数据库中变化时，要更改或是直接移除，可以定义一个类来装缓存的key，或是定义一个属性来装如下。
     private List<String> ticketKey = new  ArrayList<>();
+    private List<String> orderKye = new ArrayList<>();
 
 //    由于使用注解的形式实现缓存不利于使用可视化管理工具进行查看和管理缓存，
 //    所以使用了 RedisTemPlate；
@@ -85,7 +86,7 @@ public class CacheAspect {
         return proceedingJoinPoint.proceed();
     }
 */
-//
+
 
     //    车票缓存，乘客看到的。
     @Around("execution(* com.gzasc.onlinecarhailing.service.impl.TicketServiceImpl.searchAvailableTicket(..))")
@@ -143,5 +144,60 @@ public class CacheAspect {
 
     }
 
+//    为共用的拼车订单开启缓存
+    @Around("execution(* com.gzasc.onlinecarhailing.service.OrderService.searchOrdersByOrderState(Integer))")
+    public Object searchCanJoinOrder(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+//        缓存的key.
+        String key = null;
+//        方法名
+        String className = proceedingJoinPoint.getSignature().getName();
+// 参数
+       String args = Arrays.toString(Arrays.stream(proceedingJoinPoint.getArgs()).toArray());
+
+       key = className + args;
+
+        //        从缓存中查看数据
+        Object object = redisUtils.get(key);
+
+//        判断缓存中是否有数据
+        if (object != null) {
+            return object;
+        } else {
+            object = proceedingJoinPoint.proceed();
+
+//            将Key装入容器中，当缓存要变化时，可以使用。
+            orderKye.add(key);
+
+            redisUtils.set(key, object);
+        }
+
+        return object;
+
+    }
+
+    //    在拼车订单变化时移除拼车订单缓存
+    @Around("execution(* com.gzasc.onlinecarhailing.service.impl.OrderServiceImpl.add*(..))" +
+            "||" +
+            "execution(* com.gzasc.onlinecarhailing.service.impl.OrderServiceImpl.remove*(..))" +
+            "||" +
+            "execution(* com.gzasc.onlinecarhailing.service.impl.OrderServiceImpl.mod*(..))")
+    public Object removeCanJoinOrder(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
+//        当调用方法时，就说明要删除缓存了。
+        if (!orderKye.isEmpty()){
+
+//            缓存不为空。
+
+            redisUtils.delete(ticketKey);
+
+            return proceedingJoinPoint.proceed();
+
+        }else {
+
+            return proceedingJoinPoint.proceed();
+        }
+
+
+    }
 
 }
