@@ -5,14 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.*;
 import com.gzasc.onlinecarhailing.utils.OrderUtils;
-import com.zaxxer.hikari.util.DriverDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -99,6 +96,7 @@ public class PassengerController {
 
         Integer count = orderService.addTicketToPassenger(order);
 
+        if (count == null) return Result.error("购票失败。");
 
         if (count > 0) {
 
@@ -147,7 +145,7 @@ public class PassengerController {
     public Result cancelOrder(@RequestBody String orderId) {
 
 
-        Integer count = orderService.abolishOrderByOrderId(orderId);
+        Integer count = orderService.modOrderByOrderId(orderId);
 
         if (count > 0) return Result.success("乘客取消订单成功");
         else return Result.error("乘客取消订单失败");

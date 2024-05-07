@@ -7,6 +7,7 @@ import com.gzasc.onlinecarhailing.service.TicketService;
 import com.gzasc.onlinecarhailing.utils.OrderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class PassengerServiceImpl implements PassengerService {
 
     //    基于司机发出的拼车订单生成订单
     @Override
+    @Transactional
     public Integer addOrderOnJoinOrderToPassenger(Order driverCreateJoinOrder, Order passengerOrder) {
 
 //        得到司机
@@ -90,6 +92,7 @@ public class PassengerServiceImpl implements PassengerService {
 
     //    接受订单
     @Override
+    @Transactional
     public Integer addOrderToPassenger(String driverOrderId, Integer passengerId) {
 
 
@@ -160,17 +163,20 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
+    @Transactional
     public Integer register(Passenger passenger) {
 
         return passengerMapper.insert(passenger);
     }
 
     @Override
+    @Transactional
     public Integer remove(Integer id) {
         return passengerMapper.deleteById(id);
     }
 
     @Override
+    @Transactional
     public Integer removeByIds(List<Integer> ids) {
 //        先清除乘客对应的订单，和发起的拼单
         Passenger passenger;
@@ -209,6 +215,7 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
+    @Transactional
     public Integer mod(Passenger newPassenger) {
         return passengerMapper.update(newPassenger);
     }

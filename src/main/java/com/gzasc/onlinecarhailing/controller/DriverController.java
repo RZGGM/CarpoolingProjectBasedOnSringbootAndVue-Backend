@@ -3,7 +3,6 @@ package com.gzasc.onlinecarhailing.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.gzasc.onlinecarhailing.Mapper.DriverMapper;
 import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.plaf.PanelUI;
 import java.util.List;
 import java.util.Objects;
 
@@ -164,7 +162,7 @@ public class DriverController {
     public Result cancelOrder(@RequestBody String orderId) {
 
 
-        Integer count = orderService.abolishOrderByOrderId(orderId);
+        Integer count = orderService.modOrderByOrderId(orderId);
 
         if (count > 0) return Result.success("司机取消订单成功");
         else return Result.error("司机取消订单失败");

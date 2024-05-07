@@ -28,7 +28,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-
+<!-- AOP的依赖-->
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>3.2.5</version>
+        </dependency>
 <!--        mybatis的分页插件-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -88,9 +94,21 @@
             <version>3.0.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-
+<!--        要使用自己的tomcat应该要在这排除内置的tomcat-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
     </dependencies>
+<!--    项目打包为war包，为了部署在tomcat上。-->
+    <packaging>war</packaging>
 
     <build>
         <plugins>

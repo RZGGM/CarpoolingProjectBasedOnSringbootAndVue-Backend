@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
     //    创建订单,乘客购买车票创建的订单
     @Override
+    @Transactional
     public Integer addTicketToPassenger(Order order) {
 
 //       通过订单获得票的id。因为还要对票进行操作。
@@ -59,6 +61,7 @@ public class OrderServiceImpl implements OrderService {
 
     // 拼单订单
     @Override
+    @Transactional
     public Integer addJoinOrderToPassenger(Order order) {
 //            将订单类型改为让司机可以看到
         order.setOrderType(OrderType.PASSENGER_WAIT_DRIVER);
@@ -74,6 +77,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Integer addJoinOrderToDriver(Order order) {
         //            将订单类型改为司机等待乘客，这样，乘客就可以看到这个订单了。
         order.setOrderType(OrderType.DRIVER_WAIT_PASSENGER);
@@ -87,38 +91,10 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    @Override
-    public Integer deleteOrderById(Integer id) {
-
-
-        return orderMapper.deleteOrderById(id);
-    }
 
     @Override
-    public Integer modOrderState(String orderId, Integer state) {
+    @Transactional
 
-
-//        当状态为确认订单完成时，要设置订单的完成时间
-        if (OrderState.FINSHED.equals(state)) {
-
-            orderMapper.updateOrderFinishTime(orderId);
-
-        }
-
-
-        return orderMapper.updateOrder(orderId, state);
-
-    }
-
-    @Override
-    @Cacheable
-    public List<Order> selectBySelfId(Integer id) {
-
-        return orderMapper.selectBySelfId(id);
-    }
-
-
-    @Override
     public Integer addAppraiseIdToOrder(Appraise appraise) {
 
 //        返回一个数字，0是表示评价不成功，1是评价成功
@@ -143,7 +119,37 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Integer abolishOrderByOrderId(String orderId) {
+    @Transactional
+
+    public Integer deleteOrderById(Integer id) {
+
+
+        return orderMapper.deleteOrderById(id);
+    }
+
+    @Override
+    @Transactional
+
+    public Integer modOrderState(String orderId, Integer state) {
+
+
+//        当状态为确认订单完成时，要设置订单的完成时间
+        if (OrderState.FINSHED.equals(state)) {
+
+            orderMapper.updateOrderFinishTime(orderId);
+
+        }
+
+
+        return orderMapper.updateOrder(orderId, state);
+
+    }
+
+// 这个应该算是更新订单。
+    @Override
+    @Transactional
+
+    public Integer modOrderByOrderId(String orderId) {
 
 //        先查询这个订单的信息
         Order order = orderMapper.selectByOrderId(orderId);
@@ -190,7 +196,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Cacheable
+
     public List<Order> searchOrdersByOrderState(Integer state) {
 
 
@@ -198,7 +204,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Cacheable
+
     public List<Order> searchOrdersByAccount(Account account) {
 
 //        判断传入的帐号的类型，判断要找出什么类型的订单。
@@ -220,7 +226,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    @Cacheable
+
     public List<Order> searchOrdersByOrderType(Integer orderType) {
 
 //        判断类型，来看是返回哪些订单
@@ -246,19 +252,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Cacheable
+
     public Appraise searchAppraiseByOrderId(String orderId) {
 
         return appraiseMapper.selectAppraiseByOrderId(orderId);
 
     }
 
-    //    根据订单的所有者的身份和对应身份的id来获取订单
+    //    根据订单的所有者的身份和对应身份的id来获取订单，如果分页的结果和不分页的都用这个那会让键重复，改造下吧。
     @Override
-    @Cacheable
     public List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId) {
 
         return orderMapper.selectByCreateUserTypeAndOwnerId(createUserType, ownerId);
 
     }
+    @Override
+    public List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId, OrderQuery orderQuery) {
+
+        return orderMapper.selectByCreateUserTypeAndOwnerId(createUserType, ownerId);
+
+    }
+    @Override
+    public List<Order> searchBySelfId(Integer id) {
+
+        return orderMapper.selectBySelfId(id);
+    }
+
 }

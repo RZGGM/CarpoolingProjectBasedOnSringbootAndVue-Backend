@@ -3,7 +3,7 @@ package com.gzasc.onlinecarhailing.service;
 import com.gzasc.onlinecarhailing.pojo.Account;
 import com.gzasc.onlinecarhailing.pojo.Appraise;
 import com.gzasc.onlinecarhailing.pojo.Order;
-import com.gzasc.onlinecarhailing.pojo.OrderType;
+import com.gzasc.onlinecarhailing.pojo.OrderQuery;
 
 import java.util.List;
 
@@ -24,14 +24,14 @@ public interface OrderService {
     Integer modOrderState(String orderId, Integer state);
 
     //    乘客查看自己的所有订单
-    List<Order> selectBySelfId(Integer id);
+    List<Order> searchBySelfId(Integer id);
 
 //    乘客对订单进行评价
     Integer addAppraiseIdToOrder(Appraise appraise);
 
 
 //    通过订单的编号进行取消订单
-    Integer abolishOrderByOrderId(String orderId);
+    Integer modOrderByOrderId(String orderId);
 
 //    根据订单的状态查询订单
     List<Order> searchOrdersByOrderState(Integer state);
@@ -51,5 +51,8 @@ public interface OrderService {
 //
 //    根据订单的所有者的身份和对应身份的id来获取订单
     List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId);
+// 加上个页码用和缓存区分。但是更新缓存时怎么办？
+//    将参数更改为整个前端传来的参数，size，计算出总页码，再拼接得到key，全部移去。
+    List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId, OrderQuery orderQuery);
 
 }

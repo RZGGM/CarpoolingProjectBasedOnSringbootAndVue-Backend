@@ -1,10 +1,13 @@
 package com.gzasc.onlinecarhailing;
 
 import com.gzasc.onlinecarhailing.utils.GeneratorJWTUtils;
-import org.junit.jupiter.api.Test;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,5 +48,6 @@ class OnlineCarHailingApplicationTests {
 //        解密后的：header={typ=JWT, alg=HS256},payload={id=1, account=112233, jti=ed936896-f9f6-4cb9-8fc4-089ddc7bdb99, exp=1712131488, iat=1711872288, iss=zr, sub=user},signature=TxdgmPxGrl6tPQmZkH2Ef0_HvDEMkgLxt4tqLJuxHPU
 
     }
+
 
 }

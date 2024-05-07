@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,12 +21,14 @@ public class TicketServiceImpl implements TicketService {
 
 
     @Override
+    @Transactional
     public Integer addTicket(Ticket ticket) {
         ticketMapper.insertTicket(ticket);
         return ticket.getId();
     }
 
     @Override
+    @Transactional
     public Integer removeTicket(Integer ticketId) {
 
        return ticketMapper.deleteTicket(ticketId);
@@ -33,6 +36,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public Integer modTicket(Ticket ticket) {
 
         return ticketMapper.updateTicket(ticket);
@@ -40,20 +44,17 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    @Cacheable(cacheNames = "ticket")
     public List<Ticket> searchAllTicket() {
         return ticketMapper.selectAll();
     }
 
     @Override
-    @Cacheable(cacheNames = "ticket")
     public Ticket searchTicketById(Integer id) {
 
         return ticketMapper.selectTicketById(id);
     }
 
     @Override
-    @Cacheable(cacheNames = "ticket")
     public List<Ticket> searchAvailableTicket(){
         return ticketMapper.selectAvailableTickets();
     }

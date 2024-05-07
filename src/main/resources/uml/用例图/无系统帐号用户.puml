@@ -1,0 +1,5 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+:没有帐号的用户: -> (注册)
+@enduml
