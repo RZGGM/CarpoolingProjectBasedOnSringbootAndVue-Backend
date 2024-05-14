@@ -1,5 +1,7 @@
 @startmindmap
 'https://plantuml.com/mindmap-diagram
+
+
 * 司机
     ** 登录注册
     *** 输入帐号信息
