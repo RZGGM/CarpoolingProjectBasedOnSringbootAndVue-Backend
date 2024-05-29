@@ -8,6 +8,7 @@ import com.gzasc.onlinecarhailing.pojo.Result;
 import com.gzasc.onlinecarhailing.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,33 +24,28 @@ public class AccountServiceImpl implements AccountService {
     PassengerMapper passengerMapper;
 
     @Override
+    @Transactional
     public Integer register(Account account) {
 
         return accountMapper.insertAccount(account);
     }
 
     @Override
+    @Transactional
     public Integer remove(Integer id) {
         return accountMapper.deleteAccount(id);
     }
 
     @Override
+    @Transactional
     public Integer mod(Account newAccount) {
 
         return accountMapper.updateAccount(newAccount);
     }
 
-    @Override
-    public Account search(String account) {
-        return accountMapper.selectByAccount(account);
-    }
 
     @Override
-    public List<Account> searchAll() {
-        return accountMapper.selectAll();
-    }
-
-    @Override
+    @Transactional
     public Integer removeAccountsByIds(List<Integer> ids) {
 
 //        先查询到数据库对应的表的数据，然后判断有无乘客信息或是司机信息，然后删除。
@@ -98,4 +94,14 @@ public class AccountServiceImpl implements AccountService {
         return accountMapper.selectByPhoneAndAccount(account);
 
     }
+    @Override
+    public Account search(String account) {
+        return accountMapper.selectByAccount(account);
+    }
+
+    @Override
+    public List<Account> searchAll() {
+        return accountMapper.selectAll();
+    }
+
 }

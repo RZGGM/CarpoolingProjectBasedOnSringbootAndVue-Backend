@@ -96,6 +96,7 @@ public class ManagerController {
 
         if (ticket.getSoldCount() == null) ticket.setSoldCount(0);
 
+//        再从数据库里搜索一下刚刚添加的车票，看它是不是null；
         Ticket ticket1 = ticketService.searchTicketById(ticketService.addTicket(ticket));
 
 //        System.out.println();

@@ -1,0 +1,129 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class account {
+passenger_id  : int
+driver_id  : int
+account  : varchar(20)
+password  : varchar(20)
+manager_id  : int
+phone  : varchar(20)
+id  : int
+}
+class appraise {
+driver_id  : int
+comment  : varchar(200)
+order_id  : varchar(20)
+id  : int
+}
+class car {
+no  : varchar(20)
+owner_id  : int
+color  : varchar(20)
+id  : int
+}
+class chatroom {
+name  : varchar(15)
+create_date  : datetime
+passenger_id  : int
+driver_id  : int
+manager_id  : int
+id  : int
+}
+class driver {
+driver_birthday  : date
+driver_nation  : varchar(10)
+driver_address  : varchar(200)
+driver_license_id  : int
+update_time  : datetime
+phone  : varchar(20)
+gender  : varchar(1)
+state  : int
+name  : varchar(20)
+account_id  : int
+account  : varchar(20)
+id  : int
+}
+class driverlicense {
+license_id  : varchar(255)
+get_driver_license_date  : date
+driver_license_on  : date
+driver_license_off  : date
+id: int
+}
+class message {
+owner_id  : int
+data  : varchar(200)
+chat_room_id  : int
+owner_type  : int
+owner_name  : varchar(20)
+send_time  : datetime
+id  : int
+}
+class order {
+order_id  : varchar(30)
+create_time  : datetime
+finish_time  : datetime
+driver_id  : int
+man_count  : int
+passenger_id  : int
+tips  : varchar(200)
+price  : int
+type  : int
+owner_id  : int
+state  : int
+ticket_id  : int
+appraise_id  : int
+other_id  : varchar(20)
+create_user_type  : int
+departure  : varchar(20)
+destination  : varchar(20)
+passenger_count  : int
+join_order_can_join  : int
+phone  : varchar(20)
+id  : int
+}
+class passenger {
+phone  : varchar(20)
+gender  : varchar(1)
+state  : int
+name  : varchar(20)
+account  : varchar(20)
+account_id  : int
+update_time  : datetime
+id  : int
+}
+class ticket {
+max_passenger_count  : int
+start_time  : datetime
+status  : int
+price  : int
+departure  : varchar(200)
+destination  : varchar(200)
+sold_count  : int
+id  : int
+}
+
+
+account    "1"-[#595959,plain]-"1"  driver   : "driver_id:id"
+account    "1"-[#595959,plain]-"1"  passenger   : "passenger_id:id"
+
+appraise    "*"-[#595959,plain]-"1"  driver   : "driver_id:id"
+
+appraise    "1"-[#595959,plain]-"1"  order   : "order_id:id"
+
+chatroom    "*"-[#595959,plain]-"1"  driver   : "driver_id:id"
+chatroom    "*"-[#595959,plain]-"1"  passenger   : "passenger_id:id"
+
+message "*"-[#595959,plain]-"1" chatroom : "chat_room_id:id"
+
+driverlicense "1"-[#595959,plain]-"1"  driver : "id: driver_license_id"
+
+order    "*"-[#595959,plain]-"1"  driver   : "driver_id:id"
+order    "*"-[#595959,plain]-"1"  passenger   : "passenger_id:id"
+
+order    "*"-[#595959,plain]-"1"  ticket   : "ticket_id:id"
+@enduml

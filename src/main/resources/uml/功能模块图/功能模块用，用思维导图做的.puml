@@ -1,0 +1,27 @@
+@startmindmap
+'https://plantuml.com/mindmap-diagram
+top to bottom direction
+ * 基于JAVA的湛江网络车系统
+ ** 无帐号用户
+ *** 登录注册
+
+ ** 管理员
+ *** 登录
+ *** 车票管理
+ *** 乘客管理
+ *** 司机管理
+ *** 帐号管理
+ *** 投诉管理
+ ** 司机
+ *** 拼车
+ *** 订单
+ *** 聊天
+ *** 我的
+ ** 乘客
+ *** 车票
+ *** 拼车
+  *** 订单
+  *** 聊天
+  *** 我的
+
+@endmindmap

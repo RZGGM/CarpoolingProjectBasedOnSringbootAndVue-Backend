@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+start
+
+
+split
+    :取消订单;
+    split again
+    :发送信息;
+    split again
+    :投诉;
+    split again
+    :评价订单;
+    split again
+    :查看订单评价;
+    split again
+    :支付;
+    end split;
+
+stop
+
+@enduml
