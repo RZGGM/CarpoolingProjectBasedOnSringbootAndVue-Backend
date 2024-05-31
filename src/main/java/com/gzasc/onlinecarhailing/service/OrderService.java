@@ -23,7 +23,8 @@ public interface OrderService {
 
 //    更改订单的状态
     Integer modOrderState(String orderId, Integer state);
-
+//通过订单编号修改订单
+    Integer modOrderByOrderId(String orderId);
     //    乘客查看自己的所有订单
 
     List<Order> selectBySelfId(Integer id);

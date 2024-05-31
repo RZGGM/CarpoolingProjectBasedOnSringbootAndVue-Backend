@@ -109,6 +109,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Integer modOrderByOrderId(String orderId) {
+        return null;
+    }
+
+    @Override
     public List<Order> selectBySelfId(Integer id) {
 
         return orderMapper.selectBySelfId(id);

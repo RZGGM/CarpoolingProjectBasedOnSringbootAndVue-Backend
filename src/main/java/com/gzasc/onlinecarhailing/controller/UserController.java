@@ -39,11 +39,14 @@ public class UserController {
 
     //    登录
     @RequestMapping("/login")
-    public Result login(Account account) {
+    public Result login(Account account) throws InterruptedException {
 
         if (account == null) return Result.error("帐号为空，登录失败。");
 
-        String password = account.getPassword();
+        if (account.getAccount().equals("22")){
+            Thread.sleep(1000);
+            System.out.println("我我多");
+        }
 
         log.info(account.toString());
 
