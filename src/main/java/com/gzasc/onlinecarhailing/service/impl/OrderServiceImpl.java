@@ -108,9 +108,55 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+
+    // 这个应该算是更新订单。
     @Override
+    @Transactional
+
     public Integer modOrderByOrderId(String orderId) {
-        return null;
+
+//        先查询这个订单的信息
+        Order order = orderMapper.selectByOrderId(orderId);
+
+//        判断是否找到对应的订单，找到就进入到下一步。
+        if (order == null) return 0;
+//        判断是哪一方发起的，就是这个订单是哪个用户类型拥有的。。（感觉这样写，复杂了，其实只用判断是否有otherId就行了。）
+        if (UserType.PASSENGER.equals(order.getCreateUserType())) {
+//            乘客发起的进入到这里。
+//            再查询是否有司机接取了，有的话，要设置对应的司机的订单状态为乘客已经取消
+//            -1表示为官方的订单和没有司机接取的订单
+            if (order.getDriverId().equals(-1)) {
+//                没有的司机接收的话，设置为已经取消
+//                在取消前，是官方的票的话，要将它售出的数量-1。
+                if (order.getTicketId() != null) {
+                    Ticket ticket = ticketMapper.selectTicketById(order.getTicketId());
+
+                    if (null != ticket) {
+                        ticket.setSoldCount(ticket.getSoldCount() - 1);
+                        ticketMapper.updateTicket(ticket);
+                    }
+                }
+
+                return orderMapper.updateOrder(orderId, OrderState.CONCELED);
+            } else {
+//                设置为司机的订单为，乘客已经取消
+                orderMapper.updateOrder(order.getOtherId(), OrderState.PASSENGER_CONCEL);
+//                再设置自己的订单的状态为已经取消了。
+                return orderMapper.updateOrder(orderId, OrderState.CONCELED);
+            }
+        } else if (UserType.DRIVER.equals(order.getCreateUserType())) {
+//            司机发起的，进入到这里
+//            判断有没乘客已经接取的
+            if (order.getPassengerId().equals(-1)) {
+//                没有乘客接单就进入到这，设置订单状态为司机已经取消了。
+                return orderMapper.updateOrder(orderId, OrderState.CONCELED);
+            } else {
+//                已经有乘客接单的：设置乘客的订单为，司机已经取消
+                orderMapper.updateOrder(order.getOtherId(), OrderState.DRIVER_CONCEL);
+//                再设置自己的订单的状态为：已经取消
+                return orderMapper.updateOrder(orderId, OrderState.CONCELED);
+            }
+        } else return 0;
     }
 
     @Override
