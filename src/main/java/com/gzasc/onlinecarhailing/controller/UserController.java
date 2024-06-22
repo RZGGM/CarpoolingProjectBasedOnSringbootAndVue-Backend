@@ -66,7 +66,7 @@ public class UserController {
 //        将登录时选择的身份，保存到从数据库中找到的帐号信息对象中。
         accountFullInfo.setIt(account.getIt());
 //        得到登录时使用的帐号的类型
-        UserTypeEnum userTypeEnum = account.getUserTypeEnum();
+        UserTypeEnum userTypeEnum = account.returnUserTypeEnum();
         
 //        根据登录时选择的身份进行分支选择。
         switch (userTypeEnum) {

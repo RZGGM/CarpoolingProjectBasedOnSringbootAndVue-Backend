@@ -10,22 +10,35 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Account {
 
-//    id
+    //    id
     private Integer id;
-//    帐号
+    //    帐号
     private String account;
-//    密码
+    //    密码
     private String password;
-//    帐号的身份，就是对应的用户表的里的数据的id。
+    //    帐号的身份，就是对应的用户表的里的数据的id。
     private Integer driverId;
     private Integer passengerId;
     private Integer managerId;
-//    注册时要用到标识，当它为1就是乘客，当它为2就是司机，当它为3就是管理员。
+    //    注册时要用到标识，当它为1就是乘客，当它为2就是司机，当它为3就是管理员。
 //    也许在后面拦截时也要用到，通过判断这个身份来让它只能访问对应身份的页面。
     private Integer it;
-// 手机号
+    // 手机号
     private String phone;
-//    类型
+    //    类型
     private UserTypeEnum userTypeEnum;
+
+    public UserTypeEnum returnUserTypeEnum() {
+        switch (it) {
+            case 1:
+                return UserTypeEnum.PASSENGER;
+            case 2:
+                return UserTypeEnum.DRIVER;
+            case 3:
+                return UserTypeEnum.OFFICIAL;
+            default:
+                return UserTypeEnum.NOEXIST;
+        }
+    }
 
 }
