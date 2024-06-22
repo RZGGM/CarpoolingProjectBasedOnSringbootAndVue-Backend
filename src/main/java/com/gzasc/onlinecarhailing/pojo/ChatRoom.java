@@ -21,7 +21,6 @@ public class ChatRoom {
 //    创建时间，方便以后自动销毁
     private Date createDate;
 //    应该还有聊天室用户的id，方便查找
-
     private Integer passengerId;
     private Integer driverId;
 //    管理员的id

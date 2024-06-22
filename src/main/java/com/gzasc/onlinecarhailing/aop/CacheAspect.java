@@ -32,60 +32,6 @@ public class CacheAspect {
     @Autowired
     RedisUtils redisUtils;
 
-    //    对订单查询进行缓存查询的方法，所以应该是前置通知。
-//    又或者是使用环绕通知，但根据条件不调用原方法执行。
-//    但是因为只能环绕通知才能得到 （假如目标对象是一个方法）方法的参数和值。
-//    所以应该用环绕通知。
-//    每个系统的用户的订单是不一样的，是属于个人的，感觉没必要设置订单缓存。
-//    又或者是将订单缓存的功能放到前端好一点。
-//    查询的缓存
-  /*  @Around("execution(* com.gzasc.onlinecarhailing.service.impl.OrderServiceImpl.search*(..))")
-    public Object searchOrder(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
-//        redis里的key
-        String key;
-
-//        方法名
-        String name = proceedingJoinPoint.getSignature().getName();
-
-//        形参名，好像没有这种方法。不过好像也不用，毕竟方法名应该不同。（万一是重载方法怎么办？
-//        那就根据方法的个数和类型来区分，毕竟形参名是分不开的。）
-//        String paramsName = proceedingJoinPoint.getSignature().getName();
-
-//        参数
-        Object[] args = proceedingJoinPoint.getArgs();
-
-        key = name + Arrays.toString(Arrays.stream(args).toArray());
-
-        Object object = redisUtils.get(key);
-
-        if (object != null) {
-//            从缓存中找到数据，进入到这
-            return object;
-        } else {
-//            如果没有就调用方法找到，然后加入到缓存中。
-            object = proceedingJoinPoint.proceed();
-            redisUtils.set(key, object);
-        }
-
-        System.out.println(key);
-
-        return object;
-    }
-*/
-    // 数据库变理时要更新缓存
-//    分页订单用缓存有点麻烦。
-   /* @Around("execution(* com.gzasc.onlinecarhailing.service.impl.OrderServiceImpl.add*(..)) " +
-            "||" +
-            "execution(* com.gzasc.onlinecarhailing.service.impl.OrderServiceImpl.mod*(..))" +
-            "||" +
-            "execution(* com.gzasc.onlinecarhailing.service.impl.OrderServiceImpl.delete*(..))")
-    public Object updateCache(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
-
-        return proceedingJoinPoint.proceed();
-    }
-*/
 
 
     //    车票缓存，乘客看到的。

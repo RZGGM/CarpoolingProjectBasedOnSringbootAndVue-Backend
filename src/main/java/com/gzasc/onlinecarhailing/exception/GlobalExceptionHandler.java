@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     public Result exceptionHandle(Exception exception){
 
         exception.printStackTrace();
-
+        System.out.println("出错误了。");
         return Result.error("系统异常");
     }
 

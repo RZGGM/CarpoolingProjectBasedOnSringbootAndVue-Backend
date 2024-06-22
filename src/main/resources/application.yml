@@ -1,15 +1,13 @@
 # 数据库配置信息
 spring:
-#  mysql的，用来持久保存数据
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/onlinecarhailing
     username: root
     password: 123456
-#    redis的，现在用来作缓存。
-#  redis:
-#    host: 127.0.0.1
-#    port: 6379
+  redis:
+    host: localhost
+    port: 6379
 
 # mybatis的配置
 mybatis:
@@ -17,13 +15,11 @@ mybatis:
     # 开启mybatis驼峰命名自动映射
     map-underscore-to-camel-case: true
     # 打开mybatis的提示
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # springboot内置的tomcat的配置。
 server:
   #springboot内置的tomcat占用的端口号
   port: 8085
-
-
 
 

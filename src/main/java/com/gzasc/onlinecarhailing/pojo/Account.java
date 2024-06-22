@@ -25,5 +25,7 @@ public class Account {
     private Integer it;
 // 手机号
     private String phone;
+//    类型
+    private UserTypeEnum userTypeEnum;
 
 }

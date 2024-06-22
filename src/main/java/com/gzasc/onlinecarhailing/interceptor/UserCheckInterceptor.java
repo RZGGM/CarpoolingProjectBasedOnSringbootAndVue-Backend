@@ -37,7 +37,11 @@ public class UserCheckInterceptor implements HandlerInterceptor {
 //        判断是否有令牌
         if (!StringUtils.hasLength(jwt)) {
 // 没有令牌进入到这
-            resp.getWriter().write(JSONObject.toJSONString(Result.error("请登录")));
+            resp.getWriter().write(
+                    JSONObject.toJSONString(
+                            Result.error("请登录")
+                    )
+            );
             return false;
         }
 

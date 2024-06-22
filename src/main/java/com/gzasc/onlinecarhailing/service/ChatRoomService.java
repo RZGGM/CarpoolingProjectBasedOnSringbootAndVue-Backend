@@ -9,14 +9,11 @@ import java.util.List;
 //聊天室服务层
 public interface ChatRoomService {
 
-//    创建一个聊天室，根据传入的chatroom
+    //    创建一个聊天室，根据传入的chatroom
     ChatRoom createChatRoom(ChatRoom chatRoom);
-
 
     //    创建一个聊天室，乘客和司机
     ChatRoom createChatRoom(Passenger self, Driver other);
-
-
 
     //    创建一个聊天室，乘客和管理员
     ChatRoom createChatRoom(Passenger self, Integer managerId);
@@ -49,7 +46,7 @@ public interface ChatRoomService {
     //查看聊天室，司机，乘客，管理员
     ChatRoom searchChatRoom(Driver driver, Passenger passenger, Integer managerId);
 
-//    查看聊天室的,只要两个id就行
+    //    查看聊天室的,需要三个id就行
     ChatRoom searchChatRoom(Integer driverId, Integer passengerId, Integer managerId);
 
 }

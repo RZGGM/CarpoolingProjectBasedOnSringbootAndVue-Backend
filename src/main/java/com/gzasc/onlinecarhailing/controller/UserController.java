@@ -4,6 +4,7 @@ import com.gzasc.onlinecarhailing.pojo.*;
 import com.gzasc.onlinecarhailing.service.*;
 import com.gzasc.onlinecarhailing.utils.CountPrice;
 import com.gzasc.onlinecarhailing.utils.GeneratorJWTUtils;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,9 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static com.gzasc.onlinecarhailing.pojo.UserType.DRIVER;
+import static com.gzasc.onlinecarhailing.pojo.UserType.PASSENGER;
+import static com.gzasc.onlinecarhailing.pojo.UserType.OFFICIAL;
 
 //用户都有的接口
 @RestController
@@ -31,7 +39,6 @@ public class UserController {
 
     @Autowired
     ChatRoomService chatRoomService;
-
     @Autowired
     OrderService orderService;
 
@@ -39,93 +46,121 @@ public class UserController {
 
     //    登录
     @RequestMapping("/login")
-    public Result login(Account account) throws InterruptedException {
+    public Result login(@RequestBody Account account, HttpSession httpSession) {
 
-        if (account == null) return Result.error("帐号为空，登录失败。");
-
-        if (account.getAccount().equals("22")){
-            Thread.sleep(1000);
-            System.out.println("我我多");
-        }
-
-        log.info(account.toString());
-
+//        一些必须的数据的非null判断。
+        if (account == null ||
+                account.getPassword() == null ||
+                account.getId() == null ||
+                account.getAccount() == null ||
+                account.getUserTypeEnum() == null
+        )
+            return Result.error("帐号或是密码为空，登录失败。");
 // 传入的帐号的类型
         Integer type = account.getIt();
         HashMap<String, Object> userMap = new HashMap<>();
-        Account account1 = accountService.search(account.getAccount());
-// 判断传入的帐号是否为null或是身份有问题。
-        if (type == null || type > UserType.OFFICIAL) return Result.error("帐号类型为Null或是没有此类型，登录失败。");
+//        从数据库中根据帐号得出完整的帐号信息。
+        Account accountFullInfo = accountService.search(account.getAccount());
+//        对得出的帐号进行非空判断。
+        if (accountFullInfo == null) return Result.error("帐号或密码错误，登录失败");
+//        将登录时选择的身份，保存到从数据库中找到的帐号信息对象中。
+        accountFullInfo.setIt(account.getIt());
+//        得到登录时使用的帐号的类型
+        UserTypeEnum userTypeEnum = account.getUserTypeEnum();
+        
+//        根据登录时选择的身份进行分支选择。
+        switch (userTypeEnum) {
+            case PASSENGER: {
+//                密码判断
+                if (Objects.equals(account.getPassword(), accountFullInfo.getPassword())) {
 
-        else {
-//
-            if (account1 == null) return Result.error("帐号或密码错误，登录失败");
+//                    保存在jwt令牌中的数据
+//                    身份
+                    userMap.put("id", accountFullInfo.getId());
+                    userMap.put("account", accountFullInfo.getAccount());
+                    userMap.put("type", account.getIt());
+//                    生成JWT令牌
+                    String jwt = GeneratorJWTUtils.generateJWT(userMap);
 
-            account1.setIt(account.getIt());
+//                    得到此帐号的身份的信息
+                    Passenger passenger = passengerService.search(accountFullInfo.getPassengerId());
+//                    得到登录的帐号及所用的身份的聊天室id
+                    List<ChatRoom> chatRooms = chatRoomService.searchChatRoomsByPassengerId(
+                            passenger.getPassengerId());
+                    // 使用Stream API将列表中所有实例的attribute属性转换为一个逗号分隔的字符串
+                    String commaSeparatedString = chatRooms.stream()
+                            .map(ChatRoom::getId)
+                            .map(Object::toString) // 如果Integer.toString()不是默认的，可以显式调用
+                            .collect(Collectors.joining(","));
+                    // 将这个作为标识保存起来
+                    httpSession.setAttribute("charRoomsIdsStr", commaSeparatedString);
+                    return Result.successHaveJwt("乘客登录成功", accountFullInfo, jwt);
+                }
+            }
+            case DRIVER: {
+                //                判断密码
+                if (account.getPassword().equals(accountFullInfo.getPassword())) {
 
-//            验证身份
-            if (type.equals(UserType.PASSENGER) && null != account1.getPassengerId()) {
-                account1.setIt(1);
+//                    保存在jwt令牌中的数据
+//                    身份
 
+                    userMap.put("id", accountFullInfo.getId());
+                    userMap.put("account", accountFullInfo.getAccount());
+                    userMap.put("type", account.getIt());
+
+
+//                    得到此帐号的身份的信息
+                    Driver driver = driverSerivce.search(accountFullInfo.getDriverId());
+//                    得到登录的帐号及所用的身份的聊天室id
+                    List<ChatRoom> chatRooms = chatRoomService.searchChatRoomsByDriverId(
+                            driver.getDriverId());
+                    // 使用Stream API将列表中所有实例的attribute属性转换为一个逗号分隔的字符串
+                    String commaSeparatedString = chatRooms.stream()
+                            .map(ChatRoom::getId)
+                            .map(Object::toString) // 如果Integer.toString()不是默认的，可以显式调用
+                            .collect(Collectors.joining(","));
+                    // 将这个作为标识保存起来
+                    httpSession.setAttribute("charRoomsIdsStr", commaSeparatedString);
+//                    生成JWT令牌
+                    String jwt = GeneratorJWTUtils.generateJWT(userMap);
+                    return Result.successHaveJwt("司机登录成功", accountFullInfo, jwt);
+                }
+            }
+            case OFFICIAL: {
 //                判断密码
-                if (account.getPassword().equals(account1.getPassword())){
+                if (account.getPassword().equals(accountFullInfo.getPassword())) {
 
 //                    保存在jwt令牌中的数据
 //                    身份
-                    userMap.put("id", account1.getId());
-                    userMap.put("account", account1.getAccount());
+                    userMap.put("id", accountFullInfo.getId());
+                    userMap.put("account", accountFullInfo.getAccount());
                     userMap.put("type", account.getIt());
 
-
-//                    生成JWT令牌
-                String jwt = GeneratorJWTUtils.generateJWT(userMap);
-
-                return Result.successHaveJwt("乘客登录成功", account1, jwt);
-            } else return Result.error("帐号或密码错误，登录失败");
-
-
-            } else if (type.equals(UserType.DRIVER) && null != account1.getDriverId()) {
-                account1.setIt(2);
-                //                判断密码
-                if (account.getPassword().equals(account1.getPassword())) {
-
-//                    保存在jwt令牌中的数据
-//                    身份
-
-                    userMap.put("id", account1.getId());
-                    userMap.put("account", account1.getAccount());
-                    userMap.put("type", account.getIt());
-
-
-//                    生成JWT令牌
-                    String jwt = GeneratorJWTUtils.generateJWT(userMap);
-                    return Result.successHaveJwt("司机登录成功", account1, jwt);
-                }else return Result.error("帐号或密码错误，登录失败");
-
-            } else if (type.equals(UserType.OFFICIAL) && null != account1.getManagerId()) {
-                account1.setIt(3);
-                //                判断密码
-                if (account.getPassword().equals(account1.getPassword())) {
-
-//                    保存在jwt令牌中的数据
-//                    身份
-
-                    userMap.put("id", account1.getId());
-                    userMap.put("account", account1.getAccount());
-                    userMap.put("type", account.getIt());
-
-
+//                    得到登录的帐号及所用的身份的聊天室id
+                    List<ChatRoom> chatRooms = chatRoomService.searchChatRoomsByManagerId(
+                            accountFullInfo.getManagerId());
+                    // 使用Stream API将列表中所有实例的attribute属性转换为一个逗号分隔的字符串
+                    String commaSeparatedString = chatRooms.stream()
+                            .map(ChatRoom::getId)
+                            .map(Object::toString) // 如果Integer.toString()不是默认的，可以显式调用
+                            .collect(Collectors.joining(","));
+                    // 将这个作为标识保存起来
+                    httpSession.setAttribute("charRoomsIdsStr", commaSeparatedString);
 //                    生成JWT令牌
                     String jwt = GeneratorJWTUtils.generateJWT(userMap);
 
+                    return Result.successHaveJwt("管理员登录成功", accountFullInfo, jwt);
+                }
 
-                    return Result.successHaveJwt("管理员登录成功", account1, jwt);
-                }else return Result.error("帐号或密码错误，登录失败");
+            }
+            default: {
+                return Result.error("帐号类型为Null或是没有此类型，登录失败。");
+            }
 
-            } else return Result.error("帐号或是密码错误，登录失败");
+
         }
-
     }
+
 
 
     //    注册成为用户
@@ -145,7 +180,7 @@ public class UserController {
 
         } else {
 
-            if (Objects.equals(account.getIt(), UserType.PASSENGER)) {
+            if (Objects.equals(account.getIt(), PASSENGER)) {
 //            先注册了帐号
                 accountService.register(account);
                 Integer accountId = account.getId();
@@ -189,13 +224,13 @@ public class UserController {
 
         if (account == null) return Result.error("传入的帐号为null");
 
-        Account account1 = accountService.searchByPhoneAndAccount(account);
+        Account accountFullInfo = accountService.searchByPhoneAndAccount(account);
 
-        account1.setPassword(account.getPassword());
+        accountFullInfo.setPassword(account.getPassword());
 
-        if (account1 == null) return Result.error("没有找到对应的帐号");
+        if (accountFullInfo == null) return Result.error("没有找到对应的帐号");
 
-        return Result.success("修改密码成功", accountService.mod(account1));
+        return Result.success("修改密码成功", accountService.mod(accountFullInfo));
 
 
     }
@@ -252,7 +287,8 @@ public class UserController {
 
     //    计算发出的接单的预计价格
     @RequestMapping("/countPriceOfAddress")
-    public Result countPriceOfAddress(@RequestParam("departureAddress") String departureAddress, @RequestParam("destinationAddress") String destinationAddress) {
+    public Result countPriceOfAddress(@RequestParam("departureAddress") String
+                                              departureAddress, @RequestParam("destinationAddress") String destinationAddress) {
 
         if (null == departureAddress || null == destinationAddress) return Result.error("传入的地址有空值");
 
@@ -279,10 +315,9 @@ public class UserController {
     //    登录之后，根据身份和身份对应的id找到对应的身份信息
     @RequestMapping("/viewStanding")
     public Result viewStanding(@RequestBody Account account) {
-
+        System.out.println(account.toString());
         if (account == null) return Result.error("传入的帐号为null");
-
-        if (Objects.equals(account.getIt(), UserType.PASSENGER)) {
+        if (Objects.equals(account.getIt(), PASSENGER)) {
             return Result.success("找到乘客信息成功了，", passengerService.search(account.getPassengerId()));
         } else if (account.getIt().equals(UserType.DRIVER)) {
 

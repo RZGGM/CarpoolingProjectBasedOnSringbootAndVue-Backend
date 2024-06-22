@@ -3,8 +3,7 @@ package com.gzasc.onlinecarhailing.service;
 import com.gzasc.onlinecarhailing.pojo.Account;
 import com.gzasc.onlinecarhailing.pojo.Appraise;
 import com.gzasc.onlinecarhailing.pojo.Order;
-import com.gzasc.onlinecarhailing.pojo.OrderType;
-import org.springframework.cache.annotation.Cacheable;
+import com.gzasc.onlinecarhailing.pojo.OrderQuery;
 
 import java.util.List;
 
@@ -18,27 +17,23 @@ public interface OrderService {
 // 拼单，增加订单给司机
     Integer addJoinOrderToDriver(Order order);
 
+    //    乘客对订单进行评价
+    Integer addAppraiseIdToOrder(Appraise appraise);
+
     //    删除订单
     Integer deleteOrderById(Integer id);
 
 //    更改订单的状态
     Integer modOrderState(String orderId, Integer state);
-//通过订单编号修改订单
-    Integer modOrderByOrderId(String orderId);
-    //    乘客查看自己的所有订单
-
-    List<Order> selectBySelfId(Integer id);
-
-//    乘客对订单进行评价
-    Integer addAppraiseIdToOrder(Appraise appraise);
 
 
 //    通过订单的编号进行取消订单
-    Integer abolishOrderByOrderId(String orderId);
+    Integer modOrderByOrderId(String orderId);
 
-//    根据订单的状态查询订单
+//    根据订单的状态查询订单，司机查看可以接受的订单。
     List<Order> searchOrdersByOrderState(Integer state);
-//    返回非自己帐号创建的拼车订单，司机的
+
+//    返回非自己帐号创建的拼车订单，司机的，
     List<Order> searchOrdersByAccount(Account account);
 
 
@@ -54,5 +49,12 @@ public interface OrderService {
 //
 //    根据订单的所有者的身份和对应身份的id来获取订单
     List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId);
+// 加上个页码用和缓存区分。但是更新缓存时怎么办？
+//    将参数更改为整个前端传来的参数，size，计算出总页码，再拼接得到key，全部移去。
+    List<Order> searchOrdersByCreateUserTypeAndOwnerId(Integer createUserType, Integer ownerId, OrderQuery orderQuery);
+
+    //    乘客查看自己的所有订单
+    List<Order> searchBySelfId(Integer id);
+
 
 }
