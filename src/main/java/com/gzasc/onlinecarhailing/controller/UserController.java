@@ -51,9 +51,8 @@ public class UserController {
 //        一些必须的数据的非null判断。
         if (account == null ||
                 account.getPassword() == null ||
-                account.getId() == null ||
                 account.getAccount() == null ||
-                account.getUserTypeEnum() == null
+                account.getIt() == null
         )
             return Result.error("帐号或是密码为空，登录失败。");
 // 传入的帐号的类型
