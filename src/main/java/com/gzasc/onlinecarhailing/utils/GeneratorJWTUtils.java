@@ -15,13 +15,13 @@ import java.util.UUID;
 
 //生成JWT令牌的工具类。
 public class GeneratorJWTUtils {
-//    秘钥
+    //    秘钥
     private static String SECRET = "rz2008011326 Sharing is only supported for boot loader classes because bootstrap classpath has been appended";
 
     // 加密密钥实例
-    private static SecretKey  ENCRYPTION_KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private static SecretKey ENCRYPTION_KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
     //    生成的JWT的有效时间
-    private static Date EFFECTIVE_LENGTH = new Date(System.currentTimeMillis()+259200000L);
+    private static Date EFFECTIVE_LENGTH = new Date(System.currentTimeMillis() + 259200000L);
 
     // 生成JWT令牌
 //    形参 claims是自定义的内容，一般里面装的是用户特有的信息，如id，，，，
@@ -64,7 +64,8 @@ public class GeneratorJWTUtils {
                 .parseSignedClaims(token);
     }
 
-//    使用HUTOOL来生成JWT
-    public static void testJwt(){}
+    //    使用HUTOOL来生成JWT
+    public static void testJwt() {
+    }
 
 }

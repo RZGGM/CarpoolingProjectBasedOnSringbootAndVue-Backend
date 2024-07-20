@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 
         exception.printStackTrace();
         System.out.println("出错误了。");
-        return Result.error("系统异常");
+        return Result.error("全局异常 出现异常。");
     }
 
 

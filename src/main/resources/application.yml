@@ -21,5 +21,12 @@ mybatis:
 server:
   #springboot内置的tomcat占用的端口号
   port: 8085
+# Spring Boot应用程序中集成Spring Boot Actuator模块，以便提供对应用程序的监控和管理功能。
+# Spring Boot Actuator是一个用于公开各种信息的端点（endpoints）的库，这些端点可以让你了解和管理你的应用程序。
+management:
+  endpoints:
+    web:
+      exposure:
+        include: env,info,health
 
 

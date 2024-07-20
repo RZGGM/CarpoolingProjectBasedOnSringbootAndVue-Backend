@@ -1,15 +1,18 @@
 package com.gzasc.onlinecarhailing;
 
+import com.gzasc.onlinecarhailing.service.TicketService;
+import com.gzasc.onlinecarhailing.service.impl.TicketServiceImpl;
 import com.gzasc.onlinecarhailing.utils.GeneratorJWTUtils;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
 //springboot项目运行可能需要数据库连接才能运行，如果在配置文件中设置了数据库的信息，可以删掉下面的注解再试试
 //@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
@@ -42,6 +45,12 @@ class OnlineCarHailingApplicationTests {
 
 //        解密后的：header={typ=JWT, alg=HS256},payload={id=1, account=112233, jti=ed936896-f9f6-4cb9-8fc4-089ddc7bdb99, exp=1712131488, iat=1711872288, iss=zr, sub=user},signature=TxdgmPxGrl6tPQmZkH2Ef0_HvDEMkgLxt4tqLJuxHPU
 
+    }
+
+    @Test
+    void seAlll(){
+        TicketService ticketService = new TicketServiceImpl();
+        ticketService.searchAllTicket();
     }
 
 }

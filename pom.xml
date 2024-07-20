@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-<!--        因为springboot低版本使用websoket会有漏洞，所以升级了。-->
+        <!--        因为springboot低版本使用websoket会有漏洞，所以升级了。-->
         <version>3.3.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
@@ -23,26 +23,34 @@
 
 
     <dependencies>
-<!--        redis依赖-->
+        <!-- Spring Boot Actuator 依赖项 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- 注意：通常不需要指定版本号，因为Spring Boot的starter POMs会管理依赖版本 -->
+
+        <!--        redis依赖-->
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-<!-- AOP的依赖-->
+        <!-- AOP的依赖-->
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
             <version>3.2.5</version>
         </dependency>
-<!--        mybatis的分页插件-->
+        <!--        mybatis的分页插件-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>2.1.0</version>
         </dependency>
-<!--        开发webSoket需要的依赖-->
+        <!--        开发webSoket需要的依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
@@ -55,7 +63,7 @@
             <version>2.0.47</version>
         </dependency>
 
-<!--        JWT记录用户登录状态用的依赖-->
+        <!--        JWT记录用户登录状态用的依赖-->
         <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
         <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
         <dependency>
@@ -93,42 +101,26 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter-test</artifactId>
-            <version>3.0.3</version>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
 
-<!--        要使用自己的tomcat应该要在这排除内置的tomcat-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-tomcat</artifactId>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
+        <!--        要使用自己的tomcat应该要在这排除内置的tomcat-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-tomcat</artifactId>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
     </dependencies>
-<!--    项目打包为war包，为了部署在tomcat上。-->
+    <!--    项目打包为war包，为了部署在tomcat上。-->
     <packaging>war</packaging>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+
         </plugins>
     </build>
 
