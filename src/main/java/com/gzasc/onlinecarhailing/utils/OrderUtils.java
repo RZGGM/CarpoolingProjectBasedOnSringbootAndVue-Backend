@@ -10,18 +10,16 @@ import java.util.Objects;
 public class OrderUtils {
 
 
-
-
-
-//    返回一个订单编号
-    public static String createOrderCode(){
+    //    返回一个订单编号
+    public static String createOrderCode() {
         String format = DateUtil.format(new Date(), "yyyyMMddHHmmss");
         String numbers = RandomUtil.randomNumbers(5);
 
-        return  format + numbers;
+        return format + numbers;
     }
+
     //     基于乘客的拼车订单为司机创建订单
-    public static Order onPassengerCreateJoinOrderToCreateForDriver(Order order, Integer driverId){
+    public static Order onPassengerCreateJoinOrderToCreateForDriver(Order order, Integer driverId) {
 
         Order order1 = new Order();
 
@@ -46,46 +44,47 @@ public class OrderUtils {
 
         return order1;
     }
-//    基于拼车订单来为自己生成订单
-public static Order onDriverCreateJoinOrderToCreateForUser(Order order, Integer userId){
 
-//        传入的order是拼车订单，不是另一个用户接取拼车订单生成的订单，不过只有乘客在接取司机发起的拼车订单时才会出现这种情况。
-
-    Order order1 = new Order();
-//        设置创建者的类型为：不是拼车订单的另一个类型
-    if (Objects.equals(order.getCreateUserType(), UserType.PASSENGER)){
-        order1.setCreateUserType(UserType.DRIVER);
-    }else order1.setCreateUserType(UserType.PASSENGER);
-//        设置订单的所有者为接受拼车订单的用户
-    order1.setOwnerId(userId);
-//        设置订单的目的地和起点和拼车订单和一致。
-    order1.setDepartureAddress(order.getDepartureAddress());
-    order1.setDestinationAddress(order.getDestinationAddress());
-//        设置订单的类型为等待出发
-    order1.setState(OrderState.WAIT_DEPART);
-//        设置订单的类型为：先设置和发起拼单的人的类型一致吧。
-    order1.setOrderType(order.getOrderType());
-//        为订单分配一个编号
-    order1.setOrderId(OrderUtils.createOrderCode());
-//        价格
-    order1.setPrice(order.getPrice());
-//        绑定另一个 基于拼车订单 生成的订单 的编号，这个属性得在得到另一个用户生成的订单时设置。
-//    order1.setOtherId(order.getOrderId());
-
-
-    return order1;
-}
-
-    //    基于司机的拼车订单为乘客生成订单
-    public static Order onDriverCreateJoinOrderToCreateForPassenger(Order driverCreateJoinOrder, Order passengerOrder){
+    //    基于拼车订单来为自己生成订单
+    public static Order onDriverCreateJoinOrderToCreateForUser(Order order, Integer userId) {
 
 //        传入的order是拼车订单，不是另一个用户接取拼车订单生成的订单，不过只有乘客在接取司机发起的拼车订单时才会出现这种情况。
 
         Order order1 = new Order();
 //        设置创建者的类型为：不是拼车订单的另一个类型
-        if (Objects.equals(driverCreateJoinOrder.getCreateUserType(), UserType.PASSENGER)){
+        if (Objects.equals(order.getCreateUserType(), UserType.PASSENGER)) {
             order1.setCreateUserType(UserType.DRIVER);
-        }else order1.setCreateUserType(UserType.PASSENGER);
+        } else order1.setCreateUserType(UserType.PASSENGER);
+//        设置订单的所有者为接受拼车订单的用户
+        order1.setOwnerId(userId);
+//        设置订单的目的地和起点和拼车订单和一致。
+        order1.setDepartureAddress(order.getDepartureAddress());
+        order1.setDestinationAddress(order.getDestinationAddress());
+//        设置订单的类型为等待出发
+        order1.setState(OrderState.WAIT_DEPART);
+//        设置订单的类型为：先设置和发起拼单的人的类型一致吧。
+        order1.setOrderType(order.getOrderType());
+//        为订单分配一个编号
+        order1.setOrderId(OrderUtils.createOrderCode());
+//        价格
+        order1.setPrice(order.getPrice());
+//        绑定另一个 基于拼车订单 生成的订单 的编号，这个属性得在得到另一个用户生成的订单时设置。
+//    order1.setOtherId(order.getOrderId());
+
+
+        return order1;
+    }
+
+    //    基于司机的拼车订单为乘客生成订单
+    public static Order onDriverCreateJoinOrderToCreateForPassenger(Order driverCreateJoinOrder, Order passengerOrder) {
+
+//        传入的order是拼车订单，不是另一个用户接取拼车订单生成的订单，不过只有乘客在接取司机发起的拼车订单时才会出现这种情况。
+
+        Order order1 = new Order();
+//        设置创建者的类型为：不是拼车订单的另一个类型
+        if (Objects.equals(driverCreateJoinOrder.getCreateUserType(), UserType.PASSENGER)) {
+            order1.setCreateUserType(UserType.DRIVER);
+        } else order1.setCreateUserType(UserType.PASSENGER);
 
 //        设置乘客的id为自己
         order1.setPassengerId(passengerOrder.getPassengerId());
@@ -119,7 +118,7 @@ public static Order onDriverCreateJoinOrderToCreateForUser(Order order, Integer 
 
 
     //    基于司机的拼车订单为乘客生成的订单生成司机的订单。
-    public static Order onPassengerOrderToCreateForDriver(Order driverCreateJoinOrder, Order passengerOrder){
+    public static Order onPassengerOrderToCreateForDriver(Order driverCreateJoinOrder, Order passengerOrder) {
 
 
         Order order = new Order();
@@ -158,10 +157,8 @@ public static Order onDriverCreateJoinOrderToCreateForUser(Order order, Integer 
     }
 
 
-
-
     //     基于乘客的拼车订单为乘客创建订单，感觉这个方法没有什么用。
-    public static Order onPassengerCreateJoinOrderToCreateForPassenger(Order order, Integer driverId){
+    public static Order onPassengerCreateJoinOrderToCreateForPassenger(Order order, Integer driverId) {
 
         Order order1 = new Order();
 
@@ -187,7 +184,6 @@ public static Order onDriverCreateJoinOrderToCreateForUser(Order order, Integer 
 
         return order1;
     }
-
 
 
 }

@@ -51,9 +51,7 @@ public class UserCheckInterceptor implements HandlerInterceptor {
         try {
 
             GeneratorJWTUtils.parseClaim(jwt);
-
 //            log.info(url);
-
 
         } catch (Exception exception) {
 //            解析失败进入到这
@@ -62,8 +60,7 @@ public class UserCheckInterceptor implements HandlerInterceptor {
             return false;
         }
 
-
-//放行
+//放行，有jwt并且解析成功。
         return true;
     }
 
