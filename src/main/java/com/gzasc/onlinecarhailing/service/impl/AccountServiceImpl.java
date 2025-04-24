@@ -53,10 +53,10 @@ public class AccountServiceImpl implements AccountService {
 
         for (Account account : accountList) {
 
-            if (account.getDriverId() != null){
+            if (account.getDriverId() != null) {
                 driverMapper.deleteById(account.getDriverId());
             }
-            if (account.getPassengerId() != null){
+            if (account.getPassengerId() != null) {
                 passengerMapper.deleteById(account.getPassengerId());
             }
 
@@ -64,20 +64,20 @@ public class AccountServiceImpl implements AccountService {
 
         Integer countDeleteAccount = accountMapper.deleteAccountsById(ids);
 
-        return  countDeleteAccount;
+        return countDeleteAccount;
 
     }
 
     @Override
-    public List<Account> searchAllMangerAccount( ) {
+    public List<Account> searchAllMangerAccount() {
         return accountMapper.selectManagerAccount();
     }
 
     //     根据手机号查询帐号
     @Override
-    public Account searchByPhond(String phone){
+    public Account searchByPhond(String phone) {
 
-       return accountMapper.selectByPhone( phone);
+        return accountMapper.selectByPhone(phone);
 
     }
 
@@ -89,11 +89,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account searchByPhoneAndAccount(Account account){
+    public Account searchByPhoneAndAccount(Account account) {
 
         return accountMapper.selectByPhoneAndAccount(account);
 
     }
+
     @Override
     public Account search(String account) {
         return accountMapper.selectByAccount(account);
