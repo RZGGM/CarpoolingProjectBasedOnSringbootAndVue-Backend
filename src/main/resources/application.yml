@@ -5,9 +5,10 @@ spring:
     url: jdbc:mysql://localhost:3306/onlinecarhailing
     username: onlinecarhailing
     password: 123456
-  redis:
-    host: localhost
-    port: 6379
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 # mybatis的配置
 mybatis:
