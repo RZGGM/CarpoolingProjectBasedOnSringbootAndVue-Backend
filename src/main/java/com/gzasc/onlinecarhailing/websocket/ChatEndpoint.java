@@ -39,10 +39,14 @@ public class ChatEndpoint {
     public void onClose(Session session) {
 //        服务端退出会话时，要从服务端保存的会话列表中去除相应的会话对象。
         //        得到此会话对应的身份的聊天室所有id同时也是标识
-        String charRoomsIdsStr = (String) this.httpSession.getAttribute("charRoomsIdsStr");
+        try {
+            String charRoomsIdsStr = (String) this.httpSession.getAttribute("charRoomsIdsStr");
 
-        onlineUsers.remove(charRoomsIdsStr);
+            onlineUsers.remove(charRoomsIdsStr);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        （可选）通知其它会话这个会话已经下线。
 
     }

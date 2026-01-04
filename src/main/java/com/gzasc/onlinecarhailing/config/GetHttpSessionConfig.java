@@ -18,7 +18,11 @@ public class GetHttpSessionConfig extends ServerEndpointConfig.Configurator {
 //        获取会话对象，
         HttpSession httpSession = (HttpSession) request.getHttpSession();
 //        保存httpSession
-        sec.getUserProperties().put(HttpSession.class.getName(), httpSession);
+        try {
+            sec.getUserProperties().put(HttpSession.class.getName(), httpSession);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

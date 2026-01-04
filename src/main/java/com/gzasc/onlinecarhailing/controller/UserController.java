@@ -66,7 +66,7 @@ public class UserController {
         accountFullInfo.setIt(account.getIt());
 //        得到登录时使用的帐号的类型
         UserTypeEnum userTypeEnum = account.returnUserTypeEnum();
-        
+
 //        根据登录时选择的身份进行分支选择。
         switch (userTypeEnum) {
             case PASSENGER: {
@@ -83,6 +83,9 @@ public class UserController {
 
 //                    得到此帐号的身份的信息
                     Passenger passenger = passengerService.search(accountFullInfo.getPassengerId());
+                    if (null == passenger) {
+                        return Result.error("账号或密码错误");
+                    }
 //                    得到登录的帐号及所用的身份的聊天室id
                     List<ChatRoom> chatRooms = chatRoomService.searchChatRoomsByPassengerId(
                             passenger.getPassengerId());
@@ -110,6 +113,9 @@ public class UserController {
 
 //                    得到此帐号的身份的信息
                     Driver driver = driverSerivce.search(accountFullInfo.getDriverId());
+                    if (null == driver) {
+                        return Result.error("账号或密码错误");
+                    }
 //                    得到登录的帐号及所用的身份的聊天室id
                     List<ChatRoom> chatRooms = chatRoomService.searchChatRoomsByDriverId(
                             driver.getDriverId());
@@ -127,7 +133,10 @@ public class UserController {
             }
             case OFFICIAL: {
 //                判断密码
-                if (account.getPassword().equals(accountFullInfo.getPassword())) {
+                if (account.getPassword().equals(accountFullInfo.getPassword())
+                        &&
+                        accountFullInfo.getManagerId() != null
+                ) {
 
 //                    保存在jwt令牌中的数据
 //                    身份
@@ -159,7 +168,6 @@ public class UserController {
 
         }
     }
-
 
 
     //    注册成为用户
