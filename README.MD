@@ -28,6 +28,8 @@ mybatis 是操作数据库的，操作的数据库在 src/main/resources/applica
 
 配置文件 src/main/resources/application.yml 里面定义了占用的端口，可以修改，
 
+src/main/resources/static/onlinecarhailing.sql 是数据库文件
+
 但记得需要修改下 前端中 vue.config.js 写的后端的端口。
 
 ### 前端
